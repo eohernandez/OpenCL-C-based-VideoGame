@@ -23,64 +23,6 @@ void timer(int v) {
 	glutTimerFunc(50, timer, v);
 }
 
-void DrawCube(GLfloat x, GLfloat y, GLfloat z, GLfloat length, bool fill = false){
-	
-	GLfloat halflenght = length / 2;
-	GLfloat vertices[] = {
-		// front face
-		x - halflenght, y + halflenght, z + halflenght,
-		x + halflenght, y + halflenght, z + halflenght,
-		x + halflenght, y - halflenght, z + halflenght,
-		x - halflenght, y - halflenght, z + halflenght,
-		// back face
-		x - halflenght, y + halflenght, z - halflenght,
-		x + halflenght, y + halflenght, z - halflenght,
-		x + halflenght, y - halflenght, z - halflenght,
-		x - halflenght, y - halflenght, z - halflenght,
-		// left face
-		x - halflenght, y + halflenght, z + halflenght,
-		x - halflenght, y + halflenght, z - halflenght,
-		x - halflenght, y - halflenght, z - halflenght,
-		x - halflenght, y - halflenght, z + halflenght,
-		// right face
-		x + halflenght, y + halflenght, z + halflenght,
-		x + halflenght, y + halflenght, z - halflenght,
-		x + halflenght, y - halflenght, z - halflenght,
-		x + halflenght, y - halflenght, z + halflenght,
-		// top face
-		x - halflenght, y + halflenght, z + halflenght,
-		x - halflenght, y + halflenght, z - halflenght,
-		x + halflenght, y + halflenght, z - halflenght,
-		x + halflenght, y + halflenght, z + halflenght,
-		// bottom face
-		x - halflenght, y - halflenght, z + halflenght,
-		x - halflenght, y - halflenght, z - halflenght,
-		x + halflenght, y - halflenght, z - halflenght,
-		x + halflenght, y - halflenght, z + halflenght,
-	};
-
-	if(fill){
-		glPolygonMode( GL_FRONT_AND_BACK, GL_FILL);
-
-		glEnableClientState(GL_VERTEX_ARRAY);
-
-		glVertexPointer(3, GL_FLOAT, 0, vertices);
-		glDrawArrays(GL_QUADS, 0, 24);
-
-		glDisableClientState(GL_VERTEX_ARRAY);
-	}
-	else{
-		glPolygonMode( GL_FRONT_AND_BACK, GL_LINE);
-
-		glEnableClientState(GL_VERTEX_ARRAY);
-
-		glVertexPointer(3, GL_FLOAT, 0, vertices);
-		glDrawArrays(GL_QUADS, 0, 24);
-
-		glDisableClientState(GL_VERTEX_ARRAY);
-	}
-}
-
 void paintJet(float size){
 
 	glPushMatrix();
@@ -95,11 +37,11 @@ void paintJet(float size){
 	glScaled(1, .5, 5);
 
 	glColor3ub(50,50,50);
-	DrawCube(centerx, centery, centerz, 2, true);
+	glutSolidCube(2);
 
 	glColor3ub(0,0,0);
 	glLineWidth(10);
-	DrawCube(centerx, centery, centerz, 2);
+	glutWireCube(2);
 	glLineWidth(1);
 
 	glPopMatrix();
@@ -113,11 +55,11 @@ void paintJet(float size){
 	glTranslated(0, 0, -0.9);
 
 	glColor3ub(50,50,50);
-	DrawCube(centerx, centery, centerz, 2, true);
+	glutSolidCube(2);
 
 	glColor3ub(0,0,0);
 	glLineWidth(10);
-	DrawCube(centerx, centery, centerz, 2);
+	glutWireCube(2);
 	glLineWidth(1);
 
 	glPopMatrix();
@@ -130,11 +72,13 @@ void paintJet(float size){
 	glScaled(1, 0.5, 2);
 
 	glColor3ub(50,50,50);
-	DrawCube(centerx, centery, centerz, 2, true);
+	glutSolidCube(2);
+	// glutSolidCube(2);
 
 	glColor3ub(0,0,0);
 	glLineWidth(10);
-	DrawCube(centerx, centery, centerz, 2);
+	glutWireCube(2);
+	// glutWireCube(2);
 	glLineWidth(1);
 
 	glPopMatrix();
@@ -145,11 +89,11 @@ void paintJet(float size){
 	glScaled(1, 0.5, 2);
 
 	glColor3ub(50,50,50);
-	DrawCube(centerx, centery, centerz, 2, true);
+	glutSolidCube(2);
 
 	glColor3ub(0,0,0);
 	glLineWidth(10);
-	DrawCube(centerx, centery, centerz, 2);
+	glutWireCube(2);
 	glLineWidth(1);
 
 	glPopMatrix();
@@ -162,11 +106,11 @@ void paintJet(float size){
 	glTranslated(0, 1, -1);
 
 	glColor3ub(0, 0, 255);
-	DrawCube(centerx, centery, centerz, 2, true);
+	glutSolidCube(2);
 
 	glColor3ub(0,0,0);
 	glLineWidth(10);
-	DrawCube(centerx, centery, centerz, 2);
+	glutWireCube(2);
 	glLineWidth(1);
 
 	glPopMatrix();
@@ -186,12 +130,12 @@ void display() {
 
 	glPushMatrix();
 	glScaled(100, .05, .05);
-	DrawCube(centerx, centery, centerz, 4, true);
+	glutSolidCube(4);
 	glPopMatrix();
 
 	glPushMatrix();
 	glScaled(.05, 100, .05);
-	DrawCube(centerx, centery, centerz, 4, true);
+	glutSolidCube(4);
 
 	// int count = (int) (20 / 0.05);
 
@@ -209,10 +153,11 @@ void display() {
 
 	glPushMatrix();
 	glScaled(.05, .05, 100);
-	DrawCube(centerx, centery, centerz, 4, true);
+	glutSolidCube(4);
 	glPopMatrix();
 
 	paintJet(10);
+	
 
 	glPopMatrix();
 
@@ -223,7 +168,7 @@ void reshape(int w, int h) {
 	glViewport(0, 0, w, h);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(60, 1, 1, 10000);
+	gluPerspective(60, ((double)w)/h, 1, 10000);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	camaraz = -camaradist * cos(hor * 3.1416 / 180) * cos(ver * 3.1416 / 180);
@@ -279,6 +224,7 @@ void init() {
 	// IMPORTANTE PARA QUE SE VEA LA PROFUNDIDAD
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
+
 }
 
 // main(): Initialize GLUT and enter the GLUT event loop.

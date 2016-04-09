@@ -360,7 +360,7 @@ void keyboard(unsigned char key, int, int) {
 	jet.up.normalize();
 	jet.forward.normalize();
 	axis = jet.up.cross(jet.forward);
-	debugLog(jet.forward, jet.up, axis);
+	// debugLog(jet.forward, jet.up, axis);
 
 }
 
