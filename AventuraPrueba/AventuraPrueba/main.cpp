@@ -54,9 +54,7 @@ void getParentPath(){
 
 //dibujar nave espacial
 static void naveEspacial(){
-
-    glmDraw(&model[0], GLM_COLOR | GLM_FLAT);
-    
+    glmDraw(&model[0], GLM_COLOR);    
 }
 
 
@@ -91,7 +89,7 @@ void display(){
 void init(){
     getParentPath();
     glEnable(GL_NORMALIZE);
-    glClearColor(1.0, 1.0, 1.0);
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0);
     //string path = "/Users/enriqueohernandez/Dropbox/Escuela-/TEC/8 Semestre/Graficas Computacionales/Proyecto Final Git/OpenGL-Cpp-based-VideoGame/AventuraPrueba/AventuraPrueba/SpaceShip.obj";
     // string path = "/Users/enriqueohernandez/Dropbox/Escuela-/TEC/8 Semestre/Graficas Computacionales/Proyecto Final Git/OpenGL-Cpp-based-VideoGame/AventuraPrueba/AventuraPrueba/starwarsShip.obj";
     string path = fullPath + "SpaceShip.obj";
