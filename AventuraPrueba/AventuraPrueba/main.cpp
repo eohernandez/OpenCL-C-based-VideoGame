@@ -1,11 +1,8 @@
-
-
-
 #ifdef __APPLE__
 #include <GLUT/glut.h>
 #else
 #include <GL/glut.h>
-#include <windows.h>
+// #include <windows.h>
 #endif
 #include <stdlib.h>
 #include <string>
@@ -24,7 +21,7 @@ GLuint texName[36];
 
 void loadTexture(Image* image,int k)
 {
-    
+
     glBindTexture(GL_TEXTURE_2D, texName[k]); //Tell OpenGL which texture to edit
     
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -57,7 +54,7 @@ void getParentPath(){
 
 //dibujar nave espacial
 static void naveEspacial(){
-    
+
     glmDraw(&model[0], GLM_COLOR | GLM_FLAT);
     
 }
@@ -72,11 +69,11 @@ void myTimer(int i) {
     glutTimerFunc(100,myTimer,1);
 }
 
-     
+
 void display(){
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-     
+
     glPushMatrix();
     glTranslatef(0, 1, -100);
     //glRotatef(GLfloat angle, GLfloat x, GLfloat y, GLfloat z)
@@ -87,16 +84,17 @@ void display(){
     naveEspacial();
     glPopMatrix();
     
-     
+
     glutSwapBuffers();
 }
 
 void init(){
     getParentPath();
     glEnable(GL_NORMALIZE);
+    glClearColor(1.0, 1.0, 1.0);
     //string path = "/Users/enriqueohernandez/Dropbox/Escuela-/TEC/8 Semestre/Graficas Computacionales/Proyecto Final Git/OpenGL-Cpp-based-VideoGame/AventuraPrueba/AventuraPrueba/SpaceShip.obj";
-    string path = "/Users/enriqueohernandez/Dropbox/Escuela-/TEC/8 Semestre/Graficas Computacionales/Proyecto Final Git/OpenGL-Cpp-based-VideoGame/AventuraPrueba/AventuraPrueba/starwarsShip.obj";
-    //string path = fullPath + "SpaceShip.obj";
+    // string path = "/Users/enriqueohernandez/Dropbox/Escuela-/TEC/8 Semestre/Graficas Computacionales/Proyecto Final Git/OpenGL-Cpp-based-VideoGame/AventuraPrueba/AventuraPrueba/starwarsShip.obj";
+    string path = fullPath + "SpaceShip.obj";
     model[0] = *glmReadOBJ(path.c_str());
     glmUnitize(&model[0]);
     glmVertexNormals(&model[0], 90.0, GL_TRUE);
@@ -106,46 +104,47 @@ void init(){
     glEnable(GL_TEXTURE_2D);
     
 }
-     
-     
+
+
 void reshape (int a,int alto)
 {
-     glViewport(0, 0, a, alto);
-     glMatrixMode(GL_PROJECTION);
-     glLoadIdentity();
+   glViewport(0, 0, a, alto);
+   glMatrixMode(GL_PROJECTION);
+   glLoadIdentity();
      //glFrustum(GLdouble left, GLdouble right, GLdouble bottom, GLdouble top, GLdouble zNear, GLdouble zFar)
-     glFrustum(-1000, 1000, -1000, 1000, 10, 1000);
-     glMatrixMode(GL_MODELVIEW);
-     glLoadIdentity();
+     // glFrustum(-1000, 1000, -1000, 1000, 10, 1000);
+   gluPerspective(60, 1, 1, 10000);
+   glMatrixMode(GL_MODELVIEW);
+   glLoadIdentity();
      //gluLookAt(GLdouble eyeX, GLdouble eyeY, GLdouble eyeZ, GLdouble centerX, GLdouble centerY, GLdouble centerZ, GLdouble upX, GLdouble upY, GLdouble upZ)
-     gluLookAt(0, 0, 10, 0, 0, 0, 0, 1, 0);
+   gluLookAt(10, 10, 0, 0, 0, 0, 0, 1, 0);
 }
-     
+
 void keyboard(unsigned char key, int mouseX, int mouseY)
 {
-     switch (key){
-     case 'o':
-     case 'O':
+   switch (key){
+       case 'o':
+       case 'O':
      //opcion = 1;
-             reshape(600,600);
-             break;
-     case 'p':
-     case 'P':
+       reshape(600,600);
+       break;
+       case 'p':
+       case 'P':
              //opcion = 2;
-             reshape(600,600);
-             break;
-     case 'r':
-     case 'R':
+       reshape(600,600);
+       break;
+       case 'r':
+       case 'R':
              //  init();
-             break;
-         case 27: exit(0); break;
-     default:
-             break;
-     }
-     
-     
-     }
-     
+       break;
+       case 27: exit(0); break;
+       default:
+       break;
+   }
+
+
+}
+
 int main(int argc, char *argv[])
 {
     glutInit(&argc, argv);
@@ -171,7 +170,7 @@ using namespace std;
 
 Image::Image(char* ps, int w, int h) : pixels(ps), width(w), height(h)
 {
-    
+
 }
 
 Image::~Image()
@@ -185,16 +184,16 @@ namespace
     int toInt(const char* bytes)
     {
         return (int)(((unsigned char)bytes[3] << 24) |
-                     ((unsigned char)bytes[2] << 16) |
-                     ((unsigned char)bytes[1] << 8) |
-                     (unsigned char)bytes[0]);
+           ((unsigned char)bytes[2] << 16) |
+           ((unsigned char)bytes[1] << 8) |
+           (unsigned char)bytes[0]);
     }
     
     //Converts a two-character array to a short, using little-endian form
     short toShort(const char* bytes)
     {
         return (short)(((unsigned char)bytes[1] << 8) |
-                       (unsigned char)bytes[0]);
+         (unsigned char)bytes[0]);
     }
     
     //Reads the next four bytes as an integer, using little-endian form
@@ -313,33 +312,33 @@ Image* loadBMP(const char* filename)
     {
         case 40:
             //V3
-            width = readInt(input);
-            height = readInt(input);
-            input.ignore(2);
-            assert(readShort(input) == 24 || !"Image is not 24 bits per pixel");
-            assert(readShort(input) == 0 || !"Image is compressed");
-            break;
+        width = readInt(input);
+        height = readInt(input);
+        input.ignore(2);
+        assert(readShort(input) == 24 || !"Image is not 24 bits per pixel");
+        assert(readShort(input) == 0 || !"Image is compressed");
+        break;
         case 12:
             //OS/2 V1
-            width = readShort(input);
-            height = readShort(input);
-            input.ignore(2);
-            assert(readShort(input) == 24 || !"Image is not 24 bits per pixel");
-            break;
+        width = readShort(input);
+        height = readShort(input);
+        input.ignore(2);
+        assert(readShort(input) == 24 || !"Image is not 24 bits per pixel");
+        break;
         case 64:
             //OS/2 V2
-            assert(!"Can't load OS/2 V2 bitmaps");
-            break;
+        assert(!"Can't load OS/2 V2 bitmaps");
+        break;
         case 108:
             //Windows V4
-            assert(!"Can't load Windows V4 bitmaps");
-            break;
+        assert(!"Can't load Windows V4 bitmaps");
+        break;
         case 124:
             //Windows V5
-            assert(!"Can't load Windows V5 bitmaps");
-            break;
+        assert(!"Can't load Windows V5 bitmaps");
+        break;
         default:
-            assert(!"Unknown bitmap format");
+        assert(!"Unknown bitmap format");
     }
     
     //Read the data

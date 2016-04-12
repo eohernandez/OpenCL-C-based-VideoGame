@@ -11,7 +11,7 @@ Jet::Jet(){
 	z = 0;
 	forward = Vector3d(0,0,1);
 	up = Vector3d(0,1,0);
-	size = 3;
+	size = 10;
 	yaw = 4;
 	pitch = 0;
 	roll = 0;

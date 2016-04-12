@@ -10,6 +10,7 @@
 #include "Jet.h"
 #define PI 3.14159265
 #define JOYSTICK_DEAD_ZONE 8000
+#define JOYSTICK_MAX_VALUE 32767
 
 
 using namespace std;
@@ -19,7 +20,10 @@ void debugLog(Vector3d forward, Vector3d up, Vector3d axis);
 struct Camera
 {
 	Vector3d pos;
-	float dist = 5;
+	float dist = 15;
+	float yawMod = 0;
+	float pitchMod = 0;
+	bool first = false;
 };
 
 struct Bullet
@@ -40,11 +44,39 @@ SDL_Joystick *joy = nullptr;
 void placeCamera(){
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	camera.pos.z = jet.z + camera.dist * -jet.forward.z + jet.up.z;
-	camera.pos.x = jet.x + camera.dist * -jet.forward.x + jet.up.x;
-	camera.pos.y = jet.y + camera.dist * -jet.forward.y + jet.up.y;
-	gluLookAt(camera.pos.x, camera.pos.y, camera.pos.z, jet.x, jet.y, jet.z, jet.up.x, jet.up.y, jet.up.z);
-	// gluLookAt(5, 5, 5, 0, 0, 0, 0, 1, 0);
+	Vector3d camerafor = Vector3d(-jet.forward.x, -jet.forward.y, -jet.forward.z);
+	camerafor.normalize();
+	Vector3d cameraup = Vector3d(jet.up.x, jet.up.y, jet.up.z);
+	cameraup.normalize();
+	if(!camera.first){
+		rotateAxisVec(camera.yawMod, jet.up, camerafor);
+		Vector3d axis = camerafor.cross(jet.up);
+		axis.normalize();
+		rotateAxisVec(-camera.pitchMod, axis, camerafor);
+		rotateAxisVec(-camera.pitchMod, axis, cameraup);
+		camera.pos.z = jet.z + camera.dist * camerafor.z + camera.dist / 5 * cameraup.z ;
+		camera.pos.x = jet.x + camera.dist * camerafor.x + camera.dist / 5 * cameraup.x;
+		camera.pos.y = jet.y + camera.dist * camerafor.y + camera.dist / 5 * cameraup.y;
+		// camera.pos.z = jet.z + camera.dist * -jet.forward.z + jet.up.z;
+		// camera.pos.x = jet.x + camera.dist * -jet.forward.x + jet.up.x;
+		// camera.pos.y = jet.y + camera.dist * -jet.forward.y + jet.up.y;
+		// gluLookAt(5, 5, 5, 0, 0, 0, 0, 1, 0);
+		gluLookAt(camera.pos.x, camera.pos.y, camera.pos.z,
+			jet.x + camerafor.x, jet.y + camerafor.y, jet.z + camerafor.z,
+			cameraup.x, cameraup.y, cameraup.z);
+	} else {
+		rotateAxisVec(-camera.yawMod, jet.up, camerafor);
+		Vector3d axis = camerafor.cross(jet.up);
+		axis.normalize();
+		rotateAxisVec(camera.pitchMod, axis, camerafor);
+		rotateAxisVec(camera.pitchMod, axis, cameraup);
+		camera.pos.z = jet.z + jet.up.z;
+		camera.pos.x = jet.x + jet.up.x;
+		camera.pos.y = jet.y + jet.up.y;
+		gluLookAt(camera.pos.x, camera.pos.y, camera.pos.z,
+			camera.pos.x - camerafor.x, camera.pos.y - camerafor.y, camera.pos.z - camerafor.z,
+			cameraup.x, cameraup.y, cameraup.z);
+	}
 }
 
 void moveBullets(){
@@ -293,15 +325,11 @@ void display() {
 }
 
 void reshape(int w, int h) {
-	if(w>h){
-		glViewport(0 + (w-h)/2, 0, h, h);
-	} else {
-		glViewport(0, 0 + (h-w)/2, w, w);
-	}
+	glViewport(0, 0, w, h);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	// glFrustum(-5, 5, -5, 5, 1, 100);
-	gluPerspective(60, 1, 1, 10000);
+	gluPerspective(60, ((float)w)/h, 1, 10000);
 	placeCamera();
 	// glMatrixMode(GL_MODELVIEW);
 	// glLoadIdentity();
@@ -429,22 +457,8 @@ void EventLoop(int)
 			// }
 			//Motion on controller 0
 			if( sdlEvent.jaxis.which == 0 )	{                        
-                //X axis motion
-				if( sdlEvent.jaxis.axis == 1 ) {
-                    //Left of dead zone
-					if( sdlEvent.jaxis.value < -JOYSTICK_DEAD_ZONE ) {
-						jet.pitchMod = 1;
-					}
-                    //Right of dead zone
-					else if( sdlEvent.jaxis.value > JOYSTICK_DEAD_ZONE ) {
-						jet.pitchMod =  -1;
-					}
-					else {
-						jet.pitchMod = 0;
-					}
-				}
-             	//Y axis motion
-				else if( sdlEvent.jaxis.axis == 2 )	{
+             	//Z axis motion
+				if( sdlEvent.jaxis.axis ==  0)	{
                     //Below of dead zone
 					if( sdlEvent.jaxis.value < -JOYSTICK_DEAD_ZONE ) {
 						jet.rollMod = -1;
@@ -456,9 +470,50 @@ void EventLoop(int)
 					else {
 						jet.rollMod = 0;
 					}
+				}
+                //Y axis motion
+				else if( sdlEvent.jaxis.axis == 1 ) {
+                    //Left of dead zone
+					if( sdlEvent.jaxis.value < -JOYSTICK_DEAD_ZONE ) {
+						jet.pitchMod = 1;
+					}
+                    //Right of dead zone
+					else if( sdlEvent.jaxis.value > JOYSTICK_DEAD_ZONE ) {
+						jet.pitchMod =  -1;
+					}
+					else {
+						jet.pitchMod = 0;
+					}
+                //Yaw camera motion
+				} else if( sdlEvent.jaxis.axis ==  2)	{
+                    //Below of dead zone
+					if( sdlEvent.jaxis.value < -JOYSTICK_DEAD_ZONE ) {
+						camera.yawMod = (PI / 2.3) * (sdlEvent.jaxis.value + JOYSTICK_DEAD_ZONE) / (JOYSTICK_MAX_VALUE - JOYSTICK_DEAD_ZONE);
+					}
+                    //Above of dead zone
+					else if( sdlEvent.jaxis.value > JOYSTICK_DEAD_ZONE ) {
+						camera.yawMod = (PI / 2.3) * (sdlEvent.jaxis.value - JOYSTICK_DEAD_ZONE) / (JOYSTICK_MAX_VALUE - JOYSTICK_DEAD_ZONE);
+					}
+					else {
+						camera.yawMod = 0;
+					}
+				}
+                //Y axis motion
+				else if( sdlEvent.jaxis.axis == 3 ) {
+                    //Left of dead zone
+					if( sdlEvent.jaxis.value < -JOYSTICK_DEAD_ZONE ) {
+						camera.pitchMod = (PI / 2.3) * (sdlEvent.jaxis.value + JOYSTICK_DEAD_ZONE) / (JOYSTICK_MAX_VALUE - JOYSTICK_DEAD_ZONE);
+					}
+                    //Right of dead zone
+					else if( sdlEvent.jaxis.value > JOYSTICK_DEAD_ZONE ) {
+						camera.pitchMod = (PI / 2.3) * (sdlEvent.jaxis.value - JOYSTICK_DEAD_ZONE) / (JOYSTICK_MAX_VALUE - JOYSTICK_DEAD_ZONE);
+					}
+					else {
+						camera.pitchMod = 0;
+					}
 				} else if( sdlEvent.jaxis.axis == 4 ) {
                     //Full Trigger
-					if( sdlEvent.jaxis.value == 32767 ) {
+					if( sdlEvent.jaxis.value == JOYSTICK_MAX_VALUE ) {
 						shooting = true;
 						shoot(0);
 					} else {
@@ -503,6 +558,9 @@ void EventLoop(int)
 					break;
 					case 1:
 					jet.jetBrake();
+					break;
+					case 3:
+					camera.first = !camera.first;
 					break;
 					default:
 					printf("Joystick %d button %d down\n",
