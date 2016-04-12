@@ -58,7 +58,7 @@ void getParentPath(){
 //dibujar nave espacial
 static void naveEspacial(){
     
-    glmDraw(&model[0], GLM_COLOR | GLM_FLAT);
+    glmDraw(&model[0], GLM_COLOR);
     
 }
 
