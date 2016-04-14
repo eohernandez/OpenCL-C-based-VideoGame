@@ -9,6 +9,24 @@
 #include "physics/MatrizR.h"
 #include "physics/PhysicsBodyCube.h"
 #include "Jet.h"
+#include <string>
+
+#include "GlobalClass.hpp"
+
+
+#include "glm.h"
+GLMmodel models[1];
+#define SPACESHIP_MOD 0
+
+//
+//
+//void getParentPath(){
+//    
+//    for (int i = (int)fullPath.length()-1; i>=0 && fullPath[i] != '/'; i--) {
+//        fullPath.erase(i,1);
+//    }
+//}
+
 
 Jet::Jet(){
 	x = 0;
@@ -23,6 +41,14 @@ Jet::Jet(){
 	speed = 0;
 	pitchMod = 0;
 	rollMod = 0;
+    
+    string s =  GlobalClass::instance()->get_path();
+    //getParentPath();
+    std::string ruta = s + "objects/models/starwarsShip.obj";
+    std::cout << "Filepath: " << ruta << std::endl;
+    models[SPACESHIP_MOD] = *glmReadOBJ(ruta.c_str());
+    glmUnitize(&models[SPACESHIP_MOD]);
+    glmVertexNormals(&models[SPACESHIP_MOD], 90.0, GL_TRUE);
 }
 
 void Jet::moveJet(){
@@ -116,6 +142,16 @@ void Jet::paintJet(){
 			glScalef(0.1, 0.1, 0.1);
 			glScalef(size, size, size);
 
+            //modelo
+            
+            glPushMatrix();
+            {
+                glScaled(5, 5, 5); 
+                glmDraw(&models[SPACESHIP_MOD], GLM_COLOR | GLM_SMOOTH); //GLM_FLAT GLM_SMOOTH
+                
+            }
+            glPopMatrix();
+            /*
 		//CUERPO
 
 			glPushMatrix();
@@ -200,6 +236,8 @@ void Jet::paintJet(){
 
 			}
 			glPopMatrix();
+             
+             */
 
 		}
 		glPopMatrix();

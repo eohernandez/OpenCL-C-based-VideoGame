@@ -10,6 +10,7 @@
 #include <GLUT/glut.h>
 #else
 #include <GL/glut.h>
+
 #endif
 #include <iostream>
 #include <cmath>
@@ -23,6 +24,9 @@
 #include "levels/MainMenu.h"
 #include "levels/Game.h"
 #include "levels/Credits.h"
+#include "GlobalClass.hpp"
+
+
 #define JOYSTICK_DEAD_ZONE 8000
 #define JOYSTICK_MAX_VALUE 32767
 #ifndef M_PI
@@ -31,6 +35,9 @@
 #define MAIN_MENU 0
 #define GAME 1
 #define CREDITS 2
+
+string fullPath = __FILE__;
+
 
 using namespace std;
 
@@ -43,6 +50,14 @@ Level *level;
 int state; //Referencia del estado actual
 
 int width = 500, height = 500;
+
+void getParentPath(){
+    
+    for (int i = (int)fullPath.length()-1; i>=0 && fullPath[i] != '/'; i--) {
+        fullPath.erase(i,1);
+    }
+}
+
 
 //Checa el estado en el que se encuentra, si el nivel pide otro estado, se elimina y se crea un nuevo estado
 void checkState(){
@@ -261,7 +276,14 @@ void EventLoop(int){
 //------------------------------Fin funciones de Glut
 
 //Iniciacion del Juego
+
+GlobalClass *GlobalClass::s_instance = 0;
+
 void init() {
+    
+    getParentPath();
+    
+    GlobalClass::instance()->set_path(fullPath);
     SDL_Init(SDL_INIT_GAMECONTROLLER);
     for (int i = 0; i < SDL_NumJoysticks(); ++i)
     {
