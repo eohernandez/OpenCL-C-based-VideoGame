@@ -260,6 +260,13 @@ void Jet::paintJet(){
 
 }
 
+void Jet::setSpeed(float s){
+    speed = s;
+}
+float Jet::getSpeed(){
+    return speed;
+}
+
 void Jet::jetBoost(){
 	if (speed <= 0){
 		speed = 1;

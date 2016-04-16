@@ -229,7 +229,31 @@ void MainMenu::keyboard(unsigned char key, int, int){
 }
 
 void MainMenu::EventLoop(int){
+    SDL_Event sdlEvent;
+    
+    while( SDL_PollEvent( &sdlEvent ) ) {
+        switch( sdlEvent.type ) {
+                
+            case SDL_JOYBUTTONDOWN:
+                // printf("Joystick %d button %d down\n",
+                //  sdlEvent.jbutton.which, sdlEvent.jbutton.button);
+                if( sdlEvent.jaxis.which == 0 ){
+                    switch(sdlEvent.jbutton.button){
+                        case BUTTON_START:
+                            state = 1;
+                            break;
+                        default:
+                            break;
+                    }
+                } else{
+                    printf("Joystick %d button %d down\n",
+                           sdlEvent.jbutton.which, sdlEvent.jbutton.button);
+                }
+                break;
+        }
+    }
 
+    
 }
 
 void close()
