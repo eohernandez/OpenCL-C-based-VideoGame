@@ -37,6 +37,8 @@ public:
 	void jetBoost();
 	void jetBrake();
 	void calcDir();
+    void setSpeed(float s);
+    float getSpeed();
 };
 
 void rotateUpZ(float angle, Vector3d forward, Vector3d &up);

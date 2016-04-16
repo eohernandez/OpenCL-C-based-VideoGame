@@ -373,6 +373,16 @@ void Game::keyboard(unsigned char key, int, int){
 	axis = jet.up.cross(jet.forward);
 }
 
+float normalizeValues(int x, float a, float b){
+    
+    x = x + JOYSTICK_MAX_VALUE;
+    
+    float top = (x - NORMAL_MIN_VAL) * ( b - a ) * 1.0;
+    float botom = NORMAL_MAX_VAL - NORMAL_MIN_VAL * 1.0;
+    return a + top / botom * 1.0;
+    
+}
+
 void Game::EventLoop(int){
 	SDL_Event sdlEvent;
 
@@ -395,138 +405,149 @@ void Game::EventLoop(int){
 			case SDL_CONTROLLERAXISMOTION:
 			cout << "OnControllerAxis( sdlEvent.caxis );" << endl;
 			break;
-
-			case SDL_JOYAXISMOTION:
-            // if(abs(sdlEvent.jaxis.value) > JOYSTICK_DEAD_ZONE){
-            //  printf("Joystick %d axis %d value: %d\n",
-            //      sdlEvent.jaxis.which,
-            //      sdlEvent.jaxis.axis, sdlEvent.jaxis.value);
-            // }
-            //Motion on controller 0
-			if( sdlEvent.jaxis.which == 0 ) {                        
-                //Z axis motion
-				if( sdlEvent.jaxis.axis ==  0)  {
-                    //Below of dead zone
-					if( sdlEvent.jaxis.value < -JOYSTICK_DEAD_ZONE ) {
-						jet.rollMod = -1;
-					}
-                    //Above of dead zone
-					else if( sdlEvent.jaxis.value > JOYSTICK_DEAD_ZONE ) {
-						jet.rollMod =  1;
-					}
-					else {
-						jet.rollMod = 0;
-					}
-				}
-                //Y axis motion
-				else if( sdlEvent.jaxis.axis == 1 ) {
-                    //Left of dead zone
-					if( sdlEvent.jaxis.value < -JOYSTICK_DEAD_ZONE ) {
-						jet.pitchMod = 1;
-					}
-                    //Right of dead zone
-					else if( sdlEvent.jaxis.value > JOYSTICK_DEAD_ZONE ) {
-						jet.pitchMod =  -1;
-					}
-					else {
-						jet.pitchMod = 0;
-					}
-                //Yaw camera motion
-				} else if( sdlEvent.jaxis.axis ==  2)   {
-                    //Below of dead zone
-					if( sdlEvent.jaxis.value < -JOYSTICK_DEAD_ZONE ) {
-						camera.yawMod = (M_PI / 2.3) * (sdlEvent.jaxis.value + JOYSTICK_DEAD_ZONE) / (JOYSTICK_MAX_VALUE - JOYSTICK_DEAD_ZONE);
-					}
-                    //Above of dead zone
-					else if( sdlEvent.jaxis.value > JOYSTICK_DEAD_ZONE ) {
-						camera.yawMod = (M_PI / 2.3) * (sdlEvent.jaxis.value - JOYSTICK_DEAD_ZONE) / (JOYSTICK_MAX_VALUE - JOYSTICK_DEAD_ZONE);
-					}
-					else {
-						camera.yawMod = 0;
-					}
-				}
-                //Y axis motion
-				else if( sdlEvent.jaxis.axis == 3 ) {
-                    //Left of dead zone
-					if( sdlEvent.jaxis.value < -JOYSTICK_DEAD_ZONE ) {
-						camera.pitchMod = (M_PI / 2.3) * (sdlEvent.jaxis.value + JOYSTICK_DEAD_ZONE) / (JOYSTICK_MAX_VALUE - JOYSTICK_DEAD_ZONE);
-					}
-                    //Right of dead zone
-					else if( sdlEvent.jaxis.value > JOYSTICK_DEAD_ZONE ) {
-						camera.pitchMod = (M_PI / 2.3) * (sdlEvent.jaxis.value - JOYSTICK_DEAD_ZONE) / (JOYSTICK_MAX_VALUE - JOYSTICK_DEAD_ZONE);
-					}
-					else {
-						camera.pitchMod = 0;
-					}
-				} else if( sdlEvent.jaxis.axis == 4 ) {
-                    //Full Trigger
-					if( sdlEvent.jaxis.value == JOYSTICK_MAX_VALUE ) {
-						shooting = true;
-						shoot(0);
-					} else {
-						shooting = false;
-					}
-				}else {
-					if(abs(sdlEvent.jaxis.value) > JOYSTICK_DEAD_ZONE){
-						printf("Joystick %d axis %d value: %d\n",
-							sdlEvent.jaxis.which,
-							sdlEvent.jaxis.axis, sdlEvent.jaxis.value);
-					}
-				}
-			}
-			break;
-			case SDL_JOYHATMOTION:
-			printf("Joystick %d hat %d value:",
-				sdlEvent.jhat.which, sdlEvent.jhat.hat);
-			if (sdlEvent.jhat.value == SDL_HAT_CENTERED)
-				printf(" centered");
-			if (sdlEvent.jhat.value & SDL_HAT_UP)
-				printf(" up");
-			if (sdlEvent.jhat.value & SDL_HAT_RIGHT)
-				printf(" right");
-			if (sdlEvent.jhat.value & SDL_HAT_DOWN)
-				printf(" down");
-			if (sdlEvent.jhat.value & SDL_HAT_LEFT)
-				printf(" left");
-			printf("\n");
-			break;
-			case SDL_JOYBALLMOTION:
-			printf("Joystick %d ball %d delta: (%d,%d)\n",
-				sdlEvent.jball.which,
-				sdlEvent.jball.ball, sdlEvent.jball.xrel, sdlEvent.jball.yrel);
-			break;
-			case SDL_JOYBUTTONDOWN:
-            // printf("Joystick %d button %d down\n",
-            //  sdlEvent.jbutton.which, sdlEvent.jbutton.button);
-			if( sdlEvent.jaxis.which == 0 ){  
-				switch(sdlEvent.jbutton.button){
-					case 0:
-					jet.jetBoost();
-					break;
-					case 1:
-					jet.jetBrake();
-					break;
-					case 3:
-					camera.first = !camera.first;
-					break;
-					default:
-					printf("Joystick %d button %d down\n",
-						sdlEvent.jbutton.which, sdlEvent.jbutton.button);
-					break;
-				}
-			} else{
-				printf("Joystick %d button %d down\n",
-					sdlEvent.jbutton.which, sdlEvent.jbutton.button);
-			}
-			break;
-            // case SDL_JOYBUTTONUP:
-            // printf("Joystick %d button %d up\n",
-            //  sdlEvent.jbutton.which, sdlEvent.jbutton.button);
-            // break;
-			case SDL_KEYDOWN:
-			if ((sdlEvent.key.keysym.sym != SDLK_ESCAPE) && (sdlEvent.key.keysym.sym != SDLK_AC_BACK)) {
-				break;
-			}
+                
+                
+            //JOYSTICK
+            case SDL_JOYAXISMOTION:
+                // if(abs(sdlEvent.jaxis.value) > JOYSTICK_DEAD_ZONE){
+                //  printf("Joystick %d axis %d value: %d\n",
+                //      sdlEvent.jaxis.which,
+                //      sdlEvent.jaxis.axis, sdlEvent.jaxis.value);
+                // }
+                //Motion on controller 0
+                if( sdlEvent.jaxis.which == 0 ) {
+                    //Z axis motion
+                    if( sdlEvent.jaxis.axis ==  LEFT_STICK_HORIZONTAL)  {
+                        //Below of dead zone
+                        if( sdlEvent.jaxis.value < -JOYSTICK_DEAD_ZONE ) {
+                            jet.rollMod = -1;
+                        }
+                        //Above of dead zone
+                        else if( sdlEvent.jaxis.value > JOYSTICK_DEAD_ZONE ) {
+                            jet.rollMod =  1;
+                        }
+                        else {
+                            jet.rollMod = 0;
+                        }
+                    }
+                    //Y axis motion
+                    else if( sdlEvent.jaxis.axis == LEFT_STICK_VERTICAL ) {
+                        //Left of dead zone
+                        if( sdlEvent.jaxis.value < -JOYSTICK_DEAD_ZONE ) {
+                            jet.pitchMod = 1;
+                        }
+                        //Right of dead zone
+                        else if( sdlEvent.jaxis.value > JOYSTICK_DEAD_ZONE ) {
+                            jet.pitchMod =  -1;
+                        }
+                        else {
+                            jet.pitchMod = 0;
+                        }
+                        //Yaw camera motion
+                    } else if( sdlEvent.jaxis.axis ==  RIGHT_STICK_HORIZONTAL)   {
+                        //Below of dead zone
+                        if( sdlEvent.jaxis.value < -JOYSTICK_DEAD_ZONE ) {
+                            camera.yawMod = (M_PI / 2.3) * (sdlEvent.jaxis.value + JOYSTICK_DEAD_ZONE) / (JOYSTICK_MAX_VALUE - JOYSTICK_DEAD_ZONE);
+                        }
+                        //Above of dead zone
+                        else if( sdlEvent.jaxis.value > JOYSTICK_DEAD_ZONE ) {
+                            camera.yawMod = (M_PI / 2.3) * (sdlEvent.jaxis.value - JOYSTICK_DEAD_ZONE) / (JOYSTICK_MAX_VALUE - JOYSTICK_DEAD_ZONE);
+                        }
+                        else {
+                            camera.yawMod = 0;
+                        }
+                    }
+                    //Y axis motion
+                    else if( sdlEvent.jaxis.axis == RIGHT_STICK_VERTICAL ) {
+                        //Left of dead zone
+                        if( sdlEvent.jaxis.value < -JOYSTICK_DEAD_ZONE ) {
+                            camera.pitchMod = (M_PI / 2.3) * (sdlEvent.jaxis.value + JOYSTICK_DEAD_ZONE) / (JOYSTICK_MAX_VALUE - JOYSTICK_DEAD_ZONE);
+                        }
+                        //Right of dead zone
+                        else if( sdlEvent.jaxis.value > JOYSTICK_DEAD_ZONE ) {
+                            camera.pitchMod = (M_PI / 2.3) * (sdlEvent.jaxis.value - JOYSTICK_DEAD_ZONE) / (JOYSTICK_MAX_VALUE - JOYSTICK_DEAD_ZONE);
+                        }
+                        else {
+                            camera.pitchMod = 0;
+                        }
+                    } else if( sdlEvent.jaxis.axis == RT_AXIS ) {
+                        //Full Trigger
+                        jet.setSpeed(normalizeValues(sdlEvent.jaxis.value, 2, 6));
+                        
+                        printf("SPEED: %f\n", jet.getSpeed());
+                    }else if( sdlEvent.jaxis.axis == LT_AXIS ) {
+                        //Full Trigger
+                        
+                        jet.setSpeed(normalizeValues(sdlEvent.jaxis.value, 2, 0.5));
+                         printf("SPEED: %f\n", jet.getSpeed());
+                    }
+                    else {
+                        //SET SPEED TO NORMAL SPEED
+                        jet.setSpeed(2);
+                        
+                        if(abs(sdlEvent.jaxis.value) > JOYSTICK_DEAD_ZONE){
+                            printf("Joystick %d axis %d value: %d\n",
+                                   sdlEvent.jaxis.which,
+                                   sdlEvent.jaxis.axis, sdlEvent.jaxis.value);
+                        }
+                    }
+                }
+                break;
+            case SDL_JOYHATMOTION:
+                printf("Joystick %d hat %d value:",
+                       sdlEvent.jhat.which, sdlEvent.jhat.hat);
+                if (sdlEvent.jhat.value == SDL_HAT_CENTERED)
+                    printf(" centered");
+                if (sdlEvent.jhat.value & SDL_HAT_UP)
+                    printf(" up");
+                if (sdlEvent.jhat.value & SDL_HAT_RIGHT)
+                    printf(" right");
+                if (sdlEvent.jhat.value & SDL_HAT_DOWN)
+                    printf(" down");
+                if (sdlEvent.jhat.value & SDL_HAT_LEFT)
+                    printf(" left");
+                printf("\n");
+                break;
+            case SDL_JOYBALLMOTION:
+                printf("Joystick %d ball %d delta: (%d,%d)\n",
+                       sdlEvent.jball.which,
+                       sdlEvent.jball.ball, sdlEvent.jball.xrel, sdlEvent.jball.yrel);
+                break;
+            case SDL_JOYBUTTONDOWN:
+                // printf("Joystick %d button %d down\n",
+                //  sdlEvent.jbutton.which, sdlEvent.jbutton.button);
+                if( sdlEvent.jaxis.which == 0 ){  
+                    switch(sdlEvent.jbutton.button){
+                        case BUTTON_A:
+                            shoot(0);
+                            //jet.jetBoost();
+                            break;
+                        case BUTTON_B:
+                            jet.jetBrake();
+                            break;
+                        case BUTTON_Y:
+                            camera.first = !camera.first;
+                            break;
+                        default:
+                            printf("Joystick %d button %d down\n",
+                                   sdlEvent.jbutton.which, sdlEvent.jbutton.button);
+                            break;
+                    }
+                } else{
+                    printf("Joystick %d button %d down\n",
+                           sdlEvent.jbutton.which, sdlEvent.jbutton.button);
+                }
+                break;
+                // case SDL_JOYBUTTONUP:
+                // printf("Joystick %d button %d up\n",
+                //  sdlEvent.jbutton.which, sdlEvent.jbutton.button);
+                // break;
+            case SDL_KEYDOWN:
+                if ((sdlEvent.key.keysym.sym != SDLK_ESCAPE) && (sdlEvent.key.keysym.sym != SDLK_AC_BACK)) {
+                    break;
+                }
+                
+                
                 /* Fall through to signal quit */
         // YOUR OTHER EVENT HANDLING HERE
 
