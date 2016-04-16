@@ -397,11 +397,11 @@ void Game::EventLoop(int){
 			break;
 
 			case SDL_JOYAXISMOTION:
-            // if(abs(sdlEvent.jaxis.value) > JOYSTICK_DEAD_ZONE){
-            //  printf("Joystick %d axis %d value: %d\n",
-            //      sdlEvent.jaxis.which,
-            //      sdlEvent.jaxis.axis, sdlEvent.jaxis.value);
-            // }
+            if(abs(sdlEvent.jaxis.value) > JOYSTICK_DEAD_ZONE){
+             printf("Joystick %d axis %d value: %d\n",
+                 sdlEvent.jaxis.which,
+                 sdlEvent.jaxis.axis, sdlEvent.jaxis.value);
+            }
             //Motion on controller 0
 			if( sdlEvent.jaxis.which == 0 ) {                        
                 //Z axis motion
@@ -519,10 +519,10 @@ void Game::EventLoop(int){
 					sdlEvent.jbutton.which, sdlEvent.jbutton.button);
 			}
 			break;
-            // case SDL_JOYBUTTONUP:
-            // printf("Joystick %d button %d up\n",
-            //  sdlEvent.jbutton.which, sdlEvent.jbutton.button);
-            // break;
+            case SDL_JOYBUTTONUP:
+            printf("Joystick %d button %d up\n",
+             sdlEvent.jbutton.which, sdlEvent.jbutton.button);
+            break;
 			case SDL_KEYDOWN:
 			if ((sdlEvent.key.keysym.sym != SDLK_ESCAPE) && (sdlEvent.key.keysym.sym != SDLK_AC_BACK)) {
 				break;
