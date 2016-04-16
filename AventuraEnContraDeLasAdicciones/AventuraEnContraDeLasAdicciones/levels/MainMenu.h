@@ -2,6 +2,8 @@
 #include "Level.h"
 #include "Game.h"
 #include "Credits.h"
+#include "../glm/ImageLoader.hpp"
+#include "../GlobalClass.hpp"
 
 using namespace std;
 

@@ -2,6 +2,7 @@
 #include "Level.h"
 #include "MainMenu.h"
 #include "Credits.h"
+#include <stack>
 
 using namespace std;
 
@@ -11,6 +12,7 @@ public:
 	vector<Bullet> bullets;
 	Camera camera;
 	Jet jet;
+	vector<PhysicsBodyCube> baddie;
 	bool shooting;
 	Game(int w, int h);
 	void timer(int v);
@@ -20,5 +22,7 @@ public:
 	void EventLoop(int);
 	void moveBullets();
 	void paintBullets();
+	void paintBaddies();
+	void checkCollision();
 	void shoot(int);
 };

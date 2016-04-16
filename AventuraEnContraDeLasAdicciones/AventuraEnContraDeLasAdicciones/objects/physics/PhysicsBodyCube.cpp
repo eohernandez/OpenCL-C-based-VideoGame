@@ -9,16 +9,16 @@ PhysicsBodyCube::PhysicsBodyCube(){
 
 PhysicsBodyCube::PhysicsBodyCube(float x, float y, float z, float sizex, float sizey, float sizez){
 	maxv = Vector3d(x + sizex, y + sizey, z + sizez);
-	maxPast = Vector3d(0,0,0);
+	maxPast = Vector3d(x + sizex, y + sizey, z + sizez);
 	minv = Vector3d(x - sizex, y - sizey, z - sizez);
-	minPast = Vector3d(0,0,0);
+	minPast = Vector3d(x - sizex, y - sizey, z - sizez);
 }
 
 PhysicsBodyCube::PhysicsBodyCube(Vector3d pos, float sizex, float sizey, float sizez){
 	maxv = Vector3d(pos.x + sizex, pos.y + sizey, pos.z + sizez);
-	maxPast = Vector3d(0,0,0);
+	maxPast = Vector3d(pos.x + sizex, pos.y + sizey, pos.z + sizez);
 	minv = Vector3d(pos.x - sizex, pos.y - sizey, pos.z - sizez);
-	minPast = Vector3d(0,0,0);
+	minPast = Vector3d(pos.x - sizex, pos.y - sizey, pos.z - sizez);
 }
 
 void PhysicsBodyCube::update(Vector3d pos){

@@ -1,12 +1,15 @@
 #pragma once
 #ifdef __APPLE__
 #include <GLUT/glut.h>
+#include <SDL2_mixer/SDL_mixer.h>
 #else
 #include <GL/glut.h>
+#include <SDL2/SDL_mixer.h>
 #endif
 #include <iostream>
 #include <cmath>
 #include <SDL2/SDL.h>
+
 #include "physics/MatrizR.h"
 #include "physics/PhysicsBodyCube.h"
 
@@ -27,6 +30,7 @@ public:
 	int pitchMod;
 	int rollMod;
 	PhysicsBodyCube body;
+	Mix_Chunk *gThrust;
 	Jet();
 	void moveJet();
 	void paintJet();

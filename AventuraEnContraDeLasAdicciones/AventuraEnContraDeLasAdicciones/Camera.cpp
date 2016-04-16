@@ -33,9 +33,9 @@ void Camera::placeCamera(Jet jet){
 		axis.normalize();
 		rotateAxisVec(pitchMod, axis, camerafor);
 		rotateAxisVec(pitchMod, axis, cameraup);
-		pos.z = jet.z + jet.up.z;
-		pos.x = jet.x + jet.up.x;
-		pos.y = jet.y + jet.up.y;
+		pos.z = jet.z + jet.up.z * 2 / 3 + jet.forward.z * 3 / 4;
+		pos.x = jet.x + jet.up.x * 2 / 3 + jet.forward.x * 3 / 4;
+		pos.y = jet.y + jet.up.y * 2 / 3 + jet.forward.y * 3 / 4;
 		gluLookAt(pos.x, pos.y, pos.z,
 			pos.x - camerafor.x, pos.y - camerafor.y, pos.z - camerafor.z,
 			cameraup.x, cameraup.y, cameraup.z);

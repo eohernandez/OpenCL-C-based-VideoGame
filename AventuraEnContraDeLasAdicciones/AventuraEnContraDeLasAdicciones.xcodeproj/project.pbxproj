@@ -30,6 +30,7 @@
 		1B8F1FCA1CBF2C190068AE44 /* Game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1B8F1FAC1CBF29F40068AE44 /* Game.cpp */; };
 		1B8F1FCB1CBF2C1D0068AE44 /* MainMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1B8F1FAF1CBF29F40068AE44 /* MainMenu.cpp */; };
 		1B8F1FCC1CBF2C220068AE44 /* ImageLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1B8F1FA71CBF29EE0068AE44 /* ImageLoader.cpp */; };
+		1BBCFB401CC2B87C00DAB2FC /* SDL2_mixer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BBCFB3F1CC2B87C00DAB2FC /* SDL2_mixer.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -90,6 +91,7 @@
 		1B8F1FC01CBF29F90068AE44 /* Vector3d.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Vector3d.cpp; sourceTree = "<group>"; };
 		1B8F1FC11CBF29F90068AE44 /* Vector3d.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Vector3d.h; sourceTree = "<group>"; };
 		1B8F1FC21CBF2AB60068AE44 /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SDL2.framework; sourceTree = "<group>"; };
+		1BBCFB3F1CC2B87C00DAB2FC /* SDL2_mixer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SDL2_mixer.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +100,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1B8F1FC31CBF2AB60068AE44 /* SDL2.framework in Frameworks */,
+				1BBCFB401CC2B87C00DAB2FC /* SDL2_mixer.framework in Frameworks */,
 				1B749A8D1C963E26006119A4 /* GLUT.framework in Frameworks */,
 				1B749A8E1C963E26006119A4 /* OpenGL.framework in Frameworks */,
 			);
@@ -117,6 +120,7 @@
 		1B749A781C963DFD006119A4 = {
 			isa = PBXGroup;
 			children = (
+				1BBCFB3F1CC2B87C00DAB2FC /* SDL2_mixer.framework */,
 				1B8F1FC21CBF2AB60068AE44 /* SDL2.framework */,
 				1B749A8B1C963E26006119A4 /* GLUT.framework */,
 				1B749A8C1C963E26006119A4 /* OpenGL.framework */,

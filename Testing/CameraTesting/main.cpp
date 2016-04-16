@@ -5,6 +5,7 @@
 #endif
 #include <iostream>
 #include <cmath>
+#include "glm/glm.h"
 
 using namespace std;
 
@@ -13,6 +14,9 @@ float hor = 0, ver = 0;
 float camarax = 0, camaray = 0, camaraz = 0, camaradist = 10;
 
 int rotation = 0;
+
+GLMmodel models[1];
+#define SPACESHIP_MOD 0
 
 void timer(int v) {
 	rotation = (rotation + 10) % 360;
@@ -129,35 +133,79 @@ void display() {
 	//EJES
 
 	glPushMatrix();
-	glScaled(100, .05, .05);
+	glScaled(100, .005, .005);
 	glutSolidCube(4);
 	glPopMatrix();
 
 	glPushMatrix();
-	glScaled(.05, 100, .05);
+	glScaled(.005, 100, .005);
 	glutSolidCube(4);
+	glPopMatrix();
+	int count = 20;
 
-	// int count = (int) (20 / 0.05);
+	for (float i = 0; i < count; i += 0.5)
+	{
+		glPushMatrix();
+		glTranslated(i - count / 4, 0, 0);
+		glScaled(.005, 100, .005);
+		glutSolidCube(4);
+		glPopMatrix();
+	}
 
-	// for (int i = 0; i < count; i += count / 20)
-	// {
-	// 	DrawCube(centerx + i - count / 2, centery, centerz, 4, true);
-	// }
+	for (int i = 0; i < count; i ++)
+	{
+		glPushMatrix();
+		glTranslated(0, 0, i - count / 2);
+		glScaled(.005, 100, .005);
+		glutSolidCube(4);
+		glPopMatrix();
+	}
 
-	// for (int i = 0; i < count; i += count / 20)
-	// {
-	// 	DrawCube(centerx, centery, centerz + i - count / 2, 4, true);
-	// }
+	for (int i = 0; i < count; i ++)
+	{
+		glPushMatrix();
+		glTranslated(0, 0, i - count / 2);
+		glScaled(100, .005, .005);
+		glutSolidCube(4);
+		glPopMatrix();
+	}
+
+	for (int i = 0; i < count; i ++)
+	{
+		glPushMatrix();
+		glTranslated(0, i - count / 2, 0);
+		glScaled(100, .005, .005);
+		glutSolidCube(4);
+		glPopMatrix();
+	}
+
+	for (float i = 0; i < count; i += 0.2)
+	{
+		glPushMatrix();
+		glTranslated(0, i - count / 10, 0);
+		glScaled(.005, .005, 100);
+		glutSolidCube(4);
+		glPopMatrix();
+	}
+
+	for (int i = 0; i < count; i ++)
+	{
+		glPushMatrix();
+		glTranslated(i - count / 2, 0, 0);
+		glScaled(.005, .005, 100);
+		glutSolidCube(4);
+		glPopMatrix();
+	}
 
 	glPopMatrix();
 
 	glPushMatrix();
-	glScaled(.05, .05, 100);
+	glScaled(.005, .005, 100);
 	glutSolidCube(4);
 	glPopMatrix();
 
-	paintJet(10);
-	
+	// paintJet(10);
+	glmDraw(&models[SPACESHIP_MOD], GLM_COLOR | GLM_SMOOTH);
 
 	glPopMatrix();
 
@@ -224,7 +272,9 @@ void init() {
 	// IMPORTANTE PARA QUE SE VEA LA PROFUNDIDAD
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
-
+	models[SPACESHIP_MOD] = *glmReadOBJ("models/webtrcc.obj");
+	glmUnitize(&models[SPACESHIP_MOD]);
+	glmVertexNormals(&models[SPACESHIP_MOD], 90.0, GL_TRUE);
 }
 
 // main(): Initialize GLUT and enter the GLUT event loop.

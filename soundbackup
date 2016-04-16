@@ -1,0 +1,103 @@
+
+
+// bool exists_test (const std::string& name) {
+//     ifstream f(name.c_str());
+//     if (f.good()) {
+//         f.close();
+//         return true;
+//     } else {
+//         f.close();
+//         return false;
+//     }   
+// }
+
+// void print_init_flags(int flags)
+// {
+// #define PFLAG(a) if(flags&MIX_INIT_##a) printf(#a " ")
+//     PFLAG(FLAC);
+//     PFLAG(MOD);
+//     PFLAG(MP3);
+//     PFLAG(OGG);
+//     if(!flags)
+//         printf("None");
+//     printf("\n");
+// }
+
+// void errorv(char *str, va_list ap)
+// {
+//     vfprintf(stderr,str,ap);
+//     fprintf(stderr,": %s.\n", SDL_GetError());
+// }
+
+// void cleanExit(char *str,...)
+// {
+//     va_list ap;
+//     va_start(ap, str);
+//     errorv(str,ap);
+//     va_end(ap);
+//     Mix_CloseAudio();
+//     SDL_Quit();
+//     exit(1);
+// }
+
+
+    // int initted=Mix_Init(0);
+    // printf("Before Mix_Init SDL_mixer supported: ");
+    // print_init_flags(initted);
+    // initted=Mix_Init(~0);
+    // printf("After  Mix_Init SDL_mixer supported: ");
+    // print_init_flags(initted);
+    // Mix_Quit();
+
+
+
+
+    /* we play no samples, so deallocate the default 8 channels... */
+    // Mix_AllocateChannels(0);
+
+    /* print out some info on the formats this run of SDL_mixer supports */
+    // {
+    //     int i,n=Mix_GetNumChunkDecoders();
+    //     printf("There are %d available chunk(sample) decoders:\n",n);
+    //     for(i=0; i<n; ++i)
+    //         printf("    %s\n", Mix_GetChunkDecoder(i));
+    //     n = Mix_GetNumMusicDecoders();
+    //     printf("There are %d available music decoders:\n",n);
+    //     for(i=0; i<n; ++i)
+    //         printf("    %s\n", Mix_GetMusicDecoder(i));
+    // }
+
+    // int audio_rate,audio_channels, bits=0, sample_size=0, rate=0;
+    // Uint16 audio_format;
+
+    /* print out some info on the audio device and stream */
+    // Mix_QuerySpec(&audio_rate, &audio_format, &audio_channels);
+    // bits=audio_format&0xFF;
+    // sample_size=bits/8+audio_channels;
+    // rate=audio_rate;
+    // printf("Opened audio at %d Hz %d bit %s, %d bytes audio buffer\n", audio_rate,
+    //     bits, audio_channels>1?"stereo":"mono", 1024 );
+
+    // Mix_Music *music;
+    // char  rutaMusic[300];
+    // string s =  GlobalClass::instance()->get_path();
+    // sprintf(rutaMusic,"%s%s", s.c_str() , "sounds/starwars.wav");
+    // cout << exists_test(rutaMusic) << rutaMusic << endl;
+    /* load the song */
+    // if(!(music= Mix_LoadMUS(rutaMusic)))
+    //     cleanExit("Mix_LoadMUS(\"%s\")",rutaMusic);
+    // {
+    //     Mix_MusicType type=Mix_GetMusicType(music);
+    //     printf("Music type: %s\n",
+    //         type==MUS_NONE?"MUS_NONE":
+    //         type==MUS_CMD?"MUS_CMD":
+    //         type==MUS_WAV?"MUS_WAV":
+                /*type==MUS_MOD_MODPLUG?"MUS_MOD_MODPLUG":*/
+    //         type==MUS_MOD?"MUS_MOD":
+    //         type==MUS_MID?"MUS_MID":
+    //         type==MUS_OGG?"MUS_OGG":
+    //         type==MUS_MP3?"MUS_MP3":
+    //         type==MUS_MP3_MAD?"MUS_MP3_MAD":
+    //         type==MUS_FLAC?"MUS_FLAC":
+    //         "Unknown");
+    // }

@@ -1,12 +1,15 @@
 #pragma once
 #ifdef __APPLE__
 #include <GLUT/glut.h>
+#include <SDL2_mixer/SDL_mixer.h>
 #else
 #include <GL/glut.h>
+#include <SDL2/SDL_mixer.h>
 #endif
 #include <iostream>
 #include <cmath>
 #include <SDL2/SDL.h>
+
 #include <vector>
 #include "../Camera.h"
 #include "../objects/Jet.h"

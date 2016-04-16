@@ -104,7 +104,7 @@ void init(){
     glShadeModel(GL_SMOOTH);
     
     //SPACESHIP
-    std::string ruta = fullPath + "objects/SpaceShip.obj";
+    std::string ruta = fullPath + "objects/cigg.obj";
     std::cout << "Filepath: " << ruta << std::endl;
     models[SPACESHIP_MOD] = *glmReadOBJ(ruta.c_str());
     glmUnitize(&models[SPACESHIP_MOD]);

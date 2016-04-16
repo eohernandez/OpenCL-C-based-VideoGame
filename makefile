@@ -1,14 +1,13 @@
 all: aventura
 
-aventura: main.o MainMenu.o Game.o Credits.o Jet.o Bullet.o PhysicsBodyCube.o MatrizR.o Vector3d.o Camera.o 
-	g++ main.o MainMenu.o Game.o Credits.o Jet.o Bullet.o PhysicsBodyCube.o MatrizR.o Vector3d.o Camera.o -o aventura -lGL -lGLU -lglut -lSDL2 -std=c++11 -fpermissive  
+aventura: main.o MainMenu.o Game.o Credits.o Jet.o Bullet.o PhysicsBodyCube.o MatrizR.o Vector3d.o Camera.o GlobalClass.o ImageLoader.o
+	g++ main.o MainMenu.o Game.o Credits.o Jet.o Bullet.o PhysicsBodyCube.o MatrizR.o Vector3d.o Camera.o GlobalClass.o ImageLoader.o AventuraEnContraDeLasAdicciones/AventuraEnContraDeLasAdicciones/glm/*.c -w -o aventura -lGL -lGLU -lglut -lSDL2_mixer -lSDL2 -std=c++11 -fpermissive
 
 main.o: AventuraEnContraDeLasAdicciones/AventuraEnContraDeLasAdicciones/main.cpp
-	g++ -c AventuraEnContraDeLasAdicciones/AventuraEnContraDeLasAdicciones/main.cpp
-	AventuraEnContraDeLasAdicciones/AventuraEnContraDeLasAdicciones/glm/*.c -std=c++11
+	g++ -c AventuraEnContraDeLasAdicciones/AventuraEnContraDeLasAdicciones/main.cpp	-std=c++11 
 
 Jet.o: AventuraEnContraDeLasAdicciones/AventuraEnContraDeLasAdicciones/objects/Jet.cpp
-	g++ -c AventuraEnContraDeLasAdicciones/AventuraEnContraDeLasAdicciones/objects/Jet.cpp -std=c++11
+	g++ -c AventuraEnContraDeLasAdicciones/AventuraEnContraDeLasAdicciones/objects/Jet.cpp -std=c++11 
 
 Bullet.o: AventuraEnContraDeLasAdicciones/AventuraEnContraDeLasAdicciones/objects/Bullet.cpp
 	g++ -c AventuraEnContraDeLasAdicciones/AventuraEnContraDeLasAdicciones/objects/Bullet.cpp -std=c++11
@@ -33,6 +32,12 @@ Game.o: AventuraEnContraDeLasAdicciones/AventuraEnContraDeLasAdicciones/levels/G
 
 Credits.o: AventuraEnContraDeLasAdicciones/AventuraEnContraDeLasAdicciones/levels/Credits.cpp
 	g++ -c AventuraEnContraDeLasAdicciones/AventuraEnContraDeLasAdicciones/levels/Credits.cpp -std=c++11
+
+GlobalClass.o: AventuraEnContraDeLasAdicciones/AventuraEnContraDeLasAdicciones/GlobalClass.cpp
+	g++ -c AventuraEnContraDeLasAdicciones/AventuraEnContraDeLasAdicciones/GlobalClass.cpp -std=c++11
+
+ImageLoader.o: AventuraEnContraDeLasAdicciones/AventuraEnContraDeLasAdicciones/glm/ImageLoader.cpp
+	g++ -c AventuraEnContraDeLasAdicciones/AventuraEnContraDeLasAdicciones/glm/ImageLoader.cpp -std=c++11
 
 clean:
 	rm *o aventura
