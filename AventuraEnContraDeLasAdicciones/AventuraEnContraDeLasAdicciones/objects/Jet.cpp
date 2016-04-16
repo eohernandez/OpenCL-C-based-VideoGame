@@ -11,10 +11,9 @@
 #include "Jet.h"
 #include <string>
 
-#include "GlobalClass.hpp"
+#include "../GlobalClass.hpp"
+#include "../glm/glm.h"
 
-
-#include "glm.h"
 GLMmodel models[1];
 #define SPACESHIP_MOD 0
 
@@ -44,11 +43,23 @@ Jet::Jet(){
     
     string s =  GlobalClass::instance()->get_path();
     //getParentPath();
-    std::string ruta = s + "objects/models/starwarsShip.obj";
+    std::string ruta = s + "objects/models/Raider.obj";
     std::cout << "Filepath: " << ruta << std::endl;
     models[SPACESHIP_MOD] = *glmReadOBJ(ruta.c_str());
     glmUnitize(&models[SPACESHIP_MOD]);
     glmVertexNormals(&models[SPACESHIP_MOD], 90.0, GL_TRUE);
+
+    //Load sound effects
+	char  rutaThrust[300];
+	sprintf(rutaThrust,"%s%s", s.c_str() , "sounds/thrust.wav");
+    // cout << rutaThrust << endl;
+	gThrust = Mix_LoadWAV( rutaThrust );
+	if( gThrust == NULL )
+	{
+		printf( "Failed to load gThrust sound effect! SDL_mixer Error: %s\n", Mix_GetError() );
+	} else {
+		Mix_PlayChannel( 0, gThrust, -1 );
+	}
 }
 
 void Jet::moveJet(){
@@ -133,6 +144,7 @@ void Jet::paintJet(){
 	{
 
 		glTranslatef(x, y, z);
+
 		glRotatef(-yaw * 180 / 3.14159, 0, 1, 0);
 		glRotatef(-pitch * 180 / 3.14159, 1, 0, 0);
 		glPushMatrix();

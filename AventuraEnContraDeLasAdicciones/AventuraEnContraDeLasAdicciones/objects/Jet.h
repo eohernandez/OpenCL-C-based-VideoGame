@@ -7,6 +7,7 @@
 #include <iostream>
 #include <cmath>
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_mixer.h>
 #include "physics/MatrizR.h"
 #include "physics/PhysicsBodyCube.h"
 
@@ -27,6 +28,7 @@ public:
 	int pitchMod;
 	int rollMod;
 	PhysicsBodyCube body;
+	Mix_Chunk *gThrust;
 	Jet();
 	void moveJet();
 	void paintJet();

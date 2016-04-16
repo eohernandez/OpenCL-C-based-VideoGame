@@ -1,2 +1,2 @@
 all:
-	g++ main.cpp -lGL -lGLU -lglut -o camera
+	g++ main.cpp glm/*.c -lGL -lGLU -lglut -o camera -w -fpermissive

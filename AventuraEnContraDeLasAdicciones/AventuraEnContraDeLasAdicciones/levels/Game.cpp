@@ -1,6 +1,7 @@
 #include "Game.h"
 
 Game* game;
+vector<bool> bodycount;
 
 void Game::moveBullets(){
 	for (int i = 0; i < bullets.size(); i++){
@@ -193,7 +194,21 @@ void paintGridAround(int count){
 void Game::paintBullets(){
 	for (int i = 0; i < bullets.size(); i++){
 		Bullet it = bullets[i];
-		it.paint();
+		if(!it.dead){
+			it.paint();
+		}
+	}
+}
+
+void Game::paintBaddies(){
+	for (int i = 0; i < baddie.size(); ++i)
+	{
+		if(bodycount[i]){
+			DrawCube((baddie[i].maxv.x + baddie[i].minv.x) / 2, 
+				(baddie[i].maxv.y + baddie[i].minv.y) / 2, 
+				(baddie[i].maxv.z + baddie[i].minv.z) / 2,
+				10, true);
+		}
 	}
 }
 
@@ -203,8 +218,11 @@ void timerShoot(int){
 
 void Game::shoot(int){
 	Bullet bu;
-	bu.pos = Vector3d(jet.x, jet.y, jet.z);
 	bu.forward = jet.forward;
+	Vector3d axis = jet.up.cross(jet.forward);
+	bu.pos = Vector3d(jet.x + 2 * axis.x, jet.y + 2 * axis.y, jet.z + 2 * axis.z);
+	bullets.push_back(bu);
+	bu.pos = Vector3d(jet.x - 2 * axis.x, jet.y - 2 * axis.y, jet.z - 2 * axis.z);
 	bullets.push_back(bu);
 	if (shooting)
 	{
@@ -219,10 +237,37 @@ Game::Game(int w, int h){
 	glDepthFunc(GL_LESS);
 	game = this;
 	this->reshape(w,h);
-	cout << "Game" << endl;
+	cout << "gamme" << endl;
+	for (int i = 0; i < 5; ++i)
+	{
+		int x, y, z;
+		x = rand() % 200 - 100;
+		y = rand() % 200 - 100;
+		z = rand() % 200 - 100;
+		PhysicsBodyCube body(x, y, z, 10, 10, 10);
+		baddie.push_back(body);
+		bodycount.push_back(true);
+	}
+}
+
+void Game::checkCollision(){
+	for (int i = 0; i < bullets.size(); ++i)
+	{
+		if(!bullets[i].dead){
+			for (int j = 0; j < baddie.size(); ++j)
+			{
+				if (bodycount[j] && bullets[i].body.collidesContinuos(baddie[j]))
+				{
+					bullets[i].dead = true;
+					bodycount[j] = false;
+				}
+			}
+		}
+	}
 }
 
 void Game::timer(int v){
+	checkCollision();
 	moveBullets();
 	jet.calcDir();
 	jet.moveJet();
@@ -259,6 +304,9 @@ void Game::display(){
 
 	paintBullets();
 
+	glColor3ub(0,0,0);
+	paintBaddies();
+
 	jet.paintJet();
 
 	glutSwapBuffers();
@@ -268,7 +316,7 @@ void Game::reshape(int w, int h){
 	glViewport(0, 0, w, h);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(60, ((float)w)/h, 1, 10000);
+	gluPerspective(60, ((float)w)/h, 0.1, 10000);
 	camera.placeCamera(jet);
 }
 
@@ -276,6 +324,8 @@ void Game::keyboard(unsigned char key, int, int){
 	Vector3d axis;
 	axis = jet.up.cross(jet.forward);
 	float angle = M_PI/16;
+	camera.pitchMod = 0;
+	camera.yawMod = 0;
 	switch(key) {
 		case 'w':
 		rotateAxisVec(angle, axis, jet.forward);
@@ -296,6 +346,26 @@ void Game::keyboard(unsigned char key, int, int){
 		break;
 		case 'e': 
 		jet.jetBrake();
+		break;
+		case 'y':
+		camera.first = !camera.first;
+		break;
+		case 'i':
+		camera.pitchMod = (M_PI / 2.3);
+		break;
+		case 'k':
+		camera.pitchMod = -(M_PI / 2.3);
+		break;
+		case 'l':
+		camera.yawMod = (M_PI / 2.3);
+		break;
+		case 'j':
+		camera.yawMod = -(M_PI / 2.3);
+		break;
+		case 'm':
+		shooting = true;
+		shoot(0);
+		shooting = false;
 		break;
 	}
 	jet.up.normalize();

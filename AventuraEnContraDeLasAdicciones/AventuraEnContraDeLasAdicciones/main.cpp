@@ -13,6 +13,7 @@
 
 #endif
 #include <iostream>
+#include <fstream>
 #include <cmath>
 #include <SDL2/SDL.h>
 #include <vector>
@@ -52,7 +53,7 @@ int state; //Referencia del estado actual
 int width = 500, height = 500;
 
 void getParentPath(){
-    
+
     for (int i = (int)fullPath.length()-1; i>=0 && fullPath[i] != '/'; i--) {
         fullPath.erase(i,1);
     }
@@ -280,15 +281,20 @@ void EventLoop(int){
 GlobalClass *GlobalClass::s_instance = 0;
 
 void init() {
-    
     getParentPath();
     
     GlobalClass::instance()->set_path(fullPath);
-    SDL_Init(SDL_INIT_GAMECONTROLLER);
+    SDL_Init(SDL_INIT_GAMECONTROLLER  | SDL_INIT_AUDIO);
     for (int i = 0; i < SDL_NumJoysticks(); ++i)
     {
         joy = SDL_JoystickOpen(0);
     }
+     //Initialize SDL_mixer
+    if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 1024 ) < 0 )
+    {
+        printf( "SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError() );
+    }
+
     level = new MainMenu(width, height);
     state = MAIN_MENU;
 }
