@@ -44,7 +44,7 @@ Jet::Jet(){
     
     string s =  GlobalClass::instance()->get_path();
     //getParentPath();
-    std::string ruta = s + "objects/models/starwarsShip.obj";
+    std::string ruta = s + "objects/models/shipA_OBJ.obj";
     std::cout << "Filepath: " << ruta << std::endl;
     models[SPACESHIP_MOD] = *glmReadOBJ(ruta.c_str());
     glmUnitize(&models[SPACESHIP_MOD]);

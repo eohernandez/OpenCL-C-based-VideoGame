@@ -45,6 +45,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1B099B391CC127140038222E /* shipA_OBJ.mtl */ = {isa = PBXFileReference; lastKnownFileType = text; path = shipA_OBJ.mtl; sourceTree = "<group>"; };
+		1B099B3A1CC127140038222E /* shipA_OBJ.obj */ = {isa = PBXFileReference; lastKnownFileType = text; path = shipA_OBJ.obj; sourceTree = "<group>"; };
 		1B2BAEC91CBF47F700A0C1AB /* AventuraWallpaper.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = AventuraWallpaper.bmp; sourceTree = "<group>"; };
 		1B2BAECA1CBF4CCA00A0C1AB /* GlobalClass.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GlobalClass.cpp; sourceTree = "<group>"; };
 		1B2BAECB1CBF4CCA00A0C1AB /* GlobalClass.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GlobalClass.hpp; sourceTree = "<group>"; };
@@ -196,6 +198,8 @@
 		1B8F1FB61CBF29F90068AE44 /* models */ = {
 			isa = PBXGroup;
 			children = (
+				1B099B391CC127140038222E /* shipA_OBJ.mtl */,
+				1B099B3A1CC127140038222E /* shipA_OBJ.obj */,
 				1B8F1FB71CBF29F90068AE44 /* SpaceShip.mtl */,
 				1B8F1FB81CBF29F90068AE44 /* SpaceShip.obj */,
 				1B8F1FB91CBF29F90068AE44 /* starwarsShip.mtl */,
