@@ -51,6 +51,22 @@ bool loadMedia()
     return success;
 }
 
+void close()
+{
+    // //Free the sound effects
+    Mix_FreeChunk( gScratch );
+    Mix_FreeChunk( gSaber );
+    // Mix_FreeChunk( gMedium );
+    // Mix_FreeChunk( gLow );
+    gScratch = NULL;
+    gSaber = NULL;
+    // gMedium = NULL;
+    // gLow = NULL;
+
+    //Free the music
+    Mix_FreeMusic( gMusic );
+    gMusic = NULL;
+}
 /*
 
 //Makes the image into a texture, and returns the id of the texture
@@ -190,6 +206,7 @@ void MainMenu::keyboard(unsigned char key, int, int){
         case 'I':
         case 'i':
         state = 1;
+        close();
         break;
         case 'M':
         case 'm':
@@ -244,44 +261,26 @@ void MainMenu::EventLoop(int){
     
     while( SDL_PollEvent( &sdlEvent ) ) {
         switch( sdlEvent.type ) {
-                
+
             case SDL_JOYBUTTONDOWN:
                 // printf("Joystick %d button %d down\n",
                 //  sdlEvent.jbutton.which, sdlEvent.jbutton.button);
-                if( sdlEvent.jaxis.which == 0 ){
-                    switch(sdlEvent.jbutton.button){
-                        case BUTTON_START:
-                            state = 1;
-                            break;
-                        default:
-                            break;
-                    }
-                } else{
-                    printf("Joystick %d button %d down\n",
-                           sdlEvent.jbutton.which, sdlEvent.jbutton.button);
+            if( sdlEvent.jaxis.which == 0 ){
+                switch(sdlEvent.jbutton.button){
+                    case BUTTON_START:
+                    state = 1;
+                    close();
+                    break;
+                    default:
+                    break;
                 }
-                break;
+            } else{
+                printf("Joystick %d button %d down\n",
+                 sdlEvent.jbutton.which, sdlEvent.jbutton.button);
+            }
+            break;
         }
     }
 
     
-}
-
-void close()
-{
-
-
-    // //Free the sound effects
-    // Mix_FreeChunk( gScratch );
-    // Mix_FreeChunk( gHigh );
-    // Mix_FreeChunk( gMedium );
-    // Mix_FreeChunk( gLow );
-    // gScratch = NULL;
-    // gHigh = NULL;
-    // gMedium = NULL;
-    // gLow = NULL;
-
-    //Free the music
-    Mix_FreeMusic( gMusic );
-    gMusic = NULL;
 }

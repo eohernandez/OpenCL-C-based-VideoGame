@@ -170,14 +170,66 @@ void Game::paintSphere(int x, int y, int z){
 
 }
 
+void writeBigStringWide(GLdouble x, GLdouble y, string s, float size, int r, int g, int b){
+
+    unsigned int i;
+    
+    glPushMatrix();
+    glTranslatef(x, y, 0);
+    
+    glScaled( size, size * 3, 0.2);
+    
+    glColor3ub(r, g, b);
+    glLineWidth(50);
+    for (i = 0; i < s.size(); i++){
+        glutStrokeCharacter(GLUT_STROKE_ROMAN, s[i]);
+
+    }
+    glLineWidth(1);
+    glPopMatrix();
+}
+
 void Game::paintHUD(float x, float y, float w, float h){
 	glViewport(x, y, w, h);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluOrtho2D(-10, 10, -10, 10);
+	gluOrtho2D(-100, 100, -100, 100);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	glRectd(-5, -5, 5, 5);
+
+    writeBigStringWide(-70, 70, "SPEED:", 0.075, 0, 255, 0);
+
+	glColor3ub(255, 255, 255);
+	
+	float minCoord = -100.0f;
+    float maxCoord = 100.0f;
+
+	//Habilitar el uso de texturas
+    glEnable(GL_TEXTURE_2D);
+    
+    GLuint tex0 = GlobalClass::instance()->getTex(4);
+    
+    //Elegir la textura del Quads: angulo cambia con el timer
+    glBindTexture(GL_TEXTURE_2D, tex0);
+    
+    glBegin(GL_QUADS);
+    //Asignar la coordenada de textura 0,0 al vertice
+    glTexCoord2f(0.0f, 0.0f);
+    glVertex3f(minCoord, minCoord, 0);
+    //Asignar la coordenada de textura 1,0 al vertice
+    glTexCoord2f(1.0f, 0.0f); ///-
+    glVertex3f(maxCoord, minCoord, 0);
+    //Asignar la coordenada de textura 1,1 al vertice
+    glTexCoord2f(1.0f,1.0f); //-
+    //glTexCoord2f(1.0f,1.0f);
+    //glTexCoord2f(2.0f,5.0f);
+    glVertex3f(maxCoord, maxCoord, 0);
+    //Asignar la coordenada de textura 0,1 al vertice
+    glTexCoord2f(0.0f, 1.0f);
+    //glTexCoord2f(0.0f, 5.0f);
+    
+    glVertex3f(minCoord, maxCoord, 0);
+    glEnd();
 }
 
 void Game::paintGame(float x, float y, float w, float h){

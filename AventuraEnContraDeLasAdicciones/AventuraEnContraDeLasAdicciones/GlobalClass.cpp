@@ -22,7 +22,7 @@
 //Makes the image into a texture, and returns the id of the texture
 void GlobalClass::loadTexture(Image* image,int k)
 {
-    
+
     glBindTexture(GL_TEXTURE_2D, texName[k]); //Tell OpenGL which texture to edit
     
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -73,8 +73,12 @@ void GlobalClass::initRendering()
     sprintf(ruta,"%s%s", s.c_str() , "images/Earth_texture.bmp");
     image = loadBMP(ruta);loadTexture(image,i++);
     
-    
-    
+    sprintf(ruta,"%s%s", s.c_str() , "images/Earth_texture.bmp");
+    image = loadBMP(ruta);loadTexture(image,i++);
+
+    sprintf(ruta,"%s%s", s.c_str() , "images/HUD.bmp");
+    image = loadBMP(ruta);loadTexture(image,i++);
+
     delete image;
 }
 
