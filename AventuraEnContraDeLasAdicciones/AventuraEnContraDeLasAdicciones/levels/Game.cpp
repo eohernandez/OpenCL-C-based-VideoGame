@@ -141,6 +141,7 @@ void Game::checkCollision(){
 	}
 	while(!killBullets.empty()){
 		bullets.erase(bullets.begin() + killBullets.top());
+        
 		killBullets.pop();
 	}
 }

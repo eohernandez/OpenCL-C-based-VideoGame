@@ -35,4 +35,5 @@ public:
 	Bullet(Vector3d pos, Vector3d forward, float speed);
 	void move();
 	void paint();
+    ~Bullet();
 };
