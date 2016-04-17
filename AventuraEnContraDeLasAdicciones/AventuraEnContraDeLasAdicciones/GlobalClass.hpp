@@ -25,12 +25,18 @@ class GlobalClass
 {
     
     string fullPath;
+    float timer;
+    float totalGameTime;
     GLuint texName[TEXTURE_COUNT];
+    int points;
 
     static GlobalClass *s_instance;
     GlobalClass(string s = "")
     {
+        points = 0;
         fullPath = "";
+        totalGameTime = 20;
+        timer = totalGameTime;
     }
     
 public:
@@ -49,9 +55,32 @@ public:
         return s_instance;
     }
     
+    void resetGameDefaults(){
+        timer = totalGameTime;
+        points = 0;
+    }
+
+    
     GLuint getTex(int n){
         return texName[n];
     }
+    void setTimer(float t){
+        timer = t;
+    }
+    int getPoints(){
+        return points;
+    }
+    void updatePoints(int p){
+        points += p;
+    }
+    
+    float getTimer(){
+        return timer;
+    }
+    void updateTimer(float t){
+        timer -= t;
+    }
+    
     void initRendering();
     void loadTexture(Image* image,int k);
 };

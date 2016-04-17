@@ -10,11 +10,37 @@ void Win::timer(int v){
 
 }
 
+
+void Win::writeBigStringWide(GLdouble x, GLdouble y, string s, float size, int r, int g, int b){
+    
+    unsigned int i;
+    
+    glColor3f(1.0, 1.0,1.0);
+    glPushMatrix();
+    glTranslatef(x, y, 0);
+    
+    glScaled( size, size, 0.2);
+    
+    glColor3ub(r, g, b);
+    
+    
+    glLineWidth(50);
+    for (i = 0; i < s.size(); i++){
+        glutStrokeCharacter(GLUT_STROKE_ROMAN, s[i]);
+    }
+    glLineWidth(1);
+    glPopMatrix();
+}
 void Win::display(){
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
     
     float minCoord = -50.0f;
     float maxCoord = 50.0f;
+    
+    
+    writeBigStringWide(-22, -46, std::to_string(GlobalClass::instance()->getPoints()), 0.075, 200, 0, 0);
+
+    glColor3f(255, 255, 255);
     
     //Habilitar el uso de texturas
     glEnable(GL_TEXTURE_2D);
@@ -43,6 +69,7 @@ void Win::display(){
     
     glVertex3f(minCoord, maxCoord, 0);
     glEnd();
+    glDisable(GL_TEXTURE_2D);
     
     glutSwapBuffers();
 }

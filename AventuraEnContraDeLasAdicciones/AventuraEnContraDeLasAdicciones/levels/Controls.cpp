@@ -16,6 +16,7 @@ void Controls::display(){
     
     float minCoord = -50.0f;
     float maxCoord = 50.0f;
+    glColor3f(255, 255, 255);
     
     //Habilitar el uso de texturas
     glEnable(GL_TEXTURE_2D);

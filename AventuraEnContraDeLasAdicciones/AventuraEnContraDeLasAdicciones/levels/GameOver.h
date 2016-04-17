@@ -17,4 +17,5 @@ public:
 	void reshape(int w, int h);
 	void keyboard(unsigned char key, int, int);
 	void EventLoop(int);
+    void writeBigStringWide(GLdouble x, GLdouble y, string s, float size, int r, int g, int b);
 };

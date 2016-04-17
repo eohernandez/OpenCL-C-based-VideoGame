@@ -10,7 +10,6 @@ std::random_device rd;
 #define EVILS 10
 #define HEALTHS 3
 
-
 struct GameObject{
 	int x;
 	int y;
@@ -25,6 +24,7 @@ bool bodycount[EVILS];
 GameObject healths [HEALTHS];
 bool healthsTaken[HEALTHS];
 stack<int> killBullets;
+bool gamePause = false;
 
 void paintModel(int tex);
 
@@ -98,6 +98,14 @@ void initStructs(){
 	}
 }
 
+string formato(int t){
+    
+    string seconds = (((t/10)%60) < 10) ? ("0" + std::to_string((t/10)%60)) : (std::to_string((t/10)%60));
+    
+    return std::to_string(((t/10)/60)%60) + ":" + seconds + "." + std::to_string(t%10);
+}
+
+
 void Game::shoot(int){
 	Bullet bu;
 	bu.forward = jet.forward;
@@ -110,6 +118,9 @@ void Game::shoot(int){
 
 Game::Game(int w, int h){
 	state = 1;
+    
+    GlobalClass::instance()->resetGameDefaults();
+    
 	glClearColor(.9, .9, .9, 1);
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
@@ -147,14 +158,22 @@ void Game::checkCollision(){
 }
 
 void Game::timer(int v){
-	checkCollision();
-	moveBullets();
-	jet.calcDir();
-	jet.moveJet();
-	glutPostRedisplay();
-	if(bullets.size()){
-		cout << bullets.size() << endl;
-	}
+    
+    if(!gamePause){
+        GlobalClass::instance()->updateTimer(0.5);
+        checkCollision();
+        moveBullets();
+        jet.calcDir();
+        jet.moveJet();
+        if(bullets.size()){
+            cout << bullets.size() << endl;
+        }
+    }
+    if(GlobalClass::instance()->getTimer() < 0){
+        state = 4;
+    }
+    
+    glutPostRedisplay();
 }
 
 void Game::paintBackGroundImage(int x, int y, int z, int rx, int ry, int rz, int size){
@@ -290,13 +309,19 @@ void Game::paintHUD(float x, float y, float w, float h){
 		glVertex2f(85, -95);
 		glVertex2f(95, -95);
 		glColor3ub(0 + jet.speed * 20, 255 - jet.speed * 20, 0);
-		glVertex2f(95, -95 + jet.speed * 15);
-		glVertex2f(85, -95 + jet.speed * 15);
+		glVertex2f(95, -95 + jet.speed * 14);
+		glVertex2f(85, -95 + jet.speed * 14);
 	}
 	glEnd();
 	glColor3ub(255, 140, 0);
-	glRectf(84, -96, 96, -96 + jet.speed * 15 + 2);
+	glRectf(84, -96, 96, -96 + jet.speed * 14 + 2);
 	writeBigStringWide(-93, 85, "VIDA", 0.075, 200, 0, 0);
+    writeBigStringWide(5, 85, "PNTS: " + std::to_string(GlobalClass::instance()->getPoints()), 0.075, 200, 0, 0);
+    writeBigStringWide(65, 85, formato(GlobalClass::instance()->getTimer()), 0.075, 200, 0, 0);
+    if(gamePause){
+        
+        writeBigStringWide(-40, 0, "PAUSA", 0.2, 200, 0, 0);
+    }
 	glColor3ub(0, 255, 0);
 	glRectf(-95, 82, 0 - 95 + jet.life*95/100, 95);
 	glColor3ub(255, 0, 0);
@@ -494,13 +519,14 @@ void Game::EventLoop(int){
 					}
 				} else if( sdlEvent.jaxis.axis == RT_AXIS ) {
                         //Full Trigger
-					jet.setSpeed(normalizeValues(sdlEvent.jaxis.value, 6, 12));
+                    if(!gamePause)
+                        jet.setSpeed(normalizeValues(sdlEvent.jaxis.value, 6, 12));
 
 					// printf("SPEED: %f\n", jet.getSpeed());
 				}else if( sdlEvent.jaxis.axis == LT_AXIS ) {
                         //Full Trigger
-
-					jet.setSpeed(normalizeValues(sdlEvent.jaxis.value, 6, 2));
+                    if(!gamePause)
+                        jet.setSpeed(normalizeValues(sdlEvent.jaxis.value, 6, 2));
                          // printf("SPEED: %f\n", jet.getSpeed());
 				}
 				else {
@@ -542,15 +568,19 @@ void Game::EventLoop(int){
 			if( sdlEvent.jaxis.which == 0 ){  
 				switch(sdlEvent.jbutton.button){
 					case BUTTON_A:
-					shoot(0);
-                            //jet.jetBoost();
+                        if(!gamePause)
+                            shoot(0);
 					break;
 					case BUTTON_B:
-					jet.jetBrake();
-					break;
+                        if(!gamePause)
+                            jet.jetBrake();
+                        break;
 					case BUTTON_Y:
-					camera.first = !camera.first;
-					break;
+                        camera.first = !camera.first;
+                        break;
+                    case BUTTON_START:
+                        gamePause = !gamePause;
+                        break;
 					default:
 					printf("Joystick %d button %d down\n",
 						sdlEvent.jbutton.which, sdlEvent.jbutton.button);
