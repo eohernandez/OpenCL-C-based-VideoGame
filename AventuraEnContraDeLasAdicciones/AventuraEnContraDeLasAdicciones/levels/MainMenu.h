@@ -1,5 +1,5 @@
 #pragma once
-#include "Level.h"
+#include "View.h"
 #include "Game.h"
 #include "Credits.h"
 #include "../glm/ImageLoader.hpp"
@@ -54,7 +54,7 @@
 using namespace std;
 
 //Pantalla de menu principal
-class MainMenu : public Level{
+class MainMenu : public View{
 public:
 	MainMenu(int w, int h);
 	void timer(int v);

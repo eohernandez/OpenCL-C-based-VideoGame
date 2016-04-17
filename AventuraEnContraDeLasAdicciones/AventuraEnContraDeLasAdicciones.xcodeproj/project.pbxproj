@@ -51,6 +51,7 @@
 		1B2BAEC91CBF47F700A0C1AB /* AventuraWallpaper.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = AventuraWallpaper.bmp; sourceTree = "<group>"; };
 		1B2BAECA1CBF4CCA00A0C1AB /* GlobalClass.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GlobalClass.cpp; sourceTree = "<group>"; };
 		1B2BAECB1CBF4CCA00A0C1AB /* GlobalClass.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GlobalClass.hpp; sourceTree = "<group>"; };
+		1B65F9EF1CC311F6004154E9 /* View.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = View.h; sourceTree = "<group>"; };
 		1B749A811C963DFD006119A4 /* AventuraEnContraDeLasAdicciones */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = AventuraEnContraDeLasAdicciones; sourceTree = BUILT_PRODUCTS_DIR; };
 		1B749A841C963DFD006119A4 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		1B749A8B1C963E26006119A4 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
@@ -73,7 +74,6 @@
 		1B8F1FAB1CBF29F40068AE44 /* Credits.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Credits.h; sourceTree = "<group>"; };
 		1B8F1FAC1CBF29F40068AE44 /* Game.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Game.cpp; sourceTree = "<group>"; };
 		1B8F1FAD1CBF29F40068AE44 /* Game.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Game.h; sourceTree = "<group>"; };
-		1B8F1FAE1CBF29F40068AE44 /* Level.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Level.h; sourceTree = "<group>"; };
 		1B8F1FAF1CBF29F40068AE44 /* MainMenu.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MainMenu.cpp; sourceTree = "<group>"; };
 		1B8F1FB01CBF29F40068AE44 /* MainMenu.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainMenu.h; sourceTree = "<group>"; };
 		1B8F1FB21CBF29F90068AE44 /* Bullet.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Bullet.cpp; sourceTree = "<group>"; };
@@ -183,7 +183,7 @@
 				1B8F1FAB1CBF29F40068AE44 /* Credits.h */,
 				1B8F1FAC1CBF29F40068AE44 /* Game.cpp */,
 				1B8F1FAD1CBF29F40068AE44 /* Game.h */,
-				1B8F1FAE1CBF29F40068AE44 /* Level.h */,
+				1B65F9EF1CC311F6004154E9 /* View.h */,
 				1B8F1FAF1CBF29F40068AE44 /* MainMenu.cpp */,
 				1B8F1FB01CBF29F40068AE44 /* MainMenu.h */,
 			);

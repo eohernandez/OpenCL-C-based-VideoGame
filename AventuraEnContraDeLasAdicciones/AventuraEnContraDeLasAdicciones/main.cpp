@@ -22,7 +22,7 @@
 #include "objects/Jet.h"
 #include "objects/Bullet.h"
 #include "glm/glm.h"
-#include "levels/Level.h"
+#include "levels/View.h"
 #include "levels/MainMenu.h"
 #include "levels/Game.h"
 #include "levels/Credits.h"
@@ -47,8 +47,8 @@ using namespace std;
 SDL_GameController *controller;
 SDL_Joystick *joy;
 
-//Apuntador de clase Level, padre de todos los estados, LO QUE SE TENIA ESTA EN Game.cpp
-Level *level;
+//Apuntador de clase View, padre de todos los estados, LO QUE SE TENIA ESTA EN Game.cpp
+View *view;
 int state; //Referencia del estado actual
 
 int width = 1200, height = 1000;
@@ -63,24 +63,24 @@ void getParentPath(){
 
 //Checa el estado en el que se encuentra, si el nivel pide otro estado, se elimina y se crea un nuevo estado
 void checkState(){
-    if(level->state != state){
-        switch(level->state){
+    if(view->state != state){
+        switch(view->state){
 
             case MAIN_MENU:
-            delete level;
-            level = new MainMenu(width, height);
+            delete view;
+            view = new MainMenu(width, height);
             state = MAIN_MENU;
             break;
 
             case GAME:
-            delete level;
-            level = new Game(width, height);
+            delete view;
+            view = new Game(width, height);
             state = GAME;
             break;
 
             case CREDITS:
-            delete level;
-            level = new Credits(width, height);
+            delete view;
+            view = new Credits(width, height);
             state = CREDITS;
             break;
         }
@@ -91,27 +91,28 @@ void checkState(){
 
 void timer(int v) {
     checkState();
-    level->timer(v);
+    view->timer(v);
     glutTimerFunc(50, timer, v);
 }
 
 void display() {
-    level->display();
+    view->display();
 }
 
 void reshape(int w, int h) {
     width = w;
     height = h;
-    level->reshape(w,h);
+    view->reshape(w,h);
 }
 
 void keyboard(unsigned char key, int, int) {
-    level->keyboard(key, 0, 0);
+    view->keyboard(key, 0, 0);
 }
 
 void EventLoop(int);
 void EventLoop(int){
-    level->EventLoop(0);
+
+    view->EventLoop(0);
 
     glutTimerFunc(10, EventLoop, 0);
 }
@@ -139,7 +140,7 @@ void init() {
         printf( "SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError() );
     }
 
-    level = new MainMenu(width, height);
+    view = new MainMenu(width, height);
     state = MAIN_MENU;
 }
 

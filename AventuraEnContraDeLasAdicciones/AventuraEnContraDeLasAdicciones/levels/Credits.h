@@ -1,12 +1,12 @@
 #pragma once
-#include "Level.h"
+#include "View.h"
 #include "MainMenu.h"
 #include "Game.h"
 
 using namespace std;
 
 //Pantalla de creditos
-class Credits : public Level{
+class Credits : public View{
 public:
 	Credits(int w, int h);
 	void timer(int v);

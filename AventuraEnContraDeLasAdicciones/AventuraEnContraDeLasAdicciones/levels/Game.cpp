@@ -33,10 +33,6 @@ void Game::shoot(int){
 	bullets.push_back(bu);
 	bu.pos = Vector3d(jet.x - 2 * axis.x, jet.y - 2 * axis.y, jet.z - 2 * axis.z);
 	bullets.push_back(bu);
-	if (shooting)
-	{
-		glutTimerFunc(10, timerShoot, 0);
-	}
 }
 
 Game::Game(int w, int h){
@@ -81,42 +77,40 @@ void Game::timer(int v){
 	moveBullets();
 	jet.calcDir();
 	jet.moveJet();
-	camera.placeCamera(jet);
 	glutPostRedisplay();
 }
 
-
 void Game::paintBackGroundImage(int x, int y, int z, int rx, int ry, int rz, int size){
-    
-    size = size / 2;
-    
-    
-    float minCoord = size * -1.0;
-    float maxCoord = size * 1.0;
-    
-    glColor3f(255, 255, 255);
-    
-    
-    glPushMatrix();
-    {
-        glRotatef(90, rx, ry, rz);
-        glTranslatef(x, y, z);
-        
-        
+
+	size = size / 2;
+
+
+	float minCoord = size * -1.0;
+	float maxCoord = size * 1.0;
+
+	glColor3f(255, 255, 255);
+
+
+	glPushMatrix();
+	{
+		glRotatef(90, rx, ry, rz);
+		glTranslatef(x, y, z);
+
+
         //Habilitar el uso de texturas
-        glEnable(GL_TEXTURE_2D);
-        
-        GLuint tex0 = GlobalClass::instance()->getTex(1);
-        
+		glEnable(GL_TEXTURE_2D);
+
+		GLuint tex0 = GlobalClass::instance()->getTex(1);
+
         //Elegir la textura del Quads: angulo cambia con el timer
         //glBindTexture(GL_TEXTURE_2D, texName[0]);
-        
-        glBindTexture(GL_TEXTURE_2D, tex0);
-        
-        glBegin(GL_QUADS);
+
+		glBindTexture(GL_TEXTURE_2D, tex0);
+
+		glBegin(GL_QUADS);
         //Asignar la coordenada de textura 0,0 al vertice
-        glTexCoord2f(0.0f, 0.0f);
-        glVertex3f(minCoord, minCoord, 0);
+		glTexCoord2f(0.0f, 0.0f);
+		glVertex3f(minCoord, minCoord, 0);
         //Asignar la coordenada de textura 1,0 al vertice
         glTexCoord2f(1.0f, 0.0f); ///-
         glVertex3f(maxCoord, minCoord, 0);
@@ -177,13 +171,25 @@ void Game::paintSphere(int x, int y, int z, int texture){
     glDisable(GL_TEXTURE_GEN_T);
     glDisable(GL_TEXTURE_GEN_R);
     
-    
-    
 }
 
-void Game::display(){
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+void Game::paintHUD(float x, float y, float w, float h){
+	glViewport(x, y, w, h);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluOrtho2D(-10, 10, -10, 10);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	glRectd(-5, -5, 5, 5);
+}
 
+void Game::paintGame(float x, float y, float w, float h){
+	glViewport(x, y, w, h);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluPerspective(60, w/h, 0.01, 15000);
+	camera.placeCamera(jet);
+	glColor3ub(0,0,0);
 	
     int imageDistance = 7000;
     
@@ -202,19 +208,20 @@ void Game::display(){
 
     glColor3f(1.0, 1.0, 1.0);
 
-	jet.paintJet();
 
+	jet.paintJet();
+}
+
+void Game::display(){
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+	paintGame(0, height * 0.2, width, height * 0.8);
+	paintHUD(0, 0, width, height * 0.2);
 	glutSwapBuffers();
 }
 
 void Game::reshape(int w, int h){
-	glViewport(0, 0, w, h);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	gluPerspective(60, ((float)w)/h, 0.1, 15000);
-    
-	camera.placeCamera(jet);
-    
+	width = w;
+	height = h;
 }
 
 void Game::keyboard(unsigned char key, int, int){
@@ -260,9 +267,7 @@ void Game::keyboard(unsigned char key, int, int){
 		camera.yawMod = -(M_PI / 2.3);
 		break;
 		case 'm':
-		shooting = true;
 		shoot(0);
-		shooting = false;
 		break;
 	}
 	jet.up.normalize();
@@ -271,13 +276,13 @@ void Game::keyboard(unsigned char key, int, int){
 }
 
 float normalizeValues(int x, float a, float b){
-    
-    x = x + JOYSTICK_MAX_VALUE;
-    
-    float top = (x - NORMAL_MIN_VAL) * ( b - a ) * 1.0;
-    float botom = NORMAL_MAX_VAL - NORMAL_MIN_VAL * 1.0;
-    return a + top / botom * 1.0;
-    
+
+	x = x + JOYSTICK_MAX_VALUE;
+
+	float top = (x - NORMAL_MIN_VAL) * ( b - a ) * 1.0;
+	float botom = NORMAL_MAX_VAL - NORMAL_MIN_VAL * 1.0;
+	return a + top / botom * 1.0;
+
 }
 
 void Game::EventLoop(int){
@@ -301,80 +306,78 @@ void Game::EventLoop(int){
 
 			case SDL_CONTROLLERAXISMOTION:
 			cout << "OnControllerAxis( sdlEvent.caxis );" << endl;
-			break;
-                
-                
+			break;           
             //JOYSTICK
-            case SDL_JOYAXISMOTION:
+			case SDL_JOYAXISMOTION:
                 // if(abs(sdlEvent.jaxis.value) > JOYSTICK_DEAD_ZONE){
                 //  printf("Joystick %d axis %d value: %d\n",
                 //      sdlEvent.jaxis.which,
                 //      sdlEvent.jaxis.axis, sdlEvent.jaxis.value);
                 // }
                 //Motion on controller 0
-                if( sdlEvent.jaxis.which == 0 ) {
+			if( sdlEvent.jaxis.which == 0 ) {
                     //Z axis motion
-                    if( sdlEvent.jaxis.axis ==  LEFT_STICK_HORIZONTAL)  {
+				if( sdlEvent.jaxis.axis ==  LEFT_STICK_HORIZONTAL)  {
                         //Below of dead zone
-                        if( sdlEvent.jaxis.value < -JOYSTICK_DEAD_ZONE ) {
-                            jet.rollMod = -1;
-                        }
+					if( sdlEvent.jaxis.value < -JOYSTICK_DEAD_ZONE ) {
+						jet.rollMod = -1;
+					}
                         //Above of dead zone
-                        else if( sdlEvent.jaxis.value > JOYSTICK_DEAD_ZONE ) {
-                            jet.rollMod =  1;
-                        }
-                        else {
-                            jet.rollMod = 0;
-                        }
-                    }
+					else if( sdlEvent.jaxis.value > JOYSTICK_DEAD_ZONE ) {
+						jet.rollMod =  1;
+					}
+					else {
+						jet.rollMod = 0;
+					}
+				}
                     //Y axis motion
-                    else if( sdlEvent.jaxis.axis == LEFT_STICK_VERTICAL ) {
+				else if( sdlEvent.jaxis.axis == LEFT_STICK_VERTICAL ) {
                         //Left of dead zone
-                        if( sdlEvent.jaxis.value < -JOYSTICK_DEAD_ZONE ) {
-                            jet.pitchMod = 1;
-                        }
+					if( sdlEvent.jaxis.value < -JOYSTICK_DEAD_ZONE ) {
+						jet.pitchMod = 1;
+					}
                         //Right of dead zone
-                        else if( sdlEvent.jaxis.value > JOYSTICK_DEAD_ZONE ) {
-                            jet.pitchMod =  -1;
-                        }
-                        else {
-                            jet.pitchMod = 0;
-                        }
+					else if( sdlEvent.jaxis.value > JOYSTICK_DEAD_ZONE ) {
+						jet.pitchMod =  -1;
+					}
+					else {
+						jet.pitchMod = 0;
+					}
                         //Yaw camera motion
-                    } else if( sdlEvent.jaxis.axis ==  RIGHT_STICK_HORIZONTAL)   {
+				} else if( sdlEvent.jaxis.axis ==  RIGHT_STICK_HORIZONTAL)   {
                         //Below of dead zone
-                        if( sdlEvent.jaxis.value < -JOYSTICK_DEAD_ZONE ) {
-                            camera.yawMod = (M_PI / 2.3) * (sdlEvent.jaxis.value + JOYSTICK_DEAD_ZONE) / (JOYSTICK_MAX_VALUE - JOYSTICK_DEAD_ZONE);
-                        }
+					if( sdlEvent.jaxis.value < -JOYSTICK_DEAD_ZONE ) {
+						camera.yawMod = (M_PI / 2.3) * (sdlEvent.jaxis.value + JOYSTICK_DEAD_ZONE) / (JOYSTICK_MAX_VALUE - JOYSTICK_DEAD_ZONE);
+					}
                         //Above of dead zone
-                        else if( sdlEvent.jaxis.value > JOYSTICK_DEAD_ZONE ) {
-                            camera.yawMod = (M_PI / 2.3) * (sdlEvent.jaxis.value - JOYSTICK_DEAD_ZONE) / (JOYSTICK_MAX_VALUE - JOYSTICK_DEAD_ZONE);
-                        }
-                        else {
-                            camera.yawMod = 0;
-                        }
-                    }
+					else if( sdlEvent.jaxis.value > JOYSTICK_DEAD_ZONE ) {
+						camera.yawMod = (M_PI / 2.3) * (sdlEvent.jaxis.value - JOYSTICK_DEAD_ZONE) / (JOYSTICK_MAX_VALUE - JOYSTICK_DEAD_ZONE);
+					}
+					else {
+						camera.yawMod = 0;
+					}
+				}
                     //Y axis motion
-                    else if( sdlEvent.jaxis.axis == RIGHT_STICK_VERTICAL ) {
+				else if( sdlEvent.jaxis.axis == RIGHT_STICK_VERTICAL ) {
                         //Left of dead zone
-                        if( sdlEvent.jaxis.value < -JOYSTICK_DEAD_ZONE ) {
-                            camera.pitchMod = (M_PI / 2.3) * (sdlEvent.jaxis.value + JOYSTICK_DEAD_ZONE) / (JOYSTICK_MAX_VALUE - JOYSTICK_DEAD_ZONE);
-                        }
+					if( sdlEvent.jaxis.value < -JOYSTICK_DEAD_ZONE ) {
+						camera.pitchMod = (M_PI / 2.3) * (sdlEvent.jaxis.value + JOYSTICK_DEAD_ZONE) / (JOYSTICK_MAX_VALUE - JOYSTICK_DEAD_ZONE);
+					}
                         //Right of dead zone
-                        else if( sdlEvent.jaxis.value > JOYSTICK_DEAD_ZONE ) {
-                            camera.pitchMod = (M_PI / 2.3) * (sdlEvent.jaxis.value - JOYSTICK_DEAD_ZONE) / (JOYSTICK_MAX_VALUE - JOYSTICK_DEAD_ZONE);
-                        }
-                        else {
-                            camera.pitchMod = 0;
-                        }
-                    } else if( sdlEvent.jaxis.axis == RT_AXIS ) {
+					else if( sdlEvent.jaxis.value > JOYSTICK_DEAD_ZONE ) {
+						camera.pitchMod = (M_PI / 2.3) * (sdlEvent.jaxis.value - JOYSTICK_DEAD_ZONE) / (JOYSTICK_MAX_VALUE - JOYSTICK_DEAD_ZONE);
+					}
+					else {
+						camera.pitchMod = 0;
+					}
+				} else if( sdlEvent.jaxis.axis == RT_AXIS ) {
                         //Full Trigger
-                        jet.setSpeed(normalizeValues(sdlEvent.jaxis.value, 6, 12));
-                        
-                        printf("SPEED: %f\n", jet.getSpeed());
-                    }else if( sdlEvent.jaxis.axis == LT_AXIS ) {
+					jet.setSpeed(normalizeValues(sdlEvent.jaxis.value, 6, 12));
+
+					printf("SPEED: %f\n", jet.getSpeed());
+				}else if( sdlEvent.jaxis.axis == LT_AXIS ) {
                         //Full Trigger
-                        
+                    
                         jet.setSpeed(normalizeValues(sdlEvent.jaxis.value, 6, 2));
                          printf("SPEED: %f\n", jet.getSpeed());
                     }
@@ -411,40 +414,39 @@ void Game::EventLoop(int){
                        sdlEvent.jball.ball, sdlEvent.jball.xrel, sdlEvent.jball.yrel);
                 break;
             case SDL_JOYBUTTONDOWN:
+
                 // printf("Joystick %d button %d down\n",
                 //  sdlEvent.jbutton.which, sdlEvent.jbutton.button);
-                if( sdlEvent.jaxis.which == 0 ){  
-                    switch(sdlEvent.jbutton.button){
-                        case BUTTON_A:
-                            shoot(0);
+			if( sdlEvent.jaxis.which == 0 ){  
+				switch(sdlEvent.jbutton.button){
+					case BUTTON_A:
+					shoot(0);
                             //jet.jetBoost();
-                            break;
-                        case BUTTON_B:
-                            jet.jetBrake();
-                            break;
-                        case BUTTON_Y:
-                            camera.first = !camera.first;
-                            break;
-                        default:
-                            printf("Joystick %d button %d down\n",
-                                   sdlEvent.jbutton.which, sdlEvent.jbutton.button);
-                            break;
-                    }
-                } else{
-                    printf("Joystick %d button %d down\n",
-                           sdlEvent.jbutton.which, sdlEvent.jbutton.button);
-                }
-                break;
+					break;
+					case BUTTON_B:
+					jet.jetBrake();
+					break;
+					case BUTTON_Y:
+					camera.first = !camera.first;
+					break;
+					default:
+					printf("Joystick %d button %d down\n",
+						sdlEvent.jbutton.which, sdlEvent.jbutton.button);
+					break;
+				}
+			} else{
+				printf("Joystick %d button %d down\n",
+					sdlEvent.jbutton.which, sdlEvent.jbutton.button);
+			}
+			break;
                 // case SDL_JOYBUTTONUP:
                 // printf("Joystick %d button %d up\n",
                 //  sdlEvent.jbutton.which, sdlEvent.jbutton.button);
                 // break;
-            case SDL_KEYDOWN:
-                if ((sdlEvent.key.keysym.sym != SDLK_ESCAPE) && (sdlEvent.key.keysym.sym != SDLK_AC_BACK)) {
-                    break;
-                }
-                
-                
+			case SDL_KEYDOWN:
+			if ((sdlEvent.key.keysym.sym != SDLK_ESCAPE) && (sdlEvent.key.keysym.sym != SDLK_AC_BACK)) {
+				break;
+			}
                 /* Fall through to signal quit */
         // YOUR OTHER EVENT HANDLING HERE
 

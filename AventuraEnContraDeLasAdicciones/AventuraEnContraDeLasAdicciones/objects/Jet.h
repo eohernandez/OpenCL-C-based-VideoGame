@@ -22,6 +22,9 @@ public:
 	float z;
 	Vector3d forward;
 	Vector3d up;
+	float sizex;
+	float sizey;
+	float sizez;
 	float size;
 	float yaw;
 	float pitch;

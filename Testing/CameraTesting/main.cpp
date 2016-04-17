@@ -126,33 +126,47 @@ void display() {
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
-	glColor3ub(0,0,0);
+	glColor3ub(255,0,0);
 
 	glPushMatrix();
 
 	//EJES
 
 	glPushMatrix();
-	glScaled(100, .005, .005);
-	glutSolidCube(4);
+	{
+		glScaled(100, .01, .01);
+		glutSolidCube(4);
+	}
 	glPopMatrix();
 
 	glPushMatrix();
-	glScaled(.005, 100, .005);
-	glutSolidCube(4);
+	{
+		glScaled(.01, 100, .01);
+		glutSolidCube(4);
+	}
 	glPopMatrix();
+
+	glPushMatrix();
+	{
+		glScaled(.01, .01, 100);
+		glutSolidCube(4);
+	}
+	glPopMatrix();
+
+	glColor3ub(0,0,0);
+
 	int count = 20;
 
-	for (float i = 0; i < count; i += 0.5)
+	for (float i = 0; i < count; i += 1)
 	{
 		glPushMatrix();
-		glTranslated(i - count / 4, 0, 0);
+		glTranslated(i - count / 2, 0, 0);
 		glScaled(.005, 100, .005);
 		glutSolidCube(4);
 		glPopMatrix();
 	}
 
-	for (int i = 0; i < count; i ++)
+	for (int i = 0; i < count; i += 1)
 	{
 		glPushMatrix();
 		glTranslated(0, 0, i - count / 2);
@@ -161,7 +175,7 @@ void display() {
 		glPopMatrix();
 	}
 
-	for (int i = 0; i < count; i ++)
+	for (int i = 0; i < count; i += 1)
 	{
 		glPushMatrix();
 		glTranslated(0, 0, i - count / 2);
@@ -170,7 +184,7 @@ void display() {
 		glPopMatrix();
 	}
 
-	for (int i = 0; i < count; i ++)
+	for (int i = 0; i < count; i += 1)
 	{
 		glPushMatrix();
 		glTranslated(0, i - count / 2, 0);
@@ -179,16 +193,16 @@ void display() {
 		glPopMatrix();
 	}
 
-	for (float i = 0; i < count; i += 0.2)
+	for (float i = 0; i < count; i += 1)
 	{
 		glPushMatrix();
-		glTranslated(0, i - count / 10, 0);
+		glTranslated(0, i - count / 2, 0);
 		glScaled(.005, .005, 100);
 		glutSolidCube(4);
 		glPopMatrix();
 	}
 
-	for (int i = 0; i < count; i ++)
+	for (int i = 0; i < count; i += 1)
 	{
 		glPushMatrix();
 		glTranslated(i - count / 2, 0, 0);
@@ -197,15 +211,11 @@ void display() {
 		glPopMatrix();
 	}
 
-	glPopMatrix();
-
 	glPushMatrix();
-	glScaled(.005, .005, 100);
-	glutSolidCube(4);
-	glPopMatrix();
-
 	// paintJet(10);
+	glScaled(10, 10, 10);
 	glmDraw(&models[SPACESHIP_MOD], GLM_COLOR | GLM_SMOOTH);
+	glPopMatrix();
 
 	glPopMatrix();
 
@@ -216,7 +226,7 @@ void reshape(int w, int h) {
 	glViewport(0, 0, w, h);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(60, ((double)w)/h, 1, 10000);
+	gluPerspective(60, ((double)w)/h, 0.1, 10000);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	camaraz = -camaradist * cos(hor * 3.1416 / 180) * cos(ver * 3.1416 / 180);
@@ -272,7 +282,7 @@ void init() {
 	// IMPORTANTE PARA QUE SE VEA LA PROFUNDIDAD
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
-	models[SPACESHIP_MOD] = *glmReadOBJ("models/webtrcc.obj");
+	models[SPACESHIP_MOD] = *glmReadOBJ("NEW/cocaine.obj");
 	glmUnitize(&models[SPACESHIP_MOD]);
 	glmVertexNormals(&models[SPACESHIP_MOD], 90.0, GL_TRUE);
 }
