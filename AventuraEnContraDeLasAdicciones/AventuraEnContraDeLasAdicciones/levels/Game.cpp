@@ -1,8 +1,37 @@
 #include "Game.h"
+#include <random>
 
 Game* game;
 
 vector<bool> bodycount;
+std::random_device rd;
+
+
+struct planet{
+    int x;
+    int y;
+    int z;
+    int texture;
+    int size;
+};
+
+planet planets [10];
+
+float randomFloat(float min, float max)
+{
+    // only used once to initialise (seed) engine
+    std::mt19937 rng(rd());    // random-number engine used (Mersenne-Twister in this case)
+    std::uniform_int_distribution<int> uni(min , max); // guaranteed unbiased
+    
+    int random_integer = uni(rng);
+    
+    return random_integer * 1.0 ;
+    
+}
+int pos_or_neg(){
+    
+    return randomFloat(0, 10) < 5 ? -1 : 1;
+}
 
 void Game::moveBullets(){
 	for (int i = 0; i < bullets.size(); i++){
@@ -25,6 +54,19 @@ void timerShoot(int){
 	game->shoot(0);
 }
 
+void initStructs(){
+    
+    for (int i = 0; i < 10; i++) {
+        
+        planets[i].x = randomFloat(5000, 9000) * pos_or_neg();
+        planets[i].y = randomFloat(5000, 9000) * pos_or_neg();
+        planets[i].z = randomFloat(5000, 9000) * pos_or_neg();
+        planets[i].size = randomFloat(10, 20);
+        planets[i].texture = randomFloat(2, 3);
+        
+    }
+}
+
 void Game::shoot(int){
 	Bullet bu;
 	bu.forward = jet.forward;
@@ -43,17 +85,10 @@ Game::Game(int w, int h){
 	game = this;
 	this->reshape(w,h);
 	cout << "gamme" << endl;
-   // initRendering();
-	for (int i = 0; i < 5; ++i)
-	{
-		int x, y, z;
-		x = rand() % 200 - 100;
-		y = rand() % 200 - 100;
-		z = rand() % 200 - 100;
-		PhysicsBodyCube body(x, y, z, 10, 10, 10);
-		baddie.push_back(body);
-		bodycount.push_back(true);
-	}
+    //initRendering();
+    
+    initStructs();
+
 }
 
 void Game::checkCollision(){
@@ -130,14 +165,20 @@ void Game::paintBackGroundImage(int x, int y, int z, int rx, int ry, int rz, int
     glPopMatrix();
     
 }
-void Game::paintSphere(int x, int y, int z, int texture){
+void Game::paintSphere(int x, int y, int z, int size, int texture){
+    
     
     
     glEnable(GL_TEXTURE_GEN_S);
     glEnable(GL_TEXTURE_GEN_T);
     glEnable(GL_TEXTURE_GEN_R);
     
-    glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP);
+//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    
+    glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP); //GL_SPHERE_MAP
     glTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP);
     glTexGeni(GL_R, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP);
     
@@ -146,9 +187,11 @@ void Game::paintSphere(int x, int y, int z, int texture){
     {
 
         glTranslated(x,y,z);
-        glScalef(15, 15, 15);
+        glScalef(size, size, size);
         
         glColor3f(1.0, 1.0, 1.0);
+        //glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+
         glEnable(GL_TEXTURE_2D);
         
         GLUquadricObj *qobj;
@@ -187,11 +230,11 @@ void Game::paintGame(float x, float y, float w, float h){
 	glViewport(x, y, w, h);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(60, w/h, 0.01, 15000);
+	gluPerspective(60, w/h, 0.01, 28000);
 	camera.placeCamera(jet);
 	glColor3ub(0,0,0);
 	
-    int imageDistance = 7000;
+    int imageDistance = 10000;
     
     //PAINT BACKGROUND
     paintBackGroundImage(0,0, imageDistance, 1, 0, 0, imageDistance * 2);
@@ -204,11 +247,16 @@ void Game::paintGame(float x, float y, float w, float h){
 	paintBullets();
     
     glColor3f(1.0, 1.0, 1.0);
-    paintSphere(0,0,500, 2);
+    
+    
+    for (int i = 0 ; i < 10; i++) {
+        
+        paintSphere(planets[i].x,planets[i].y,planets[i].z, planets[i].size, planets[i].texture);
+        
+    }
 
     glColor3f(1.0, 1.0, 1.0);
-
-
+    
 	jet.paintJet();
 }
 

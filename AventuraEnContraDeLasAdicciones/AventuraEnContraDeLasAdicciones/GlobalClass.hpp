@@ -19,7 +19,7 @@
 
 using namespace std;
 
-const int TEXTURE_COUNT=3;
+const int TEXTURE_COUNT = 5;
 
 class GlobalClass
 {

@@ -77,6 +77,9 @@ void GlobalClass::initRendering()
     sprintf(ruta,"%s%s", s.c_str() , "images/Earth_texture.bmp");
     image = loadBMP(ruta);loadTexture(image,i++);
     
+    sprintf(ruta,"%s%s", s.c_str() , "images/Moon.bmp");
+    image = loadBMP(ruta);loadTexture(image,i++);
+    
     
     
     delete image;
