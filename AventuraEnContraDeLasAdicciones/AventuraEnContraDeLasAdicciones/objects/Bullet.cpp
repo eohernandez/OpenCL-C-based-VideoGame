@@ -1,5 +1,9 @@
 #include "Bullet.h"
 
+Bullet::~Bullet(){
+    
+}
+
 
 Bullet::Bullet(){
 	pos = Vector3d(0,0,0);
