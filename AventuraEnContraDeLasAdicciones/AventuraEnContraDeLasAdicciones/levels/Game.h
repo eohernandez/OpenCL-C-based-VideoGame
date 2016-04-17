@@ -82,7 +82,8 @@ public:
 	void paintHUD(float wi, float hi, float wf, float hf);
 	void paintGame(float wi, float hi, float wf, float hf);
     void paintBackGroundImage(int x, int y, int z, int rx, int ry, int rz, int size);
-    void paintSphere(int x, int y, int z);
+    void paintSphere(int x, int y, int z, int size, int texture);
+    //float randomFloat(float min, float max);
     //void loadTexture(Image* image,int k);
     //void initRendering();
 };

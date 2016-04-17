@@ -32,6 +32,7 @@ public:
 	float speed;
 	int pitchMod;
 	int rollMod;
+	float life;
 	PhysicsBodyCube body;
 	Mix_Chunk *gThrust;
 	Jet();

@@ -58,6 +58,10 @@ void GlobalClass::initRendering()
     
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_TEXTURE_2D);
+    
+    glEnable(GL_NORMALIZE);
+    
+    glEnable(GL_COLOR_MATERIAL);
     glGenTextures(TEXTURE_COUNT, texName); //Make room for our texture
     
     string s =  GlobalClass::instance()->get_path();
@@ -73,12 +77,12 @@ void GlobalClass::initRendering()
     sprintf(ruta,"%s%s", s.c_str() , "images/Earth_texture.bmp");
     image = loadBMP(ruta);loadTexture(image,i++);
     
-    sprintf(ruta,"%s%s", s.c_str() , "images/Earth_texture.bmp");
+    sprintf(ruta,"%s%s", s.c_str() , "images/Moon.bmp");
     image = loadBMP(ruta);loadTexture(image,i++);
 
     sprintf(ruta,"%s%s", s.c_str() , "images/HUD.bmp");
     image = loadBMP(ruta);loadTexture(image,i++);
-
+    
     delete image;
 }
 

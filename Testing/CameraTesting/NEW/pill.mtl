@@ -2,6 +2,7 @@
 #
 # Multi/Sub blue (2) to come 
 #
+
 newmtl 15_-_Default
 Ka  0.9 0.9 0.9
 Kd  0.9 0.9 0.9
@@ -10,6 +11,7 @@ d  1.0
 Ns  4.0
 illum 2
 #
+
 newmtl Material__34
 Ka  0.0 0.4 0.8
 Kd  0.0 0.4 0.8
@@ -17,11 +19,13 @@ Ks  0.9 0.9 0.9
 d  1.0
 Ns  4.0
 illum 2
+
 #
 # Multi/Sub blue done 
 #
 # Multi/Sub transparent (2) to come 
 #
+
 newmtl 15_-_Default
 Ka  0.8 0.8 0.7
 Kd  0.8 0.8 0.7
@@ -30,6 +34,7 @@ d  0.8
 Ns  4.0
 illum 2
 #
+
 newmtl 15_-_Default
 Ka  0.8 0.8 0.7
 Kd  0.8 0.8 0.7
@@ -37,11 +42,13 @@ Ks  0.9 0.9 0.9
 d  0.8
 Ns  4.0
 illum 2
+
 #
 # Multi/Sub transparent done 
 #
 # Multi/Sub 15_-_Default (2) to come 
 #
+
 newmtl 15_-_Default
 Ka  0.9 0.9 0.9
 Kd  0.9 0.9 0.9
@@ -50,6 +57,7 @@ d  1.0
 Ns  4.0
 illum 2
 #
+
 newmtl Material__34
 Ka  0.9 0.3 0.3
 Kd  0.9 0.3 0.3
@@ -57,11 +65,13 @@ Ks  0.9 0.9 0.9
 d  1.0
 Ns  4.0
 illum 2
+
 #
 # Multi/Sub 15_-_Default done 
 #
 # Multi/Sub grey (2) to come 
 #
+
 newmtl 15_-_Default
 Ka  0.9 0.9 0.9
 Kd  0.9 0.9 0.9
@@ -69,6 +79,7 @@ Ks  0.9 0.9 0.9
 d  1.0
 Ns  4.0
 illum 2
+
 #
 newmtl 15_-_Default
 Ka  0.9 0.9 0.9
@@ -77,11 +88,13 @@ Ks  0.9 0.9 0.9
 d  1.0
 Ns  4.0
 illum 2
+
 #
 # Multi/Sub grey done 
 #
 # Multi/Sub green (2) to come 
 #
+
 newmtl 15_-_Default
 Ka  0.9 0.9 0.9
 Kd  0.9 0.9 0.9
@@ -89,6 +102,7 @@ Ks  0.9 0.9 0.9
 d  1.0
 Ns  4.0
 illum 2
+
 #
 newmtl Material__34
 Ka  0.5 0.7 0.5
@@ -97,6 +111,7 @@ Ks  0.9 0.9 0.9
 d  1.0
 Ns  4.0
 illum 2
+
 #
 # Multi/Sub green done 
 #

@@ -44,7 +44,8 @@ Jet::Jet(){
 	speed = 0;
 	pitchMod = 0;
 	rollMod = 0;
-
+	life = 100;
+	
 	string s =  GlobalClass::instance()->get_path();
     //getParentPath();
 
@@ -84,6 +85,18 @@ void Jet::moveJet(){
 	x += speed * forward.x;
 	y += speed * forward.y;
 	// cout << x << " " << y << " " << z << endl;
+    
+    if(x > abs(5000) || y > abs(5000) || z > abs(5000)){
+        
+        Vector3d dir;
+        dir = Vector3d(-x,-y,-z);
+        dir.normalize();
+        
+        z += speed * dir.z * 2;
+        x += speed * dir.x * 2;
+        y += speed * dir.y * 2;
+    }
+    
 	body.update(Vector3d(x,y,z));
 }
 

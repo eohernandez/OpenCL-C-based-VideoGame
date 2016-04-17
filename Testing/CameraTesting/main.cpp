@@ -213,7 +213,7 @@ void display() {
 
 	glPushMatrix();
 	// paintJet(10);
-	glScaled(10, 10, 10);
+	// glScaled(10, 10, 10);
 	glmDraw(&models[SPACESHIP_MOD], GLM_COLOR | GLM_SMOOTH);
 	glPopMatrix();
 
@@ -282,7 +282,7 @@ void init() {
 	// IMPORTANTE PARA QUE SE VEA LA PROFUNDIDAD
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
-	models[SPACESHIP_MOD] = *glmReadOBJ("NEW/cocaine.obj");
+	models[SPACESHIP_MOD] = *glmReadOBJ("NEW/free_injector_OBJ.obj");
 	glmUnitize(&models[SPACESHIP_MOD]);
 	glmVertexNormals(&models[SPACESHIP_MOD], 90.0, GL_TRUE);
 }
