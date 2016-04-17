@@ -78,7 +78,7 @@ public:
 	void moveBullets();
 	void paintBullets();
 	void checkCollision();
-	void shoot(int);
+	void shoot(int, bool player);
 	void paintHUD(float wi, float hi, float wf, float hf);
 	void paintGame(float wi, float hi, float wf, float hf);
     void paintBackGroundImage(int x, int y, int z, int rx, int ry, int rz, int size);

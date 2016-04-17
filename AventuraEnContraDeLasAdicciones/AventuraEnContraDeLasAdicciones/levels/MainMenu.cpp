@@ -89,7 +89,7 @@ MainMenu::MainMenu(int w, int h){
 }
 
 void MainMenu::timer(int v){
-
+    // cout << state << endl;
 }
 
 void MainMenu::display(){
@@ -205,8 +205,8 @@ void MainMenu::keyboard(unsigned char key, int, int){
 
 void MainMenu::EventLoop(int){
     SDL_Event sdlEvent;
-    
     while( SDL_PollEvent( &sdlEvent ) ) {
+
         switch( sdlEvent.type ) {
 
             case SDL_JOYBUTTONDOWN:
@@ -217,10 +217,13 @@ void MainMenu::EventLoop(int){
 
                     case BUTTON_START:
                     state = 1;
+                    cout << "ahi va" << endl;
                     break;
 
                     case BUTTON_A:
                     state = 1;
+                    cout << "ahi va" << endl;
+
                     break;
 
                     case BUTTON_B:
@@ -236,6 +239,7 @@ void MainMenu::EventLoop(int){
                     break;
 
                     default:
+                        cout << sdlEvent.jbutton.button << endl;
                     break;
                 }
             } else{

@@ -282,7 +282,7 @@ void init() {
 	// IMPORTANTE PARA QUE SE VEA LA PROFUNDIDAD
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
-	models[SPACESHIP_MOD] = *glmReadOBJ("NEW/free_injector_OBJ.obj");
+	models[SPACESHIP_MOD] = *glmReadOBJ("DEFINITE/water.obj");
 	glmUnitize(&models[SPACESHIP_MOD]);
 	glmVertexNormals(&models[SPACESHIP_MOD], 90.0, GL_TRUE);
 }

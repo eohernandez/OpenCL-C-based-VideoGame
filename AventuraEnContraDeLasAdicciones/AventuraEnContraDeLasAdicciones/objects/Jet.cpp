@@ -115,7 +115,7 @@ void Jet::paintJet(){
         glPopMatrix();
     }
     glPopMatrix();
-    body.testPaint();
+    // body.testPaint();
 }
 
 void Jet::setSpeed(float s){

@@ -4,14 +4,14 @@
 Bullet::Bullet(){
 	pos = Vector3d(0,0,0);
 	forward = Vector3d(0,0,0);
-	speed = 15;
+	speed = 50;
 	life = 100;
 	dead = false;
 	size = 1;
 	body = PhysicsBodyCube(pos, size, size, size);
 
 	string s =  GlobalClass::instance()->get_path();
-    //getParentPath();
+    // getParentPath();
 	std::string ruta = s + "objects/models/webtrcc.obj";
 	// std::cout << "Filepath: " << ruta << std::endl;
 	models[BULLET_MOD] = *glmReadOBJ(ruta.c_str());
@@ -41,7 +41,7 @@ Bullet::Bullet(Vector3d pos, Vector3d forward, float speed){
 	body = PhysicsBodyCube(pos, size, size, size);
 
 	string s =  GlobalClass::instance()->get_path();
-    //getParentPath();
+    // getParentPath();
 	std::string ruta = s + "objects/models/webtrcc.obj";
 	// std::cout << "Filepath: " << ruta << std::endl;
 	models[BULLET_MOD] = *glmReadOBJ(ruta.c_str());
@@ -64,8 +64,9 @@ void Bullet::paint(){
 	glPushMatrix();
 	glTranslatef(pos.x, pos.y, pos.z);
 	// glScaled(size * 2, size * 2, size * 2);
+	// glutSolidSphere(1.0, 20, 20);
 	glmDraw(&models[BULLET_MOD], GLM_COLOR | GLM_SMOOTH); 
 	// DrawCubeB(0, 0, 0, 1, true);
 	glPopMatrix();
-	body.testPaint();
+	// body.testPaint();
 }
