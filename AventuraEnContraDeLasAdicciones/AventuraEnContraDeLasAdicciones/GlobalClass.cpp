@@ -58,6 +58,10 @@ void GlobalClass::initRendering()
     
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_TEXTURE_2D);
+    
+    glEnable(GL_NORMALIZE);
+    
+    glEnable(GL_COLOR_MATERIAL);
     glGenTextures(TEXTURE_COUNT, texName); //Make room for our texture
     
     string s =  GlobalClass::instance()->get_path();

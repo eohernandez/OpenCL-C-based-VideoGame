@@ -136,42 +136,47 @@ void Game::paintBackGroundImage(int x, int y, int z, int rx, int ry, int rz, int
     glPopMatrix();
     
 }
-void Game::paintSphere(int x, int y, int z){
+void Game::paintSphere(int x, int y, int z, int texture){
+    
+    
+    glEnable(GL_TEXTURE_GEN_S);
+    glEnable(GL_TEXTURE_GEN_T);
+    glEnable(GL_TEXTURE_GEN_R);
+    
+    glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP);
+    glTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP);
+    glTexGeni(GL_R, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP);
+    
     
     glPushMatrix();
     {
+
         glTranslated(x,y,z);
-        glScalef(5, 5, 5);
-        
-        glEnable(GL_TEXTURE_GEN_S);
-        glEnable(GL_TEXTURE_GEN_T);
-        
-        glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP);
-        glTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP);
+        glScalef(15, 15, 15);
         
         glColor3f(1.0, 1.0, 1.0);
         glEnable(GL_TEXTURE_2D);
         
         GLUquadricObj *qobj;
         
-        glBindTexture(GL_TEXTURE_2D, GlobalClass::instance()->getTex(3));
+        glBindTexture(GL_TEXTURE_2D, GlobalClass::instance()->getTex(texture));
             
-
         glPushMatrix();
         qobj = gluNewQuadric();
         //glTranslatef(x, y, z);
         gluQuadricDrawStyle(qobj, GLU_FILL); /* smooth shaded */
-        gluSphere(qobj, 20, 20, 20);
-        glutSolidSphere(20,20,20);
+        //gluSphere(qobj, 20, 20, 20);
+        glutSolidSphere(18,20,20);
         glPopMatrix();
         
-        
-        glDisable(GL_TEXTURE_GEN_S);
-        glDisable(GL_TEXTURE_GEN_T);
-    
     }
 
     glPopMatrix();
+    
+    glDisable(GL_TEXTURE_GEN_S);
+    glDisable(GL_TEXTURE_GEN_T);
+    glDisable(GL_TEXTURE_GEN_R);
+    
     
     
 }
@@ -180,23 +185,22 @@ void Game::display(){
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
 	
-    int imageDistance = 5000;
+    int imageDistance = 7000;
     
     //PAINT BACKGROUND
-    paintBackGroundImage(0,0, imageDistance, 0, 0, 0, imageDistance * 2);
-    paintBackGroundImage(0,0,-imageDistance, 0, 0, 0, imageDistance * 2);
+    paintBackGroundImage(0,0, imageDistance, 1, 0, 0, imageDistance * 2);
+    paintBackGroundImage(0,0,-imageDistance, 1, 0, 0, imageDistance * 2);
     paintBackGroundImage(0,0, imageDistance, 0, 0, 1, imageDistance * 2);
     paintBackGroundImage(0,0,-imageDistance, 0, 0, 1, imageDistance * 2);
     paintBackGroundImage(0,0, imageDistance, 0, 1, 0, imageDistance * 2);
     paintBackGroundImage(0,0,-imageDistance, 0, 1, 0, imageDistance * 2);    
     
 	paintBullets();
+    
     glColor3f(1.0, 1.0, 1.0);
-    paintSphere(500,0,0);
+    paintSphere(0,0,500, 2);
 
-    //glColor3ub(255,255,255);
     glColor3f(1.0, 1.0, 1.0);
-	//paintBaddies();
 
 	jet.paintJet();
 
@@ -376,7 +380,7 @@ void Game::EventLoop(int){
                     }
                     else {
                         //SET SPEED TO NORMAL SPEED
-                        jet.setSpeed(2);
+                        jet.setSpeed(6);
                         
                         if(abs(sdlEvent.jaxis.value) > JOYSTICK_DEAD_ZONE){
                             printf("Joystick %d axis %d value: %d\n",

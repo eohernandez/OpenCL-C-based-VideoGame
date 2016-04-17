@@ -80,7 +80,7 @@ public:
 	void checkCollision();
 	void shoot(int);
     void paintBackGroundImage(int x, int y, int z, int rx, int ry, int rz, int size);
-    void paintSphere(int x, int y, int z);
+    void paintSphere(int x, int y, int z, int texture);
     //void loadTexture(Image* image,int k);
     //void initRendering();
 };
