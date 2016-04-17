@@ -27,6 +27,13 @@
 #include "levels/Game.h"
 #include "levels/Credits.h"
 #include "GlobalClass.hpp"
+#include "MainMenu.h"
+#include "Game.h"
+#include "Credits.h"
+#include "Controls.h"
+#include "History.h"
+#include "GameOver.h"
+#include "Win.h"
 
 
 #define JOYSTICK_DEAD_ZONE 8000
@@ -37,6 +44,11 @@
 #define MAIN_MENU 0
 #define GAME 1
 #define CREDITS 2
+#define CONTROLS 3
+#define GAMEOVER 4
+#define WIN 5
+#define HISTORY 6
+
 
 string fullPath = __FILE__;
 
@@ -83,6 +95,31 @@ void checkState(){
             view = new Credits(width, height);
             state = CREDITS;
             break;
+                
+            case CONTROLS:
+            delete view;
+            view = new Controls(width, height);
+            state = CONTROLS;
+            break;
+            
+            case GAMEOVER:
+            delete view;
+            view = new GameOver(width, height);
+            state = GAMEOVER;
+            break;
+                
+            case WIN:
+            delete view;
+            view = new Win(width, height);
+            state = WIN;
+            break;
+                
+            case HISTORY:
+            delete view;
+            view = new History(width, height);
+            state = HISTORY;
+            break;
+                
         }
     }
 }

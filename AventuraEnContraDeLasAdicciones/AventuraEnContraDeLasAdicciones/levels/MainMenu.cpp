@@ -51,64 +51,7 @@ bool loadMedia()
     return success;
 }
 
-/*
 
-//Makes the image into a texture, and returns the id of the texture
-void loadTexture(Image* image,int k)
-{
-
-    glBindTexture(GL_TEXTURE_2D, texName[k]); //Tell OpenGL which texture to edit
-    
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    
-    //Filtros de ampliacion y redución con cálculo mas cercano no es tan bueno pero es rápido
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,GL_NEAREST);
-    
-    //Filtros de ampliacion y redución con cálculo lineal es mejo pero son más calculos
-    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,GL_LINEAR);
-    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,GL_LINEAR);
-    
-    //Map the image to the texture
-    glTexImage2D(GL_TEXTURE_2D,                //Always GL_TEXTURE_2D
-                 0,                            //0 for now
-                 GL_RGB,                       //Format OpenGL uses for image
-                 image->width, image->height,  //Width and height
-                 0,                            //The border of the image
-                 GL_RGB, //GL_RGB, because pixels are stored in RGB format
-                 GL_UNSIGNED_BYTE, //GL_UNSIGNED_BYTE, because pixels are stored
-                 //as unsigned numbers
-                 image->pixels);               //The actual pixel data
-}
-
- 
- */
-
-/*
-void initRendering()
-{
-    //Declaración del objeto Image
-    Image* image;
-    GLuint i=0;
-    
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_TEXTURE_2D);
-    glGenTextures(TEXTURE_COUNT, texName); //Make room for our texture
-    
-    string s =  GlobalClass::instance()->get_path();
-
-    // cout << s << endl;
-
-    char  ruta[300];
-    sprintf(ruta,"%s%s", s.c_str() , "images/AventuraWallpaper.bmp");
-    image = loadBMP(ruta);loadTexture(image,i++);
-    
-    
-    delete image;
-}
-
-*/
 MainMenu::MainMenu(int w, int h){
 
     //initRendering();
@@ -121,6 +64,7 @@ MainMenu::MainMenu(int w, int h){
     this->reshape(w,h);
     state = 0;
     cout << "MainMenu" << endl;
+    glutPostRedisplay();
     
 
     
@@ -145,7 +89,9 @@ void MainMenu::display(){
     //Habilitar el uso de texturas
     glEnable(GL_TEXTURE_2D);
     
-    GLuint tex0 = GlobalClass::instance()->getTex(0);
+    GLuint tex0 = GlobalClass::instance()->getTex(7);
+    
+    
     
     //Elegir la textura del Quads: angulo cambia con el timer
     glBindTexture(GL_TEXTURE_2D, tex0);
@@ -246,13 +192,31 @@ void MainMenu::EventLoop(int){
         switch( sdlEvent.type ) {
                 
             case SDL_JOYBUTTONDOWN:
-                // printf("Joystick %d button %d down\n",
-                //  sdlEvent.jbutton.which, sdlEvent.jbutton.button);
+                 printf("Joystick %d button %d down\n",
+                  sdlEvent.jbutton.which, sdlEvent.jbutton.button);
                 if( sdlEvent.jaxis.which == 0 ){
                     switch(sdlEvent.jbutton.button){
+                            
                         case BUTTON_START:
                             state = 1;
                             break;
+                            
+                        case BUTTON_A:
+                            state = 1;
+                            break;
+                        
+                        case BUTTON_B:
+                            state = 3;
+                            break;
+                            
+                        case BUTTON_Y:
+                            state = 6;
+                            break;
+                            
+                        case BUTTON_X:
+                            state = 2;
+                            break;
+                            
                         default:
                             break;
                     }
@@ -264,7 +228,6 @@ void MainMenu::EventLoop(int){
         }
     }
 
-    
 }
 
 void close()

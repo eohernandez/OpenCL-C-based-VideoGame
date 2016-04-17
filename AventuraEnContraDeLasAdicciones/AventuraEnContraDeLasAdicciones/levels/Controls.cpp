@@ -1,16 +1,17 @@
-#include "Credits.h"
+#include "Controls.h"
 
-Credits::Credits(int w, int h){
+Controls::Controls(int w, int h){
     reshape(w, h);
     glutPostRedisplay();
-	state = 2;
+	state = 3;
 }
 
-void Credits::timer(int v){
+void Controls::timer(int v){
 
 }
 
-void Credits::display(){
+void Controls::display(){
+    
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
     
     float minCoord = -50.0f;
@@ -19,8 +20,8 @@ void Credits::display(){
     //Habilitar el uso de texturas
     glEnable(GL_TEXTURE_2D);
     
-    GLuint tex0 = GlobalClass::instance()->getTex(8);
-    
+    GLuint tex0 = GlobalClass::instance()->getTex(4);
+
     
     //Elegir la textura del Quads: angulo cambia con el timer
     glBindTexture(GL_TEXTURE_2D, tex0);
@@ -47,7 +48,8 @@ void Credits::display(){
     glutSwapBuffers();
 }
 
-void Credits::reshape(int w, int h){
+void Controls::reshape(int w, int h){
+
     glViewport(0, 0, w, h);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -56,11 +58,11 @@ void Credits::reshape(int w, int h){
     glLoadIdentity();
 }
 
-void Credits::keyboard(unsigned char key, int, int){
+void Controls::keyboard(unsigned char key, int, int){
 
 }
 
-void Credits::EventLoop(int){
+void Controls::EventLoop(int){
 
     SDL_Event sdlEvent;
     
@@ -77,7 +79,7 @@ void Credits::EventLoop(int){
                         case BUTTON_B:
                             state = 0;
                             break;
-                            
+
                             
                         default:
                             break;
@@ -90,4 +92,5 @@ void Credits::EventLoop(int){
         }
     }
     
+
 }
