@@ -92,6 +92,8 @@
 		1B8F1FC11CBF29F90068AE44 /* Vector3d.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Vector3d.h; sourceTree = "<group>"; };
 		1B8F1FC21CBF2AB60068AE44 /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SDL2.framework; sourceTree = "<group>"; };
 		1BBCFB3F1CC2B87C00DAB2FC /* SDL2_mixer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SDL2_mixer.framework; sourceTree = "<group>"; };
+		1BBCFB7B1CC2DB2700DAB2FC /* SpaceBackGround.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = SpaceBackGround.bmp; sourceTree = "<group>"; };
+		1BBCFB821CC3052E00DAB2FC /* Earth_texture.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = Earth_texture.bmp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,6 +115,8 @@
 			isa = PBXGroup;
 			children = (
 				1B2BAEC91CBF47F700A0C1AB /* AventuraWallpaper.bmp */,
+				1BBCFB821CC3052E00DAB2FC /* Earth_texture.bmp */,
+				1BBCFB7B1CC2DB2700DAB2FC /* SpaceBackGround.bmp */,
 			);
 			path = images;
 			sourceTree = "<group>";

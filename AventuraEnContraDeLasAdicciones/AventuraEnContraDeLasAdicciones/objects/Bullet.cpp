@@ -4,7 +4,7 @@
 Bullet::Bullet(){
 	pos = Vector3d(0,0,0);
 	forward = Vector3d(0,0,0);
-	speed = 10;
+	speed = 15;
 	life = 100;
 	dead = false;
 	size = 0.5;

@@ -1,7 +1,10 @@
 #include "MainMenu.h"
+#include "../GlobalClass.hpp"
 
-const int TEXTURE_COUNT=1;
-static GLuint texName[TEXTURE_COUNT];
+#include <SDL2/SDL.h>
+
+//const int TEXTURE_COUNT=1;
+//static GLuint texName[TEXTURE_COUNT];
 
 //The music that will be played
 Mix_Music *gMusic = NULL;
@@ -48,6 +51,7 @@ bool loadMedia()
     return success;
 }
 
+/*
 
 //Makes the image into a texture, and returns the id of the texture
 void loadTexture(Image* image,int k)
@@ -77,6 +81,11 @@ void loadTexture(Image* image,int k)
                  //as unsigned numbers
                  image->pixels);               //The actual pixel data
 }
+
+ 
+ */
+
+/*
 void initRendering()
 {
     //Declaración del objeto Image
@@ -99,10 +108,10 @@ void initRendering()
     delete image;
 }
 
-
+*/
 MainMenu::MainMenu(int w, int h){
 
-    initRendering();
+    //initRendering();
     loadMedia();
 
     glClearColor(.9, .9, .9, 1);
@@ -136,8 +145,10 @@ void MainMenu::display(){
     //Habilitar el uso de texturas
     glEnable(GL_TEXTURE_2D);
     
+    GLuint tex0 = GlobalClass::instance()->getTex(0);
+    
     //Elegir la textura del Quads: angulo cambia con el timer
-    glBindTexture(GL_TEXTURE_2D, texName[0]);
+    glBindTexture(GL_TEXTURE_2D, tex0);
     
     glBegin(GL_QUADS);
     //Asignar la coordenada de textura 0,0 al vertice

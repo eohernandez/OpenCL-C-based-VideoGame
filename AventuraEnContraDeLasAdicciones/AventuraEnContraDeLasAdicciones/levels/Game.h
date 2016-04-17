@@ -4,7 +4,7 @@
 #include "Credits.h"
 #include <stack>
 
-
+#include "../glm/ImageLoader.hpp"
 
 #ifdef __APPLE__
 
@@ -76,8 +76,12 @@ public:
 	void EventLoop(int);
 	void moveBullets();
 	void paintBullets();
-	void paintBaddies();
+	//void paintBaddies();
 	void checkCollision();
 	void shoot(int);
+    void paintBackGroundImage(int x, int y, int z, int rx, int ry, int rz, int size);
+    void paintSphere(int x, int y, int z);
+    //void loadTexture(Image* image,int k);
+    //void initRendering();
 };
 

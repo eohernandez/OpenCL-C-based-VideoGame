@@ -9,8 +9,8 @@ Camera::Camera(){
 }
 
 void Camera::placeCamera(Jet jet){
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
 	Vector3d camerafor = Vector3d(-jet.forward.x, -jet.forward.y, -jet.forward.z);
 	camerafor.normalize();
 	Vector3d cameraup = Vector3d(jet.up.x, jet.up.y, jet.up.z);
