@@ -51,7 +51,7 @@ SDL_Joystick *joy;
 View *view;
 int state; //Referencia del estado actual
 
-int width = 500, height = 500;
+int width = 1200, height = 1000;
 
 void getParentPath(){
 
@@ -111,167 +111,9 @@ void keyboard(unsigned char key, int, int) {
 
 void EventLoop(int);
 void EventLoop(int){
+
     view->EventLoop(0);
-    {
-        // SDL_Event sdlEvent;
 
-        // while( SDL_PollEvent( &sdlEvent ) ) {
-        //     switch( sdlEvent.type ) {
-
-        //         case SDL_CONTROLLERDEVICEADDED:
-        //         cout << "AddController( sdlEvent.cdevice );" << endl;
-        //         break;
-
-        //         case SDL_CONTROLLERDEVICEREMOVED:
-        //         cout << "RemoveController( sdlEvent.cdevice );" << endl;
-        //         break;
-
-        //         case SDL_CONTROLLERBUTTONDOWN:
-        //         case SDL_CONTROLLERBUTTONUP:
-        //         cout << "OnControllerButton( sdlEvent.cbutton );" << endl;
-        //         break;
-
-        //         case SDL_CONTROLLERAXISMOTION:
-        //         cout << "OnControllerAxis( sdlEvent.caxis );" << endl;
-        //         break;
-
-        //         case SDL_JOYAXISMOTION:
-        //     // if(abs(sdlEvent.jaxis.value) > JOYSTICK_DEAD_ZONE){
-        //     //  printf("Joystick %d axis %d value: %d\n",
-        //     //      sdlEvent.jaxis.which,
-        //     //      sdlEvent.jaxis.axis, sdlEvent.jaxis.value);
-        //     // }
-        //     //Motion on controller 0
-        //         if( sdlEvent.jaxis.which == 0 ) {                        
-        //         //Z axis motion
-        //             if( sdlEvent.jaxis.axis ==  0)  {
-        //             //Below of dead zone
-        //                 if( sdlEvent.jaxis.value < -JOYSTICK_DEAD_ZONE ) {
-        //                     jet.rollMod = -1;
-        //                 }
-        //             //Above of dead zone
-        //                 else if( sdlEvent.jaxis.value > JOYSTICK_DEAD_ZONE ) {
-        //                     jet.rollMod =  1;
-        //                 }
-        //                 else {
-        //                     jet.rollMod = 0;
-        //                 }
-        //             }
-        //         //Y axis motion
-        //             else if( sdlEvent.jaxis.axis == 1 ) {
-        //             //Left of dead zone
-        //                 if( sdlEvent.jaxis.value < -JOYSTICK_DEAD_ZONE ) {
-        //                     jet.pitchMod = 1;
-        //                 }
-        //             //Right of dead zone
-        //                 else if( sdlEvent.jaxis.value > JOYSTICK_DEAD_ZONE ) {
-        //                     jet.pitchMod =  -1;
-        //                 }
-        //                 else {
-        //                     jet.pitchMod = 0;
-        //                 }
-        //         //Yaw camera motion
-        //             } else if( sdlEvent.jaxis.axis ==  2)   {
-        //             //Below of dead zone
-        //                 if( sdlEvent.jaxis.value < -JOYSTICK_DEAD_ZONE ) {
-        //                     camera.yawMod = (M_PI / 2.3) * (sdlEvent.jaxis.value + JOYSTICK_DEAD_ZONE) / (JOYSTICK_MAX_VALUE - JOYSTICK_DEAD_ZONE);
-        //                 }
-        //             //Above of dead zone
-        //                 else if( sdlEvent.jaxis.value > JOYSTICK_DEAD_ZONE ) {
-        //                     camera.yawMod = (M_PI / 2.3) * (sdlEvent.jaxis.value - JOYSTICK_DEAD_ZONE) / (JOYSTICK_MAX_VALUE - JOYSTICK_DEAD_ZONE);
-        //                 }
-        //                 else {
-        //                     camera.yawMod = 0;
-        //                 }
-        //             }
-        //         //Y axis motion
-        //             else if( sdlEvent.jaxis.axis == 3 ) {
-        //             //Left of dead zone
-        //                 if( sdlEvent.jaxis.value < -JOYSTICK_DEAD_ZONE ) {
-        //                     camera.pitchMod = (M_PI / 2.3) * (sdlEvent.jaxis.value + JOYSTICK_DEAD_ZONE) / (JOYSTICK_MAX_VALUE - JOYSTICK_DEAD_ZONE);
-        //                 }
-        //             //Right of dead zone
-        //                 else if( sdlEvent.jaxis.value > JOYSTICK_DEAD_ZONE ) {
-        //                     camera.pitchMod = (M_PI / 2.3) * (sdlEvent.jaxis.value - JOYSTICK_DEAD_ZONE) / (JOYSTICK_MAX_VALUE - JOYSTICK_DEAD_ZONE);
-        //                 }
-        //                 else {
-        //                     camera.pitchMod = 0;
-        //                 }
-        //             } else if( sdlEvent.jaxis.axis == 4 ) {
-        //             //Full Trigger
-        //                 if( sdlEvent.jaxis.value == JOYSTICK_MAX_VALUE ) {
-        //                     shooting = true;
-        //                     shoot(0);
-        //                 } else {
-        //                     shooting = false;
-        //                 }
-        //             }else {
-        //                 if(abs(sdlEvent.jaxis.value) > JOYSTICK_DEAD_ZONE){
-        //                     printf("Joystick %d axis %d value: %d\n",
-        //                         sdlEvent.jaxis.which,
-        //                         sdlEvent.jaxis.axis, sdlEvent.jaxis.value);
-        //                 }
-        //             }
-        //         }
-        //         break;
-        //         case SDL_JOYHATMOTION:
-        //         printf("Joystick %d hat %d value:",
-        //             sdlEvent.jhat.which, sdlEvent.jhat.hat);
-        //         if (sdlEvent.jhat.value == SDL_HAT_CENTERED)
-        //             printf(" centered");
-        //         if (sdlEvent.jhat.value & SDL_HAT_UP)
-        //             printf(" up");
-        //         if (sdlEvent.jhat.value & SDL_HAT_RIGHT)
-        //             printf(" right");
-        //         if (sdlEvent.jhat.value & SDL_HAT_DOWN)
-        //             printf(" down");
-        //         if (sdlEvent.jhat.value & SDL_HAT_LEFT)
-        //             printf(" left");
-        //         printf("\n");
-        //         break;
-        //         case SDL_JOYBALLMOTION:
-        //         printf("Joystick %d ball %d delta: (%d,%d)\n",
-        //             sdlEvent.jball.which,
-        //             sdlEvent.jball.ball, sdlEvent.jball.xrel, sdlEvent.jball.yrel);
-        //         break;
-        //         case SDL_JOYBUTTONDOWN:
-        //     // printf("Joystick %d button %d down\n",
-        //     //  sdlEvent.jbutton.which, sdlEvent.jbutton.button);
-        //         if( sdlEvent.jaxis.which == 0 ){  
-        //             switch(sdlEvent.jbutton.button){
-        //                 case 0:
-        //                 jet.jetBoost();
-        //                 break;
-        //                 case 1:
-        //                 jet.jetBrake();
-        //                 break;
-        //                 case 3:
-        //                 camera.first = !camera.first;
-        //                 break;
-        //                 default:
-        //                 printf("Joystick %d button %d down\n",
-        //                     sdlEvent.jbutton.which, sdlEvent.jbutton.button);
-        //                 break;
-        //             }
-        //         } else{
-        //             printf("Joystick %d button %d down\n",
-        //                 sdlEvent.jbutton.which, sdlEvent.jbutton.button);
-        //         }
-        //         break;
-        //     // case SDL_JOYBUTTONUP:
-        //     // printf("Joystick %d button %d up\n",
-        //     //  sdlEvent.jbutton.which, sdlEvent.jbutton.button);
-        //     // break;
-        //         case SDL_KEYDOWN:
-        //         if ((sdlEvent.key.keysym.sym != SDLK_ESCAPE) && (sdlEvent.key.keysym.sym != SDLK_AC_BACK)) {
-        //             break;
-        //         }
-        //         /* Fall through to signal quit */
-        // // YOUR OTHER EVENT HANDLING HERE
-
-        //     }
-        // }
-    }
     glutTimerFunc(10, EventLoop, 0);
 }
 
@@ -284,7 +126,9 @@ GlobalClass *GlobalClass::s_instance = 0;
 void init() {
     getParentPath();
     
+    
     GlobalClass::instance()->set_path(fullPath);
+    GlobalClass::instance()->initRendering();
     SDL_Init(SDL_INIT_GAMECONTROLLER  | SDL_INIT_AUDIO);
     for (int i = 0; i < SDL_NumJoysticks(); ++i)
     {
@@ -304,7 +148,7 @@ int main(int argc, char** argv) {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     glutInitWindowPosition(80, 80);
-    glutInitWindowSize(500, 500);
+    glutInitWindowSize(width, height);
     glutCreateWindow("Aventura En Contra De Las Adicciones");
     glutReshapeFunc(reshape);
     glutTimerFunc(50, timer, 0);

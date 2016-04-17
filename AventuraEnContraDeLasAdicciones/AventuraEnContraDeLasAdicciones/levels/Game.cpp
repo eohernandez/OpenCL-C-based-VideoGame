@@ -1,6 +1,7 @@
 #include "Game.h"
 
 Game* game;
+
 vector<bool> bodycount;
 
 void Game::moveBullets(){
@@ -11,205 +12,11 @@ void Game::moveBullets(){
 	}
 }
 
-void DrawCube(GLfloat x, GLfloat y, GLfloat z, GLfloat length, bool fills = false, bool fill = false){
-	GLfloat halflenght = length / 2;
-	GLfloat vertices[] = {
-        // front face
-		x - halflenght, y + halflenght, z + halflenght,
-		x + halflenght, y + halflenght, z + halflenght,
-		x + halflenght, y - halflenght, z + halflenght,
-		x - halflenght, y - halflenght, z + halflenght,
-        // back face
-		x - halflenght, y + halflenght, z - halflenght,
-		x + halflenght, y + halflenght, z - halflenght,
-		x + halflenght, y - halflenght, z - halflenght,
-		x - halflenght, y - halflenght, z - halflenght,
-        // left face
-		x - halflenght, y + halflenght, z + halflenght,
-		x - halflenght, y + halflenght, z - halflenght,
-		x - halflenght, y - halflenght, z - halflenght,
-		x - halflenght, y - halflenght, z + halflenght,
-        // right face
-		x + halflenght, y + halflenght, z + halflenght,
-		x + halflenght, y + halflenght, z - halflenght,
-		x + halflenght, y - halflenght, z - halflenght,
-		x + halflenght, y - halflenght, z + halflenght,
-        // top face
-		x - halflenght, y + halflenght, z + halflenght,
-		x - halflenght, y + halflenght, z - halflenght,
-		x + halflenght, y + halflenght, z - halflenght,
-		x + halflenght, y + halflenght, z + halflenght,
-        // bottom face
-		x - halflenght, y - halflenght, z + halflenght,
-		x - halflenght, y - halflenght, z - halflenght,
-		x + halflenght, y - halflenght, z - halflenght,
-		x + halflenght, y - halflenght, z + halflenght,
-	};
-
-	if(fills){
-		glPolygonMode( GL_FRONT_AND_BACK, GL_FILL);
-
-		glEnableClientState(GL_VERTEX_ARRAY);
-
-		glVertexPointer(3, GL_FLOAT, 0, vertices);
-		glDrawArrays(GL_QUADS, 0, 24);
-
-		glDisableClientState(GL_VERTEX_ARRAY);
-	}
-	else{
-		glPolygonMode( GL_FRONT_AND_BACK, GL_LINE);
-
-		glEnableClientState(GL_VERTEX_ARRAY);
-
-		glVertexPointer(3, GL_FLOAT, 0, vertices);
-		glDrawArrays(GL_QUADS, 0, 24);
-
-		glDisableClientState(GL_VERTEX_ARRAY);
-	}
-}
-
-void paintGridAround(int count){
-
-    // CARA 1
-
-	for (int i = 0; i < count; ++i)
-	{
-		glPushMatrix();
-		glTranslatef(i - count / 2, 0, count / 2);
-		glScaled(.05, 100, .05);
-		DrawCube(0, 0, 0, 4, true);
-		glPopMatrix();
-	}
-
-	for (int i = 0; i < count; ++i)
-	{
-		glPushMatrix();
-		glTranslatef(0, i - count / 2, count / 2);
-		glScaled(100, .05, .05);
-		DrawCube(0, 0, 0, 4, true);
-		glPopMatrix();
-	}
-
-    // CARA 2
-
-	for (int i = 0; i < count; ++i)
-	{
-		glPushMatrix();
-		glTranslatef(i - count / 2, 0, -count / 2);
-		glScaled(.05, 100, .05);
-		DrawCube(0, 0, 0, 4, true);
-		glPopMatrix();
-	}
-
-	for (int i = 0; i < count; ++i)
-	{
-		glPushMatrix();
-		glTranslatef(0, i - count / 2, -count / 2);
-		glScaled(100, .05, .05);
-		DrawCube(0, 0, 0, 4, true);
-		glPopMatrix();
-	}
-
-    // CARA 3
-
-	for (int i = 0; i < count; ++i)
-	{
-		glPushMatrix();
-		glTranslatef(i - count / 2, count / 2, 0);
-		glScaled(.05, .05, 100);
-		DrawCube(0, 0, 0, 4, true);
-		glPopMatrix();
-	}
-
-	for (int i = 0; i < count; ++i)
-	{
-		glPushMatrix();
-		glTranslatef(0, count / 2, i - count / 2);
-		glScaled(100, .05, .05);
-		DrawCube(0, 0, 0, 4, true);
-		glPopMatrix();
-	}
-
-    // CARA 4
-
-	for (int i = 0; i < count; ++i)
-	{
-		glPushMatrix();
-		glTranslatef(i - count / 2, -count / 2, 0);
-		glScaled(.05, .05, 100);
-		DrawCube(0, 0, 0, 4, true);
-		glPopMatrix();
-	}
-
-	for (int i = 0; i < count; ++i)
-	{
-		glPushMatrix();
-		glTranslatef(0, -count / 2, i - count / 2);
-		glScaled(100, .05, .05);
-		DrawCube(0, 0, 0, 4, true);
-		glPopMatrix();
-	}
-
-    // CARA 5
-
-	for (int i = 0; i < count; ++i)
-	{
-		glPushMatrix();
-		glTranslatef(count / 2, i - count / 2, 0);
-		glScaled(.05, .05, 100);
-		DrawCube(0, 0, 0, 4, true);
-		glPopMatrix();
-	}
-
-	for (int i = 0; i < count; ++i)
-	{
-		glPushMatrix();
-		glTranslatef(count / 2, 0, i - count / 2);
-		glScaled(.05, 100, .05);
-		DrawCube(0, 0, 0, 4, true);
-		glPopMatrix();
-	}
-
-    // CARA 6
-
-	for (int i = 0; i < count; ++i)
-	{
-		glPushMatrix();
-		glTranslatef(-count / 2, i - count / 2, 0);
-		glScaled(.05, .05, 100);
-		DrawCube(0, 0, 0, 4, true);
-		glPopMatrix();
-	}
-
-	for (int i = 0; i < count; ++i)
-	{
-		glPushMatrix();
-		glTranslatef(-count / 2, 0, i - count / 2);
-		glScaled(.05, 100, .05);
-		DrawCube(0, 0, 0, 4, true);
-		glPopMatrix();
-	}
-}
-
 void Game::paintBullets(){
 	for (int i = 0; i < bullets.size(); i++){
 		Bullet it = bullets[i];
 		if(!it.dead){
 			it.paint();
-		}
-	}
-}
-
-void Game::paintBaddies(){
-	for (int i = 0; i < baddie.size(); ++i)
-	{
-		if(bodycount[i]){
-			baddie[i].testPaint();
-			glColor3ub(0,0,0);
-			DrawCube((baddie[i].maxv.x + baddie[i].minv.x) / 2, 
-				(baddie[i].maxv.y + baddie[i].minv.y) / 2, 
-				(baddie[i].maxv.z + baddie[i].minv.z) / 2,
-				20, true);
 		}
 	}
 }
@@ -236,6 +43,7 @@ Game::Game(int w, int h){
 	game = this;
 	this->reshape(w,h);
 	cout << "gamme" << endl;
+   // initRendering();
 	for (int i = 0; i < 5; ++i)
 	{
 		int x, y, z;
@@ -272,6 +80,96 @@ void Game::timer(int v){
 	glutPostRedisplay();
 }
 
+void Game::paintBackGroundImage(int x, int y, int z, int rx, int ry, int rz, int size){
+
+	size = size / 2;
+
+
+	float minCoord = size * -1.0;
+	float maxCoord = size * 1.0;
+
+	glColor3f(255, 255, 255);
+
+
+	glPushMatrix();
+	{
+		glRotatef(90, rx, ry, rz);
+		glTranslatef(x, y, z);
+
+
+        //Habilitar el uso de texturas
+		glEnable(GL_TEXTURE_2D);
+
+		GLuint tex0 = GlobalClass::instance()->getTex(1);
+
+        //Elegir la textura del Quads: angulo cambia con el timer
+        //glBindTexture(GL_TEXTURE_2D, texName[0]);
+
+		glBindTexture(GL_TEXTURE_2D, tex0);
+
+		glBegin(GL_QUADS);
+        //Asignar la coordenada de textura 0,0 al vertice
+		glTexCoord2f(0.0f, 0.0f);
+		glVertex3f(minCoord, minCoord, 0);
+        //Asignar la coordenada de textura 1,0 al vertice
+        glTexCoord2f(1.0f, 0.0f); ///-
+        glVertex3f(maxCoord, minCoord, 0);
+        //Asignar la coordenada de textura 1,1 al vertice
+        glTexCoord2f(1.0f,1.0f); //-
+        //glTexCoord2f(1.0f,1.0f);
+        //glTexCoord2f(2.0f,5.0f);
+        glVertex3f(maxCoord, maxCoord, 0);
+        //Asignar la coordenada de textura 0,1 al vertice
+        glTexCoord2f(0.0f, 1.0f);
+        //glTexCoord2f(0.0f, 5.0f);
+        
+        glVertex3f(minCoord, maxCoord, 0);
+        glEnd();
+        
+    }
+    glPopMatrix();
+    
+}
+void Game::paintSphere(int x, int y, int z){
+
+	glPushMatrix();
+	{
+		glTranslated(x,y,z);
+		glScalef(5, 5, 5);
+
+		glEnable(GL_TEXTURE_GEN_S);
+		glEnable(GL_TEXTURE_GEN_T);
+
+		glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP);
+		glTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP);
+
+		glColor3f(1.0, 1.0, 1.0);
+		glEnable(GL_TEXTURE_2D);
+
+		GLUquadricObj *qobj;
+
+		glBindTexture(GL_TEXTURE_2D, GlobalClass::instance()->getTex(3));
+
+
+		glPushMatrix();
+		qobj = gluNewQuadric();
+        //glTranslatef(x, y, z);
+        gluQuadricDrawStyle(qobj, GLU_FILL); /* smooth shaded */
+		gluSphere(qobj, 20, 20, 20);
+		glutSolidSphere(20,20,20);
+		glPopMatrix();
+
+
+		glDisable(GL_TEXTURE_GEN_S);
+		glDisable(GL_TEXTURE_GEN_T);
+
+	}
+
+	glPopMatrix();
+
+
+}
+
 void Game::paintHUD(float x, float y, float w, float h){
 	glViewport(x, y, w, h);
 	glMatrixMode(GL_PROJECTION);
@@ -286,34 +184,27 @@ void Game::paintGame(float x, float y, float w, float h){
 	glViewport(x, y, w, h);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(60, w/h, 0.1, 20000);
+	gluPerspective(60, w/h, 0.01, 15000);
 	camera.placeCamera(jet);
 	glColor3ub(0,0,0);
 
-    //EJE X
-	glPushMatrix();
-	glScaled(100, .05, .05);
-	DrawCube(0, 0, 0, 4, true);
-	glPopMatrix();
+	int imageDistance = 5000;
 
-    //EJE Y
-	glPushMatrix();
-	glScaled(.05, 100, .05);
-	DrawCube(0, 0, 0, 4, true);
-	glPopMatrix();
-
-    //EJE Z
-	glPushMatrix();
-	glScaled(.05, .05, 100);
-	DrawCube(0, 0, 0, 4, true);
-	glPopMatrix();
-
-	paintGridAround(400);
+    //PAINT BACKGROUND
+	paintBackGroundImage(0,0, imageDistance, 1, 0, 0, imageDistance * 2);
+	paintBackGroundImage(0,0,-imageDistance, 1, 0, 0, imageDistance * 2);
+	paintBackGroundImage(0,0, imageDistance, 0, 0, 1, imageDistance * 2);
+	paintBackGroundImage(0,0,-imageDistance, 0, 0, 1, imageDistance * 2);
+	paintBackGroundImage(0,0, imageDistance, 0, 1, 0, imageDistance * 2);
+	paintBackGroundImage(0,0,-imageDistance, 0, 1, 0, imageDistance * 2);    
 
 	paintBullets();
+	glColor3f(1.0, 1.0, 1.0);
+	paintSphere(500,0,0);
 
-	glColor3ub(0,0,0);
-	paintBaddies();
+    //glColor3ub(255,255,255);
+	glColor3f(1.0, 1.0, 1.0);
+	//paintBaddies();
 
 	jet.paintJet();
 }
@@ -478,18 +369,18 @@ void Game::EventLoop(int){
 					}
 				} else if( sdlEvent.jaxis.axis == RT_AXIS ) {
                         //Full Trigger
-					jet.setSpeed(normalizeValues(sdlEvent.jaxis.value, 2, 6));
+					jet.setSpeed(normalizeValues(sdlEvent.jaxis.value, 6, 12));
 
 					printf("SPEED: %f\n", jet.getSpeed());
 				}else if( sdlEvent.jaxis.axis == LT_AXIS ) {
                         //Full Trigger
 
-					jet.setSpeed(normalizeValues(sdlEvent.jaxis.value, 2, 0.5));
+					jet.setSpeed(normalizeValues(sdlEvent.jaxis.value, 6, 2));
 					printf("SPEED: %f\n", jet.getSpeed());
 				}
 				else {
-                        //SET SPEED TO NORMAL SPEED
-					jet.setSpeed(2);
+                    //SET SPEED TO NORMAL SPEED
+					jet.setSpeed(6);
 
 					if(abs(sdlEvent.jaxis.value) > JOYSTICK_DEAD_ZONE){
 						printf("Joystick %d axis %d value: %d\n",
