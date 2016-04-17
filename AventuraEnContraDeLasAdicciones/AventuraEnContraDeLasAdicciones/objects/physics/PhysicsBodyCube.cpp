@@ -2,23 +2,19 @@
 
 PhysicsBodyCube::PhysicsBodyCube(){
 	maxv = Vector3d(0,0,0);
-	maxPast = Vector3d(0,0,0);
 	minv = Vector3d(0,0,0);
-	minPast = Vector3d(0,0,0);
 }
 
 PhysicsBodyCube::PhysicsBodyCube(float x, float y, float z, float sizex, float sizey, float sizez){
 	maxv = Vector3d(x + sizex, y + sizey, z + sizez);
-	maxPast = Vector3d(x + sizex, y + sizey, z + sizez);
 	minv = Vector3d(x - sizex, y - sizey, z - sizez);
-	minPast = Vector3d(x - sizex, y - sizey, z - sizez);
+	update(Vector3d(x,y,z));
 }
 
 PhysicsBodyCube::PhysicsBodyCube(Vector3d pos, float sizex, float sizey, float sizez){
 	maxv = Vector3d(pos.x + sizex, pos.y + sizey, pos.z + sizez);
-	maxPast = Vector3d(pos.x + sizex, pos.y + sizey, pos.z + sizez);
 	minv = Vector3d(pos.x - sizex, pos.y - sizey, pos.z - sizez);
-	minPast = Vector3d(pos.x - sizex, pos.y - sizey, pos.z - sizez);
+	update(pos);
 }
 
 void PhysicsBodyCube::update(Vector3d pos){
@@ -43,4 +39,41 @@ bool PhysicsBodyCube::collidesContinuos(PhysicsBodyCube body){
 			and min(minv.y, minPast.y) <= max(body.maxv.y, body.maxPast.y)))
 		and ((max(maxv.z, maxPast.z) >= min(body.minv.z, body.minPast.z) 
 			and min(minv.z, minPast.z) <= max(body.maxv.z, body.maxPast.z))));
+}
+
+void PhysicsBodyCube::testPaint(){
+
+	glColor3f(1.0f, 0.0f, 0.0f);
+
+	//FACE FRONT
+	glBegin(GL_LINE_LOOP);
+	glVertex3f(maxv.x, maxv.y, maxv.z);
+	glVertex3f(minv.x, maxv.y, maxv.z);
+	glVertex3f(minv.x, minv.y, maxv.z);
+	glVertex3f(maxv.x, minv.y, maxv.z);
+	glEnd();
+
+	//FACE BACK
+	glBegin(GL_LINE_LOOP);
+	glVertex3f(maxv.x, maxv.y, minv.z);
+	glVertex3f(minv.x, maxv.y, minv.z);
+	glVertex3f(minv.x, minv.y, minv.z);
+	glVertex3f(maxv.x, minv.y, minv.z);
+	glEnd();
+
+	//FACE TOP
+	glBegin(GL_LINE_LOOP);
+	glVertex3f(maxv.x, maxv.y, maxv.z);
+	glVertex3f(maxv.x, maxv.y, minv.z);
+	glVertex3f(minv.x, maxv.y, minv.z);
+	glVertex3f(minv.x, maxv.y, maxv.z);
+	glEnd();
+
+	//FACE BOTTOM
+	glBegin(GL_LINE_LOOP);
+	glVertex3f(maxv.x, minv.y, maxv.z);
+	glVertex3f(maxv.x, minv.y, minv.z);
+	glVertex3f(minv.x, minv.y, minv.z);
+	glVertex3f(minv.x, minv.y, maxv.z);
+	glEnd();
 }

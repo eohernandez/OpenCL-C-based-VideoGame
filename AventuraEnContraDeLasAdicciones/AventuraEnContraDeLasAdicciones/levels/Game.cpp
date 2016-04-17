@@ -204,10 +204,12 @@ void Game::paintBaddies(){
 	for (int i = 0; i < baddie.size(); ++i)
 	{
 		if(bodycount[i]){
+			baddie[i].testPaint();
+			glColor3ub(0,0,0);
 			DrawCube((baddie[i].maxv.x + baddie[i].minv.x) / 2, 
 				(baddie[i].maxv.y + baddie[i].minv.y) / 2, 
 				(baddie[i].maxv.z + baddie[i].minv.z) / 2,
-				10, true);
+				20, true);
 		}
 	}
 }
@@ -224,10 +226,6 @@ void Game::shoot(int){
 	bullets.push_back(bu);
 	bu.pos = Vector3d(jet.x - 2 * axis.x, jet.y - 2 * axis.y, jet.z - 2 * axis.z);
 	bullets.push_back(bu);
-	if (shooting)
-	{
-		glutTimerFunc(10, timerShoot, 0);
-	}
 }
 
 Game::Game(int w, int h){
@@ -271,13 +269,25 @@ void Game::timer(int v){
 	moveBullets();
 	jet.calcDir();
 	jet.moveJet();
-	camera.placeCamera(jet);
 	glutPostRedisplay();
 }
 
-void Game::display(){
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+void Game::paintHUD(float x, float y, float w, float h){
+	glViewport(x, y, w, h);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluOrtho2D(-10, 10, -10, 10);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	glRectd(-5, -5, 5, 5);
+}
 
+void Game::paintGame(float x, float y, float w, float h){
+	glViewport(x, y, w, h);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluPerspective(60, w/h, 0.1, 20000);
+	camera.placeCamera(jet);
 	glColor3ub(0,0,0);
 
     //EJE X
@@ -300,24 +310,24 @@ void Game::display(){
 
 	paintGridAround(400);
 
-    //DrawCube(0, 0, 0, 4, true);
-
 	paintBullets();
 
 	glColor3ub(0,0,0);
 	paintBaddies();
 
 	jet.paintJet();
+}
 
+void Game::display(){
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+	paintGame(0, height * 0.2, width, height * 0.8);
+	paintHUD(0, 0, width, height * 0.2);
 	glutSwapBuffers();
 }
 
 void Game::reshape(int w, int h){
-	glViewport(0, 0, w, h);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	gluPerspective(60, ((float)w)/h, 0.1, 10000);
-	camera.placeCamera(jet);
+	width = w;
+	height = h;
 }
 
 void Game::keyboard(unsigned char key, int, int){
@@ -363,9 +373,7 @@ void Game::keyboard(unsigned char key, int, int){
 		camera.yawMod = -(M_PI / 2.3);
 		break;
 		case 'm':
-		shooting = true;
 		shoot(0);
-		shooting = false;
 		break;
 	}
 	jet.up.normalize();
@@ -374,13 +382,13 @@ void Game::keyboard(unsigned char key, int, int){
 }
 
 float normalizeValues(int x, float a, float b){
-	
+
 	x = x + JOYSTICK_MAX_VALUE;
-	
+
 	float top = (x - NORMAL_MIN_VAL) * ( b - a ) * 1.0;
 	float botom = NORMAL_MAX_VAL - NORMAL_MIN_VAL * 1.0;
 	return a + top / botom * 1.0;
-	
+
 }
 
 void Game::EventLoop(int){
@@ -471,18 +479,18 @@ void Game::EventLoop(int){
 				} else if( sdlEvent.jaxis.axis == RT_AXIS ) {
                         //Full Trigger
 					jet.setSpeed(normalizeValues(sdlEvent.jaxis.value, 2, 6));
-					
+
 					printf("SPEED: %f\n", jet.getSpeed());
 				}else if( sdlEvent.jaxis.axis == LT_AXIS ) {
                         //Full Trigger
-					
+
 					jet.setSpeed(normalizeValues(sdlEvent.jaxis.value, 2, 0.5));
 					printf("SPEED: %f\n", jet.getSpeed());
 				}
 				else {
                         //SET SPEED TO NORMAL SPEED
 					jet.setSpeed(2);
-					
+
 					if(abs(sdlEvent.jaxis.value) > JOYSTICK_DEAD_ZONE){
 						printf("Joystick %d axis %d value: %d\n",
 							sdlEvent.jaxis.which,

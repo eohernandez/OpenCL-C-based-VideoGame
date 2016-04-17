@@ -22,7 +22,7 @@
 
 using namespace std;
 
-class Level {
+class View {
 public:
 	int state;
 	virtual void timer(int v) = 0;

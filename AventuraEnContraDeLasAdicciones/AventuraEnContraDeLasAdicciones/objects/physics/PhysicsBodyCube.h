@@ -3,6 +3,11 @@
 #include <cmath>
 #include "Vector3d.h"
 #include <algorithm>
+#ifdef __APPLE__
+#include <GLUT/glut.h>
+#else
+#include <GL/glut.h>
+#endif
 
 using namespace std;
 
@@ -18,4 +23,5 @@ public:
 	void update(Vector3d pos);
 	bool collides(PhysicsBodyCube body);
 	bool collidesContinuos(PhysicsBodyCube body);
+	void testPaint();
 };

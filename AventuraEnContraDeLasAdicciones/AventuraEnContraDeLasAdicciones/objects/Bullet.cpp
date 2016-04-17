@@ -7,7 +7,7 @@ Bullet::Bullet(){
 	speed = 10;
 	life = 100;
 	dead = false;
-	size = 0.5;
+	size = 1;
 	body = PhysicsBodyCube(pos, size, size, size);
 
 	string s =  GlobalClass::instance()->get_path();
@@ -60,64 +60,6 @@ void Bullet::move(){
 	body.update(pos);
 }
 
-void DrawCubeB(GLfloat x, GLfloat y, GLfloat z, GLfloat length, bool fills = false, bool fill = false){
-	
-	GLfloat halflenght = length / 2;
-	GLfloat vertices[] = {
-		// front face
-		x - halflenght, y + halflenght, z + halflenght,
-		x + halflenght, y + halflenght, z + halflenght,
-		x + halflenght, y - halflenght, z + halflenght,
-		x - halflenght, y - halflenght, z + halflenght,
-		// back face
-		x - halflenght, y + halflenght, z - halflenght,
-		x + halflenght, y + halflenght, z - halflenght,
-		x + halflenght, y - halflenght, z - halflenght,
-		x - halflenght, y - halflenght, z - halflenght,
-		// left face
-		x - halflenght, y + halflenght, z + halflenght,
-		x - halflenght, y + halflenght, z - halflenght,
-		x - halflenght, y - halflenght, z - halflenght,
-		x - halflenght, y - halflenght, z + halflenght,
-		// right face
-		x + halflenght, y + halflenght, z + halflenght,
-		x + halflenght, y + halflenght, z - halflenght,
-		x + halflenght, y - halflenght, z - halflenght,
-		x + halflenght, y - halflenght, z + halflenght,
-		// top face
-		x - halflenght, y + halflenght, z + halflenght,
-		x - halflenght, y + halflenght, z - halflenght,
-		x + halflenght, y + halflenght, z - halflenght,
-		x + halflenght, y + halflenght, z + halflenght,
-		// bottom face
-		x - halflenght, y - halflenght, z + halflenght,
-		x - halflenght, y - halflenght, z - halflenght,
-		x + halflenght, y - halflenght, z - halflenght,
-		x + halflenght, y - halflenght, z + halflenght,
-	};
-
-	if(fills){
-		glPolygonMode( GL_FRONT_AND_BACK, GL_FILL);
-
-		glEnableClientState(GL_VERTEX_ARRAY);
-
-		glVertexPointer(3, GL_FLOAT, 0, vertices);
-		glDrawArrays(GL_QUADS, 0, 24);
-
-		glDisableClientState(GL_VERTEX_ARRAY);
-	}
-	else{
-		glPolygonMode( GL_FRONT_AND_BACK, GL_LINE);
-
-		glEnableClientState(GL_VERTEX_ARRAY);
-
-		glVertexPointer(3, GL_FLOAT, 0, vertices);
-		glDrawArrays(GL_QUADS, 0, 24);
-
-		glDisableClientState(GL_VERTEX_ARRAY);
-	}
-}
-
 void Bullet::paint(){
 	glPushMatrix();
 	glTranslatef(pos.x, pos.y, pos.z);
@@ -125,4 +67,5 @@ void Bullet::paint(){
 	glmDraw(&models[BULLET_MOD], GLM_COLOR | GLM_SMOOTH); 
 	// DrawCubeB(0, 0, 0, 1, true);
 	glPopMatrix();
+	body.testPaint();
 }

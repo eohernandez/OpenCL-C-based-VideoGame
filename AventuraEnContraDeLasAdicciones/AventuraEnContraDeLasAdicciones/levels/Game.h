@@ -1,5 +1,5 @@
 #pragma once
-#include "Level.h"
+#include "View.h"
 #include "MainMenu.h"
 #include "Credits.h"
 #include <stack>
@@ -61,13 +61,14 @@
 using namespace std;
 
 //Clase de juego-LO QUE SE TENIA
-class Game : public Level{
+class Game : public View{
 public:
 	vector<Bullet> bullets;
 	Camera camera;
 	Jet jet;
 	vector<PhysicsBodyCube> baddie;
-	bool shooting;
+	float width;
+	float height;
 	Game(int w, int h);
 	void timer(int v);
 	void display();
@@ -79,5 +80,7 @@ public:
 	void paintBaddies();
 	void checkCollision();
 	void shoot(int);
+	void paintHUD(float wi, float hi, float wf, float hf);
+	void paintGame(float wi, float hi, float wf, float hf);
 };
 
