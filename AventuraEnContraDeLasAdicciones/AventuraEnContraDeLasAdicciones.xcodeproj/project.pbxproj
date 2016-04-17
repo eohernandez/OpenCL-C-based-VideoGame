@@ -16,6 +16,10 @@
 		1B2BAEC51CBF39E200A0C1AB /* glmimg_sdl.c in Sources */ = {isa = PBXBuildFile; fileRef = 1B8F1FA41CBF29EE0068AE44 /* glmimg_sdl.c */; };
 		1B2BAEC61CBF39E200A0C1AB /* glmimg_sim.c in Sources */ = {isa = PBXBuildFile; fileRef = 1B8F1FA51CBF29EE0068AE44 /* glmimg_sim.c */; };
 		1B2BAECC1CBF4CCA00A0C1AB /* GlobalClass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1B2BAECA1CBF4CCA00A0C1AB /* GlobalClass.cpp */; };
+		1B65F9F91CC33C36004154E9 /* Controls.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1B65F9F71CC33C36004154E9 /* Controls.cpp */; };
+		1B65F9FC1CC33C4A004154E9 /* GameOver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1B65F9FA1CC33C4A004154E9 /* GameOver.cpp */; };
+		1B65F9FF1CC33C54004154E9 /* History.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1B65F9FD1CC33C54004154E9 /* History.cpp */; };
+		1B65FA021CC33D26004154E9 /* Win.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1B65FA001CC33D26004154E9 /* Win.cpp */; };
 		1B749A851C963DFD006119A4 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1B749A841C963DFD006119A4 /* main.cpp */; };
 		1B749A8D1C963E26006119A4 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B749A8B1C963E26006119A4 /* GLUT.framework */; };
 		1B749A8E1C963E26006119A4 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B749A8C1C963E26006119A4 /* OpenGL.framework */; };
@@ -53,6 +57,20 @@
 		1B2BAECB1CBF4CCA00A0C1AB /* GlobalClass.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GlobalClass.hpp; sourceTree = "<group>"; };
 		1B65F9EF1CC311F6004154E9 /* View.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = View.h; sourceTree = "<group>"; };
 		1B65F9F01CC314CE004154E9 /* Moon.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = Moon.bmp; sourceTree = "<group>"; };
+		1B65F9F11CC33946004154E9 /* Controles.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = Controles.bmp; sourceTree = "<group>"; };
+		1B65F9F21CC33946004154E9 /* creditos.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = creditos.bmp; sourceTree = "<group>"; };
+		1B65F9F31CC33951004154E9 /* GameOver.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = GameOver.bmp; sourceTree = "<group>"; };
+		1B65F9F41CC33951004154E9 /* historia.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = historia.bmp; sourceTree = "<group>"; };
+		1B65F9F51CC33951004154E9 /* MainMenu.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = MainMenu.bmp; sourceTree = "<group>"; };
+		1B65F9F61CC33959004154E9 /* Win.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = Win.bmp; sourceTree = "<group>"; };
+		1B65F9F71CC33C36004154E9 /* Controls.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Controls.cpp; sourceTree = "<group>"; };
+		1B65F9F81CC33C36004154E9 /* Controls.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Controls.h; sourceTree = "<group>"; };
+		1B65F9FA1CC33C4A004154E9 /* GameOver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameOver.cpp; sourceTree = "<group>"; };
+		1B65F9FB1CC33C4A004154E9 /* GameOver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameOver.h; sourceTree = "<group>"; };
+		1B65F9FD1CC33C54004154E9 /* History.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = History.cpp; sourceTree = "<group>"; };
+		1B65F9FE1CC33C54004154E9 /* History.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = History.h; sourceTree = "<group>"; };
+		1B65FA001CC33D26004154E9 /* Win.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Win.cpp; sourceTree = "<group>"; };
+		1B65FA011CC33D26004154E9 /* Win.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Win.h; sourceTree = "<group>"; };
 		1B749A811C963DFD006119A4 /* AventuraEnContraDeLasAdicciones */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = AventuraEnContraDeLasAdicciones; sourceTree = BUILT_PRODUCTS_DIR; };
 		1B749A841C963DFD006119A4 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		1B749A8B1C963E26006119A4 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
@@ -116,6 +134,12 @@
 			isa = PBXGroup;
 			children = (
 				1B65F9F01CC314CE004154E9 /* Moon.bmp */,
+				1B65F9F11CC33946004154E9 /* Controles.bmp */,
+				1B65F9F31CC33951004154E9 /* GameOver.bmp */,
+				1B65F9F41CC33951004154E9 /* historia.bmp */,
+				1B65F9F51CC33951004154E9 /* MainMenu.bmp */,
+				1B65F9F21CC33946004154E9 /* creditos.bmp */,
+				1B65F9F61CC33959004154E9 /* Win.bmp */,
 				1B2BAEC91CBF47F700A0C1AB /* AventuraWallpaper.bmp */,
 				1BBCFB821CC3052E00DAB2FC /* Earth_texture.bmp */,
 				1BBCFB7B1CC2DB2700DAB2FC /* SpaceBackGround.bmp */,
@@ -181,6 +205,14 @@
 		1B8F1FA91CBF29F40068AE44 /* levels */ = {
 			isa = PBXGroup;
 			children = (
+				1B65FA001CC33D26004154E9 /* Win.cpp */,
+				1B65FA011CC33D26004154E9 /* Win.h */,
+				1B65F9FD1CC33C54004154E9 /* History.cpp */,
+				1B65F9FE1CC33C54004154E9 /* History.h */,
+				1B65F9FA1CC33C4A004154E9 /* GameOver.cpp */,
+				1B65F9FB1CC33C4A004154E9 /* GameOver.h */,
+				1B65F9F71CC33C36004154E9 /* Controls.cpp */,
+				1B65F9F81CC33C36004154E9 /* Controls.h */,
 				1B8F1FAA1CBF29F40068AE44 /* Credits.cpp */,
 				1B8F1FAB1CBF29F40068AE44 /* Credits.h */,
 				1B8F1FAC1CBF29F40068AE44 /* Game.cpp */,
@@ -293,18 +325,22 @@
 				1B2BAECC1CBF4CCA00A0C1AB /* GlobalClass.cpp in Sources */,
 				1B2BAEC21CBF39E200A0C1AB /* glmimg_devil.c in Sources */,
 				1B2BAEC31CBF39E200A0C1AB /* glmimg_jpg.c in Sources */,
+				1B65FA021CC33D26004154E9 /* Win.cpp in Sources */,
 				1B2BAEC41CBF39E200A0C1AB /* glmimg_png.c in Sources */,
 				1B2BAEC51CBF39E200A0C1AB /* glmimg_sdl.c in Sources */,
 				1B2BAEC61CBF39E200A0C1AB /* glmimg_sim.c in Sources */,
 				1B8F1FCC1CBF2C220068AE44 /* ImageLoader.cpp in Sources */,
+				1B65F9F91CC33C36004154E9 /* Controls.cpp in Sources */,
 				1B8F1FCB1CBF2C1D0068AE44 /* MainMenu.cpp in Sources */,
 				1B8F1FCA1CBF2C190068AE44 /* Game.cpp in Sources */,
+				1B65F9FC1CC33C4A004154E9 /* GameOver.cpp in Sources */,
 				1B8F1FC91CBF2C140068AE44 /* Credits.cpp in Sources */,
 				1B8F1FC81CBF2C0D0068AE44 /* Vector3d.cpp in Sources */,
 				1B8F1FC71CBF2C090068AE44 /* PhysicsBodyCube.cpp in Sources */,
 				1B8F1FC61CBF2C000068AE44 /* MatrizR.cpp in Sources */,
 				1B8F1FC51CBF2BFB0068AE44 /* Jet.cpp in Sources */,
 				1B8F1FC41CBF2BF70068AE44 /* Bullet.cpp in Sources */,
+				1B65F9FF1CC33C54004154E9 /* History.cpp in Sources */,
 				1B8F1F9B1CBF29E80068AE44 /* Camera.cpp in Sources */,
 				1B749A851C963DFD006119A4 /* main.cpp in Sources */,
 			);

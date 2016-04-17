@@ -68,19 +68,34 @@ void GlobalClass::initRendering()
     
     
     char  ruta[300];
-    sprintf(ruta,"%s%s", s.c_str() , "images/AventuraWallpaper.bmp");
+    sprintf(ruta,"%s%s", s.c_str() , "images/AventuraWallpaper.bmp");   //0
     image = loadBMP(ruta);loadTexture(image,i++);
     
-    sprintf(ruta,"%s%s", s.c_str() , "images/SpaceBackGround.bmp");
+    sprintf(ruta,"%s%s", s.c_str() , "images/SpaceBackGround.bmp");     //1
     image = loadBMP(ruta);loadTexture(image,i++);
     
-    sprintf(ruta,"%s%s", s.c_str() , "images/Earth_texture.bmp");
+    sprintf(ruta,"%s%s", s.c_str() , "images/Earth_texture.bmp");       //2
     image = loadBMP(ruta);loadTexture(image,i++);
     
-    sprintf(ruta,"%s%s", s.c_str() , "images/Moon.bmp");
+    sprintf(ruta,"%s%s", s.c_str() , "images/Moon.bmp");                //3
     image = loadBMP(ruta);loadTexture(image,i++);
 
-    sprintf(ruta,"%s%s", s.c_str() , "images/HUD.bmp");
+    sprintf(ruta,"%s%s", s.c_str() , "images/Controles.bmp");           //4
+    image = loadBMP(ruta);loadTexture(image,i++);
+    
+    sprintf(ruta,"%s%s", s.c_str() , "images/GameOver.bmp");            //5
+    image = loadBMP(ruta);loadTexture(image,i++);
+    
+    sprintf(ruta,"%s%s", s.c_str() , "images/historia.bmp");            //6
+    image = loadBMP(ruta);loadTexture(image,i++);
+    
+    sprintf(ruta,"%s%s", s.c_str() , "images/MainMenu.bmp");            //7
+    image = loadBMP(ruta);loadTexture(image,i++);
+    
+    sprintf(ruta,"%s%s", s.c_str() , "images/creditos.bmp");            //8
+    image = loadBMP(ruta);loadTexture(image,i++);
+    
+    sprintf(ruta,"%s%s", s.c_str() , "images/Win.bmp");                 //9
     image = loadBMP(ruta);loadTexture(image,i++);
     
     delete image;

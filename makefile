@@ -1,7 +1,7 @@
 all: aventura
 
-aventura: main.o MainMenu.o Game.o Credits.o Jet.o Bullet.o PhysicsBodyCube.o MatrizR.o Vector3d.o Camera.o GlobalClass.o ImageLoader.o
-	g++ main.o MainMenu.o Game.o Credits.o Jet.o Bullet.o PhysicsBodyCube.o MatrizR.o Vector3d.o Camera.o GlobalClass.o ImageLoader.o AventuraEnContraDeLasAdicciones/AventuraEnContraDeLasAdicciones/glm/*.c -w -o aventura -lGL -lGLU -lglut -lSDL2_mixer -lSDL2 -std=c++11 -fpermissive
+aventura: main.o MainMenu.o Game.o Credits.o Jet.o Bullet.o PhysicsBodyCube.o MatrizR.o Vector3d.o Camera.o GlobalClass.o ImageLoader.o Controls.o GameOver.o Win.o History.o
+	g++ main.o MainMenu.o Game.o Credits.o Jet.o Bullet.o PhysicsBodyCube.o MatrizR.o Vector3d.o Camera.o GlobalClass.o ImageLoader.o Controls.o GameOver.o Win.o History.o AventuraEnContraDeLasAdicciones/AventuraEnContraDeLasAdicciones/glm/*.c -w -o aventura -lGL -lGLU -lglut -lSDL2_mixer -lSDL2 -std=c++11 -fpermissive
 
 main.o: AventuraEnContraDeLasAdicciones/AventuraEnContraDeLasAdicciones/main.cpp
 	g++ -c AventuraEnContraDeLasAdicciones/AventuraEnContraDeLasAdicciones/main.cpp	-std=c++11 
@@ -32,6 +32,18 @@ Game.o: AventuraEnContraDeLasAdicciones/AventuraEnContraDeLasAdicciones/levels/G
 
 Credits.o: AventuraEnContraDeLasAdicciones/AventuraEnContraDeLasAdicciones/levels/Credits.cpp
 	g++ -c AventuraEnContraDeLasAdicciones/AventuraEnContraDeLasAdicciones/levels/Credits.cpp -std=c++11
+
+Controls.o: AventuraEnContraDeLasAdicciones/AventuraEnContraDeLasAdicciones/levels/Controls.cpp
+	g++ -c AventuraEnContraDeLasAdicciones/AventuraEnContraDeLasAdicciones/levels/Controls.cpp -std=c++11
+
+GameOver.o: AventuraEnContraDeLasAdicciones/AventuraEnContraDeLasAdicciones/levels/GameOver.cpp
+	g++ -c AventuraEnContraDeLasAdicciones/AventuraEnContraDeLasAdicciones/levels/GameOver.cpp -std=c++11
+
+Win.o: AventuraEnContraDeLasAdicciones/AventuraEnContraDeLasAdicciones/levels/Win.cpp
+	g++ -c AventuraEnContraDeLasAdicciones/AventuraEnContraDeLasAdicciones/levels/Win.cpp -std=c++11
+
+History.o: AventuraEnContraDeLasAdicciones/AventuraEnContraDeLasAdicciones/levels/History.cpp
+	g++ -c AventuraEnContraDeLasAdicciones/AventuraEnContraDeLasAdicciones/levels/History.cpp -std=c++11
 
 GlobalClass.o: AventuraEnContraDeLasAdicciones/AventuraEnContraDeLasAdicciones/GlobalClass.cpp
 	g++ -c AventuraEnContraDeLasAdicciones/AventuraEnContraDeLasAdicciones/GlobalClass.cpp -std=c++11
