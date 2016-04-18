@@ -1,7 +1,7 @@
 #include "Bullet.h"
 
 Bullet::~Bullet(){
-    
+
 }
 
 
@@ -51,6 +51,18 @@ Bullet::Bullet(Vector3d pos, Vector3d forward, float speed){
 	models[BULLET_MOD] = *glmReadOBJ(ruta.c_str());
 	glmUnitize(&models[BULLET_MOD]);
 	glmVertexNormals(&models[BULLET_MOD], 90.0, GL_TRUE);
+
+	//Load sound effects
+	char  rutaSaber[300];
+	sprintf(rutaSaber,"%s%s", s.c_str() , "sounds/blast.wav");
+    // cout << rutaSaber << endl;
+	gSaber = Mix_LoadWAV( rutaSaber );
+	if( gSaber == NULL )
+	{
+		printf( "Failed to load gSaber sound effect! SDL_mixer Error: %s\n", Mix_GetError() );
+	} else {
+		Mix_PlayChannel( 1, gSaber, 0 );
+	}
 }
 
 void Bullet::move(){
