@@ -30,8 +30,8 @@ public:
 	float pitch;
 	float roll;
 	float speed;
-	int pitchMod;
-	int rollMod;
+	float pitchMod;
+	float rollMod;
 	float life;
 	PhysicsBodyCube body;
 	Mix_Chunk *gThrust;
