@@ -21,6 +21,7 @@ struct GameObject{
 	int size;
 };
 
+int evilsAlive = EVILS;
 GameObject planets[PLANETS];
 GameObject evils[EVILS];
 PhysicsBodyCube evilsBody[EVILS];
@@ -249,11 +250,19 @@ void Game::checkCollision(){
 				{
 					if (evilscount[j] && bullets[i].body.collidesContinuos(evilsBody[j]))
 					{
+
 						GlobalClass::instance()->updatePoints(10);
+						evilsAlive--;
 						killBullets.push(i);
 						bullets[i].dead = true;
 						evilscount[j] = false;
 					}
+				}
+			} else{
+				if(bullets[i].body.collidesContinuos(jet.body)){
+					jet.life -= 20;
+					killBullets.push(i);
+					bullets[i].dead = true;
 				}
 			}
 		} else {
@@ -264,6 +273,21 @@ void Game::checkCollision(){
 		bullets.erase(bullets.begin() + killBullets.top());
 
 		killBullets.pop();
+	}
+	for (int i = 0; i < EVILS; ++i)
+	{
+		if(evilscount[i] && jet.body.collidesContinuos(evilsBody[i])){
+			evilsAlive--;
+			evilscount[i] = false;
+			jet.life -= 20;
+		}
+	}
+	for (int i = 0; i < HEALTHS; ++i)
+	{
+		if(healthsTaken[i] && jet.body.collidesContinuos(healthsBody[i])){
+			healthsTaken[i] = false;
+			jet.life += 20;
+		}
 	}
 }
 
@@ -278,10 +302,15 @@ void Game::timer(int v){
 		evilsshoot();
 		if(bullets.size()){
             //cout << bullets.size() << endl;
+
 		}
 	}
 	if(GlobalClass::instance()->getTimer() < 0){
 		state = 4;
+	}
+	if(evilsAlive <= 0){
+
+		state = 5;
 	}
 
 	glutPostRedisplay();
@@ -564,6 +593,13 @@ float normalizeValues(int x, float a, float b){
 	return a + top / botom * 1.0;
 }
 
+float normalizeValuesCamera(int x, float a, float b){
+    //x = x + JOYSTICK_MAX_VALUE;
+	float top = (x - JOYSTICK_MIN_VALUE) * ( b - a ) * 1.0;
+	float botom = JOYSTICK_MAX_VALUE - JOYSTICK_MIN_VALUE * 1.0;
+	return a + top / botom * 1.0;
+}
+
 void Game::EventLoop(int){
 	SDL_Event sdlEvent;
 
@@ -598,30 +634,56 @@ void Game::EventLoop(int){
                     //Z axis motion
 				if( sdlEvent.jaxis.axis ==  LEFT_STICK_HORIZONTAL)  {
                         //Below of dead zone
+
+					jet.rollMod = normalizeValuesCamera(sdlEvent.jaxis.value, -1, 1);
+                    /*
 					if( sdlEvent.jaxis.value < -JOYSTICK_DEAD_ZONE ) {
-						jet.rollMod = -1;
+						//jet.rollMod = -1;
+                        jet.rollMod = normalizeValues(sdlEvent.jaxis.value, 0, -1);
 					}
                         //Above of dead zone
 					else if( sdlEvent.jaxis.value > JOYSTICK_DEAD_ZONE ) {
-						jet.rollMod =  1;
+						//jet.rollMod =  1;
+                        jet.rollMod = normalizeValues(sdlEvent.jaxis.value, 0, 1);
+                        
 					}
-					else {
+                     */
+
+					if (sdlEvent.jaxis.value < JOYSTICK_DEAD_ZONE && sdlEvent.jaxis.value > -JOYSTICK_DEAD_ZONE) {
 						jet.rollMod = 0;
 					}
+					//else {
+						//jet.rollMod = 0;
+					//}
 				}
                     //Y axis motion
 				else if( sdlEvent.jaxis.axis == LEFT_STICK_VERTICAL ) {
                         //Left of dead zone
+
+					jet.pitchMod = normalizeValuesCamera(sdlEvent.jaxis.value, 1, -1);
+
+                    /*
 					if( sdlEvent.jaxis.value < -JOYSTICK_DEAD_ZONE ) {
-						jet.pitchMod = 1;
+						//jet.pitchMod = 1;
+                        //jet.pitchMod = normalizeValues(int x, float a, float b)
+                        jet.pitchMod = normalizeValues(sdlEvent.jaxis.value, 0, 1);
+                        
 					}
                         //Right of dead zone
 					else if( sdlEvent.jaxis.value > JOYSTICK_DEAD_ZONE ) {
-						jet.pitchMod =  -1;
+						//jet.pitchMod =  -1;
+                        jet.pitchMod = normalizeValues(sdlEvent.jaxis.value, 0, -1);
 					}
 					else {
 						jet.pitchMod = 0;
 					}
+                    
+                     */
+					if (sdlEvent.jaxis.value < JOYSTICK_DEAD_ZONE && sdlEvent.jaxis.value > -JOYSTICK_DEAD_ZONE) {
+						jet.pitchMod = 0;
+					}
+
+
                         //Yaw camera motion
 				} else if( sdlEvent.jaxis.axis ==  RIGHT_STICK_HORIZONTAL)   {
                         //Below of dead zone
