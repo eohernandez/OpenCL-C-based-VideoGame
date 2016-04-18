@@ -236,7 +236,7 @@ Game::Game(int w, int h){
 	this->reshape(w,h);
 	cout << "gamme" << endl;
     //initRendering();
-    evilsAlive = EVILS;
+	evilsAlive = EVILS;
 	initStructs();
 
 }
@@ -287,6 +287,9 @@ void Game::checkCollision(){
 		if(healthsTaken[i] && jet.body.collidesContinuos(healthsBody[i])){
 			healthsTaken[i] = false;
 			jet.life += 20;
+			if(jet.life>100){
+				jet.life = 100;
+			}
 		}
 	}
 }
@@ -305,11 +308,14 @@ void Game::timer(int v){
 
 		}
 	}
+	if(jet.life <= 0){
+		state = 4;
+	} 
 	if(GlobalClass::instance()->getTimer() < 0){
 		state = 4;
 	}
 	if(evilsAlive <= 0){
-
+		GlobalClass::instance()->updatePoints(GlobalClass::instance()->getTimer()/10);
 		state = 5;
 	}
 
