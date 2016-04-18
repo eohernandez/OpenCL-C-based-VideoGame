@@ -617,7 +617,7 @@ void Game::EventLoop(int){
 				else if( sdlEvent.jaxis.axis == LEFT_STICK_VERTICAL ) {
                         //Left of dead zone
                     
-                    jet.pitchMod = normalizeValuesCamera(sdlEvent.jaxis.value, -1, 1);
+                    jet.pitchMod = normalizeValuesCamera(sdlEvent.jaxis.value, 1, -1);
 
                     /*
 					if( sdlEvent.jaxis.value < -JOYSTICK_DEAD_ZONE ) {
