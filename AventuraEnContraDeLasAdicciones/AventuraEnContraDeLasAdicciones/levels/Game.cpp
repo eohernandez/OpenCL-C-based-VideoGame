@@ -26,6 +26,7 @@ GameObject planets[PLANETS];
 GameObject evils[EVILS];
 PhysicsBodyCube evilsBody[EVILS];
 bool evilscount[EVILS];
+int evilshoottimer[EVILS];
 GameObject healths[HEALTHS];
 bool healthsTaken[HEALTHS];
 PhysicsBodyCube healthsBody[HEALTHS];
@@ -33,6 +34,23 @@ stack<int> killBullets;
 bool gamePause = false;
 
 void paintModel(int tex, int x, int y, int z, int size);
+
+void Game::evilsshoot(){
+	for (int i = 0; i < EVILS; ++i)
+	{
+		if(evilscount[i] && sqrt(pow(evils[i].x - jet.x, 2) + pow(evils[i].y - jet.y, 2) + pow(evils[i].z - jet.z, 2)) < 1500){
+			if(evilshoottimer[i] < 0){
+				Vector3d dir(jet.x - evils[i].x, jet.y - evils[i].y, jet.z - evils[i].z);
+				dir.normalize();
+				Bullet bu(Vector3d(evils[i].x, evils[i].y, evils[i].z), dir, 50);
+				bu.player = false;
+				bullets.push_back(bu);
+				evilshoottimer[i] = 5;
+			}
+			evilshoottimer[i]--;
+		}
+	}
+}
 
 float randomFloat(float min, float max)
 {
@@ -132,6 +150,7 @@ void initStructs(){
 		evils[i].size = randomFloat(100, 200);
 		evils[i].texture = randomFloat(0, 3);
 		evilscount[i] = true;
+		evilshoottimer[i] = 0;
 	}
 
 	for (int i = 0; i < HEALTHS; i++) {
@@ -187,10 +206,10 @@ void initStructs(){
 }
 
 string formato(int t){
-    
-    string seconds = (((t/10)%60) < 10) ? ("0" + std::to_string((t/10)%60)) : (std::to_string((t/10)%60));
-    
-    return std::to_string(((t/10)/60)%60) + ":" + seconds + "." + std::to_string(t%10);
+
+	string seconds = (((t/10)%60) < 10) ? ("0" + std::to_string((t/10)%60)) : (std::to_string((t/10)%60));
+
+	return std::to_string(((t/10)/60)%60) + ":" + seconds + "." + std::to_string(t%10);
 }
 
 
@@ -207,9 +226,9 @@ void Game::shoot(int, bool player){
 
 Game::Game(int w, int h){
 	state = 1;
-    
-    GlobalClass::instance()->resetGameDefaults();
-    
+
+	GlobalClass::instance()->resetGameDefaults();
+
 	glClearColor(.9, .9, .9, 1);
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
@@ -231,12 +250,19 @@ void Game::checkCollision(){
 				{
 					if (evilscount[j] && bullets[i].body.collidesContinuos(evilsBody[j]))
 					{
-                        GlobalClass::instance()->updatePoints(10);
-                        evilsAlive--;
+
+						GlobalClass::instance()->updatePoints(10);
+						evilsAlive--;
 						killBullets.push(i);
 						bullets[i].dead = true;
 						evilscount[j] = false;
 					}
+				}
+			} else{
+				if(bullets[i].body.collidesContinuos(jet.body)){
+					jet.life -= 20;
+					killBullets.push(i);
+					bullets[i].dead = true;
 				}
 			}
 		} else {
@@ -245,32 +271,49 @@ void Game::checkCollision(){
 	}
 	while(!killBullets.empty()){
 		bullets.erase(bullets.begin() + killBullets.top());
-        
+
 		killBullets.pop();
+	}
+	for (int i = 0; i < EVILS; ++i)
+	{
+		if(evilscount[i] && jet.body.collidesContinuos(evilsBody[i])){
+			evilsAlive--;
+			evilscount[i] = false;
+			jet.life -= 20;
+		}
+	}
+	for (int i = 0; i < HEALTHS; ++i)
+	{
+		if(healthsTaken[i] && jet.body.collidesContinuos(healthsBody[i])){
+			healthsTaken[i] = false;
+			jet.life += 20;
+		}
 	}
 }
 
 void Game::timer(int v){
 
-    if(!gamePause){
-        GlobalClass::instance()->updateTimer(0.5);
-        checkCollision();
-        moveBullets();
-        jet.calcDir();
-        jet.moveJet();
-        if(bullets.size()){
+	if(!gamePause){
+		GlobalClass::instance()->updateTimer(0.5);
+		checkCollision();
+		moveBullets();
+		jet.calcDir();
+		jet.moveJet();
+		evilsshoot();
+		if(bullets.size()){
             //cout << bullets.size() << endl;
-        }
-    }
-    if(GlobalClass::instance()->getTimer() < 0){
-        state = 4;
-    }
-    if(evilsAlive <= 0){
-        
-        state = 5;
-    }
-    
-    glutPostRedisplay();
+
+		}
+	}
+	if(GlobalClass::instance()->getTimer() < 0){
+		state = 4;
+	}
+	if(evilsAlive <= 0){
+
+		state = 5;
+	}
+
+	glutPostRedisplay();
 
 }
 
@@ -415,12 +458,12 @@ void Game::paintHUD(float x, float y, float w, float h){
 	glColor3ub(255, 140, 0);
 	glRectf(84, -96, 96, -96 + jet.speed * 7 + 2);
 	writeBigStringWide(-93, 85, "VIDA", 0.075, 200, 0, 0);
-    writeBigStringWide(5, 85, "PNTS: " + std::to_string(GlobalClass::instance()->getPoints()), 0.075, 200, 0, 0);
-    writeBigStringWide(65, 85, formato(GlobalClass::instance()->getTimer()), 0.075, 200, 0, 0);
-    if(gamePause){
-        
-        writeBigStringWide(-40, 0, "PAUSA", 0.2, 200, 0, 0);
-    }
+	writeBigStringWide(5, 85, "PNTS: " + std::to_string(GlobalClass::instance()->getPoints()), 0.075, 200, 0, 0);
+	writeBigStringWide(65, 85, formato(GlobalClass::instance()->getTimer()), 0.075, 200, 0, 0);
+	if(gamePause){
+
+		writeBigStringWide(-40, 0, "PAUSA", 0.2, 200, 0, 0);
+	}
 	glColor3ub(0, 255, 0);
 	glRectf(-95, 82, 0 - 95 + jet.life*95/100, 95);
 	glColor3ub(255, 0, 0);
@@ -552,9 +595,9 @@ float normalizeValues(int x, float a, float b){
 
 float normalizeValuesCamera(int x, float a, float b){
     //x = x + JOYSTICK_MAX_VALUE;
-    float top = (x - JOYSTICK_MIN_VALUE) * ( b - a ) * 1.0;
-    float botom = JOYSTICK_MAX_VALUE - JOYSTICK_MIN_VALUE * 1.0;
-    return a + top / botom * 1.0;
+	float top = (x - JOYSTICK_MIN_VALUE) * ( b - a ) * 1.0;
+	float botom = JOYSTICK_MAX_VALUE - JOYSTICK_MIN_VALUE * 1.0;
+	return a + top / botom * 1.0;
 }
 
 void Game::EventLoop(int){
@@ -591,8 +634,8 @@ void Game::EventLoop(int){
                     //Z axis motion
 				if( sdlEvent.jaxis.axis ==  LEFT_STICK_HORIZONTAL)  {
                         //Below of dead zone
-                    
-                    jet.rollMod = normalizeValuesCamera(sdlEvent.jaxis.value, -1, 1);
+
+					jet.rollMod = normalizeValuesCamera(sdlEvent.jaxis.value, -1, 1);
                     /*
 					if( sdlEvent.jaxis.value < -JOYSTICK_DEAD_ZONE ) {
 						//jet.rollMod = -1;
@@ -605,10 +648,10 @@ void Game::EventLoop(int){
                         
 					}
                      */
-                    
-                    if (sdlEvent.jaxis.value < JOYSTICK_DEAD_ZONE && sdlEvent.jaxis.value > -JOYSTICK_DEAD_ZONE) {
-                        jet.rollMod = 0;
-                    }
+
+					if (sdlEvent.jaxis.value < JOYSTICK_DEAD_ZONE && sdlEvent.jaxis.value > -JOYSTICK_DEAD_ZONE) {
+						jet.rollMod = 0;
+					}
 					//else {
 						//jet.rollMod = 0;
 					//}
@@ -616,8 +659,8 @@ void Game::EventLoop(int){
                     //Y axis motion
 				else if( sdlEvent.jaxis.axis == LEFT_STICK_VERTICAL ) {
                         //Left of dead zone
-                    
-                    jet.pitchMod = normalizeValuesCamera(sdlEvent.jaxis.value, 1, -1);
+
+					jet.pitchMod = normalizeValuesCamera(sdlEvent.jaxis.value, 1, -1);
 
                     /*
 					if( sdlEvent.jaxis.value < -JOYSTICK_DEAD_ZONE ) {
@@ -636,11 +679,11 @@ void Game::EventLoop(int){
 					}
                     
                      */
-                    if (sdlEvent.jaxis.value < JOYSTICK_DEAD_ZONE && sdlEvent.jaxis.value > -JOYSTICK_DEAD_ZONE) {
-                        jet.pitchMod = 0;
-                    }
-                    
-                    
+					if (sdlEvent.jaxis.value < JOYSTICK_DEAD_ZONE && sdlEvent.jaxis.value > -JOYSTICK_DEAD_ZONE) {
+						jet.pitchMod = 0;
+					}
+
+
                         //Yaw camera motion
 				} else if( sdlEvent.jaxis.axis ==  RIGHT_STICK_HORIZONTAL)   {
                         //Below of dead zone
@@ -670,15 +713,15 @@ void Game::EventLoop(int){
 					}
 				} else if( sdlEvent.jaxis.axis == RT_AXIS ) {
                         //Full Trigger
-                    if(!gamePause)
-                        jet.setSpeed(normalizeValues(sdlEvent.jaxis.value, 6, 24));
+					if(!gamePause)
+						jet.setSpeed(normalizeValues(sdlEvent.jaxis.value, 6, 24));
 
 
 					// printf("SPEED: %f\n", jet.getSpeed());
 				}else if( sdlEvent.jaxis.axis == LT_AXIS ) {
                         //Full Trigger
-                    if(!gamePause)
-                        jet.setSpeed(normalizeValues(sdlEvent.jaxis.value, 6, 2));
+					if(!gamePause)
+						jet.setSpeed(normalizeValues(sdlEvent.jaxis.value, 6, 2));
                          // printf("SPEED: %f\n", jet.getSpeed());
 				}
 				else {
@@ -720,19 +763,16 @@ void Game::EventLoop(int){
 			if( sdlEvent.jaxis.which == 0 ){  
 				switch(sdlEvent.jbutton.button){
 					case BUTTON_A:
-                        if(!gamePause)
-                            shoot(0, true);
+					if(!gamePause)
+						shoot(0, true);
 					break;
-//					case BUTTON_B:
-//                        if(!gamePause)
-//                            jet.jetBrake();
-//                        break;
+
 					case BUTTON_Y:
-                        camera.first = !camera.first;
-                        break;
-                    case BUTTON_START:
-                        gamePause = !gamePause;
-                        break;
+					camera.first = !camera.first;
+					break;
+					case BUTTON_START:
+					gamePause = !gamePause;
+					break;
 					default:
 					printf("Joystick %d button %d down\n",
 						sdlEvent.jbutton.which, sdlEvent.jbutton.button);

@@ -34,7 +34,6 @@
 #include "levels/Win.h"
 
 
-#define JOYSTICK_DEAD_ZONE 8000
 #define JOYSTICK_MAX_VALUE 32767
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
