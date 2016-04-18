@@ -38,7 +38,7 @@ void Win::display(){
     float maxCoord = 50.0f;
     
     
-    writeBigStringWide(-18, -46, std::to_string(GlobalClass::instance()->getPoints()), 0.075, 200, 0, 0);
+    writeBigStringWide(0, -40, std::to_string(GlobalClass::instance()->getPoints()), 0.075, 200, 0, 0);
 
     glColor3f(255, 255, 255);
     
