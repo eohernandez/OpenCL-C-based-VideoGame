@@ -69,6 +69,11 @@ Jet::Jet(){
 	}
 }
 
+void Jet::soundOff(){
+	Mix_FreeChunk( gThrust );
+    gThrust = NULL;
+}
+
 void Jet::moveJet(){
 	float angle = 3.14159 / 32;
 	if(pitchMod){

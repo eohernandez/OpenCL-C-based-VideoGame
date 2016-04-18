@@ -16,14 +16,12 @@
 #include "../GlobalClass.hpp"
 #include "../glm/glm.h"
 
-#define BULLET_MOD 0
 
 using namespace std;
 
 class Bullet {
 public:
 	Vector3d pos;
-	GLMmodel models[1];
 	Vector3d forward;
 	float speed;
 	PhysicsBodyCube body;

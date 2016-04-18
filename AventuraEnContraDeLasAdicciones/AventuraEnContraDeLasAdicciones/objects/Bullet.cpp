@@ -15,12 +15,6 @@ Bullet::Bullet(){
 	body = PhysicsBodyCube(pos, size, size, size);
 
 	string s =  GlobalClass::instance()->get_path();
-    // getParentPath();
-	std::string ruta = s + "objects/models/webtrcc.obj";
-	// std::cout << "Filepath: " << ruta << std::endl;
-	models[BULLET_MOD] = *glmReadOBJ(ruta.c_str());
-	glmUnitize(&models[BULLET_MOD]);
-	glmVertexNormals(&models[BULLET_MOD], 90.0, GL_TRUE);
 
 	//Load sound effects
 	char  rutaSaber[300];
@@ -45,12 +39,7 @@ Bullet::Bullet(Vector3d pos, Vector3d forward, float speed){
 	body = PhysicsBodyCube(pos, size, size, size);
 
 	string s =  GlobalClass::instance()->get_path();
-    // getParentPath();
-	std::string ruta = s + "objects/models/webtrcc.obj";
-	// std::cout << "Filepath: " << ruta << std::endl;
-	models[BULLET_MOD] = *glmReadOBJ(ruta.c_str());
-	glmUnitize(&models[BULLET_MOD]);
-	glmVertexNormals(&models[BULLET_MOD], 90.0, GL_TRUE);
+
 
 	//Load sound effects
 	char  rutaSaber[300];
@@ -77,12 +66,19 @@ void Bullet::move(){
 }
 
 void Bullet::paint(){
+	glDisable(GL_TEXTURE_2D);
 	glPushMatrix();
 	glTranslatef(pos.x, pos.y, pos.z);
 	// glScaled(size * 2, size * 2, size * 2);
-	// glutSolidSphere(1.0, 20, 20);
-	glmDraw(&models[BULLET_MOD], GLM_COLOR | GLM_SMOOTH); 
+	if(player){
+		glColor3ub(0,255,0);
+	} else{
+		glColor3ub(255,0,0);
+	}
+	glutSolidSphere(1.0, 20, 20);
 	// DrawCubeB(0, 0, 0, 1, true);
 	glPopMatrix();
-	// body.testPaint();
+	// body.testPaint(true);
+	glEnable(GL_TEXTURE_2D);
+
 }

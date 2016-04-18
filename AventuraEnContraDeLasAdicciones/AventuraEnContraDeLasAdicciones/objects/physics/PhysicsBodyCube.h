@@ -23,5 +23,5 @@ public:
 	void update(Vector3d pos);
 	bool collides(PhysicsBodyCube body);
 	bool collidesContinuos(PhysicsBodyCube body);
-	void testPaint();
+	void testPaint(bool red);
 };

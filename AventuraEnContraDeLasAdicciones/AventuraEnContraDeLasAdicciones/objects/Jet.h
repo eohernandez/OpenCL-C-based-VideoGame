@@ -36,6 +36,7 @@ public:
 	PhysicsBodyCube body;
 	Mix_Chunk *gThrust;
 	Jet();
+	void soundOff();
 	void moveJet();
 	void paintJet();
 	void jetBoost();

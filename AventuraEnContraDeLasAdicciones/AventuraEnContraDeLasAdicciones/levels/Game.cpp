@@ -3,6 +3,7 @@
 #include <stack>
 
 Game* game;
+Mix_Music *gDubstep = NULL;
 
 std::random_device rd;
 
@@ -34,6 +35,23 @@ stack<int> killBullets;
 bool gamePause = false;
 
 void paintModel(int tex, int x, int y, int z, int size);
+
+void closeSound()
+{
+    // //Free the sound effects
+    // Mix_FreeChunk( gScratch );
+    // Mix_FreeChunk( gSaber );
+    // Mix_FreeChunk( gMedium );
+    // Mix_FreeChunk( gLow );
+    // gScratch = NULL;
+    // gSaber = NULL;
+    // gMedium = NULL;
+    // gLow = NULL;
+
+    //Free the music
+    Mix_FreeMusic( gDubstep );
+    gDubstep = NULL;
+}
 
 void Game::evilsshoot(){
 	for (int i = 0; i < EVILS; ++i)
@@ -239,6 +257,17 @@ Game::Game(int w, int h){
 	evilsAlive = EVILS;
 	initStructs();
 
+	string s =  GlobalClass::instance()->get_path();
+	char  rutaMusic[300];
+	sprintf(rutaMusic,"%s%s", s.c_str() , "sounds/Dubstep.wav");
+    // cout << rutaMusic << endl;
+	gDubstep = Mix_LoadMUS( rutaMusic );
+	if( gDubstep == NULL )
+	{
+		printf( "Failed to load Dubstep music! SDL_mixer Error: %s\n", Mix_GetError() );
+	}
+	Mix_PlayMusic( gDubstep, -1 );
+
 }
 
 void Game::checkCollision(){
@@ -310,13 +339,19 @@ void Game::timer(int v){
 	}
 	if(jet.life <= 0){
 		state = 4;
+		closeSound();
+		jet.soundOff();
 	} 
 	if(GlobalClass::instance()->getTimer() < 0){
 		state = 4;
+		closeSound();
+		jet.soundOff();
 	}
 	if(evilsAlive <= 0){
 		GlobalClass::instance()->updatePoints(GlobalClass::instance()->getTimer()/10);
 		state = 5;
+		closeSound();
+		jet.soundOff();
 	}
 
 	glutPostRedisplay();
@@ -509,7 +544,7 @@ void Game::paintGame(float x, float y, float w, float h){
 		if(evilscount[i]){
 			paintModel(evils[i].texture, evils[i].x, evils[i].y, evils[i].z, evils[i].size);
 			if(camera.first){
-				evilsBody[i].testPaint();
+				evilsBody[i].testPaint(true);
 			}
 		}
 	}
@@ -519,7 +554,7 @@ void Game::paintGame(float x, float y, float w, float h){
 		{
 			paintModel(healths[i].texture, healths[i].x, healths[i].y, healths[i].z, healths[i].size);
 			if(camera.first){
-				healthsBody[i].testPaint();
+				healthsBody[i].testPaint(false);
 			}
 		}
 	}

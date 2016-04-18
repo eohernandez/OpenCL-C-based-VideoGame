@@ -41,9 +41,13 @@ bool PhysicsBodyCube::collidesContinuos(PhysicsBodyCube body){
 			and min(minv.z, minPast.z) <= max(body.maxv.z, body.maxPast.z))));
 }
 
-void PhysicsBodyCube::testPaint(){
+void PhysicsBodyCube::testPaint(bool red){
 
-	glColor3f(1.0f, 0.0f, 0.0f);
+	if(red){
+		glColor3f(1.0f, 0.0f, 0.0f);
+	} else {
+		glColor3f(0.0f, 1.0f, 0.0f);
+	}
 
 	//FACE FRONT
 	glBegin(GL_LINE_LOOP);
