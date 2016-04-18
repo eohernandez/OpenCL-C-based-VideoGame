@@ -230,6 +230,7 @@ void Game::checkCollision(){
 				{
 					if (evilscount[j] && bullets[i].body.collidesContinuos(evilsBody[j]))
 					{
+                        GlobalClass::instance()->updatePoints(10);
 						killBullets.push(i);
 						bullets[i].dead = true;
 						evilscount[j] = false;

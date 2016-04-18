@@ -35,7 +35,7 @@ class GlobalClass
     {
         points = 0;
         fullPath = "";
-        totalGameTime = 20;
+        totalGameTime = 1800;
         timer = totalGameTime;
     }
     
