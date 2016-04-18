@@ -217,7 +217,7 @@ Game::Game(int w, int h){
 	this->reshape(w,h);
 	cout << "gamme" << endl;
     //initRendering();
-
+    evilsAlive = EVILS;
 	initStructs();
 
 }
