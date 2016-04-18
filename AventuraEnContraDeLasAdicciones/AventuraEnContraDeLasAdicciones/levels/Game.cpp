@@ -9,6 +9,9 @@ std::random_device rd;
 #define PLANETS 10
 #define EVILS 10
 #define HEALTHS 3
+#define MODELS 6
+
+GLMmodel gameModels[MODELS];
 
 struct GameObject{
 	int x;
@@ -18,15 +21,17 @@ struct GameObject{
 	int size;
 };
 
-GameObject planets [PLANETS];
-GameObject evils [EVILS];
-bool bodycount[EVILS];
-GameObject healths [HEALTHS];
+GameObject planets[PLANETS];
+GameObject evils[EVILS];
+PhysicsBodyCube evilsBody[EVILS];
+bool evilscount[EVILS];
+GameObject healths[HEALTHS];
 bool healthsTaken[HEALTHS];
+PhysicsBodyCube healthsBody[HEALTHS];
 stack<int> killBullets;
 bool gamePause = false;
 
-void paintModel(int tex);
+void paintModel(int tex, int x, int y, int z, int size);
 
 float randomFloat(float min, float max)
 {
@@ -61,41 +66,123 @@ void Game::paintBullets(){
 	}
 }
 
-void timerShoot(int){
-	game->shoot(0);
+void assignBodysEvil(){
+	for (int i = 0; i < EVILS; ++i)
+	{
+		switch(evils[i].texture){
+			case 0:
+			evilsBody[i] = PhysicsBodyCube(
+				evils[i].x, evils[i].y, evils[i].z, 
+				0.5 * evils[i].size, 2 * evils[i].size, 0.5 * evils[i].size);
+			break;
+			case 1:
+			evilsBody[i] = PhysicsBodyCube(
+				evils[i].x, evils[i].y, evils[i].z, 
+				0.2 * evils[i].size, 0.2 * evils[i].size, 2 * evils[i].size);
+			break;
+			case 2:
+			evilsBody[i] = PhysicsBodyCube(
+				evils[i].x, evils[i].y, evils[i].z, 
+				1 * evils[i].size, 0.2 * evils[i].size, 1 * evils[i].size);
+			break;
+			case 3:
+			evilsBody[i] = PhysicsBodyCube(
+				evils[i].x, evils[i].y, evils[i].z, 
+				1 * evils[i].size, 0.6 * evils[i].size, 2 * evils[i].size);
+			break;
+		}
+		evilsBody[i].update(Vector3d(evils[i].x, evils[i].y, evils[i].z));
+	}
+}
+
+void assignBodysHealth(){
+	for (int i = 0; i < HEALTHS; ++i)
+	{
+		switch(healths[i].texture){
+			case 4:
+			healthsBody[i] = PhysicsBodyCube(
+				healths[i].x, healths[i].y, healths[i].z, 
+				2 * healths[i].size, 2 * healths[i].size, 2 * healths[i].size);
+			break;
+			case 5:
+			healthsBody[i] = PhysicsBodyCube(
+				healths[i].x, healths[i].y, healths[i].z, 
+				0.8 * healths[i].size, 2 * healths[i].size, 0.8 * healths[i].size);
+			break;
+		}
+		healthsBody[i].update(Vector3d(healths[i].x, healths[i].y, healths[i].z));
+	}
 }
 
 void initStructs(){
 
 	for (int i = 0; i < PLANETS; i++) {
-
 		planets[i].x = randomFloat(5000, 9000) * pos_or_neg();
 		planets[i].y = randomFloat(5000, 9000) * pos_or_neg();
 		planets[i].z = randomFloat(5000, 9000) * pos_or_neg();
 		planets[i].size = randomFloat(10, 20);
 		planets[i].texture = randomFloat(2, 3);
-
 	}
 
 	for (int i = 0; i < EVILS; i++) {
-
 		evils[i].x = randomFloat(500, 4500) * pos_or_neg();
 		evils[i].y = randomFloat(500, 4500) * pos_or_neg();
 		evils[i].z = randomFloat(500, 4500) * pos_or_neg();
-		evils[i].size = randomFloat(10, 20);
+		evils[i].size = randomFloat(100, 200);
 		evils[i].texture = randomFloat(0, 3);
-
+		evilscount[i] = true;
 	}
 
 	for (int i = 0; i < HEALTHS; i++) {
-
 		healths[i].x = randomFloat(500, 4500) * pos_or_neg();
 		healths[i].y = randomFloat(500, 4500) * pos_or_neg();
 		healths[i].z = randomFloat(500, 4500) * pos_or_neg();
-		healths[i].size = randomFloat(10, 20);
+		healths[i].size = randomFloat(100, 200);
 		healths[i].texture = randomFloat(4, 5);
-
+		healthsTaken[i] = true;
 	}
+
+	assignBodysEvil();
+
+	assignBodysHealth();
+
+	string s =  GlobalClass::instance()->get_path();
+    //getParentPath();
+	string ruta = s + "objects/models/beerbottle_belgian.obj";
+	cout << "Filepath: " << ruta << std::endl;
+	gameModels[0] = *glmReadOBJ(ruta.c_str());
+	glmUnitize(&gameModels[0]);
+	glmVertexNormals(&gameModels[0], 90.0, GL_TRUE);
+
+	ruta = s + "objects/models/cigarette.obj";
+	cout << "Filepath: " << ruta << std::endl;
+	gameModels[1] = *glmReadOBJ(ruta.c_str());
+	glmUnitize(&gameModels[1]);
+	glmVertexNormals(&gameModels[1], 90.0, GL_TRUE);
+
+	ruta = s + "objects/models/weed.obj";
+	cout << "Filepath: " << ruta << std::endl;
+	gameModels[2] = *glmReadOBJ(ruta.c_str());
+	glmUnitize(&gameModels[2]);
+	glmVertexNormals(&gameModels[2], 90.0, GL_TRUE);
+
+	ruta = s + "objects/models/free_injector_OBJ.obj";
+	cout << "Filepath: " << ruta << std::endl;
+	gameModels[3] = *glmReadOBJ(ruta.c_str());
+	glmUnitize(&gameModels[3]);
+	glmVertexNormals(&gameModels[3], 90.0, GL_TRUE);
+
+	ruta = s + "objects/models/apple.obj";
+	cout << "Filepath: " << ruta << std::endl;
+	gameModels[4] = *glmReadOBJ(ruta.c_str());
+	glmUnitize(&gameModels[4]);
+	glmVertexNormals(&gameModels[4], 90.0, GL_TRUE);
+
+	ruta = s + "objects/models/water.obj";
+	cout << "Filepath: " << ruta << std::endl;
+	gameModels[5] = *glmReadOBJ(ruta.c_str());
+	glmUnitize(&gameModels[5]);
+	glmVertexNormals(&gameModels[5], 90.0, GL_TRUE);
 }
 
 string formato(int t){
@@ -106,8 +193,9 @@ string formato(int t){
 }
 
 
-void Game::shoot(int){
+void Game::shoot(int, bool player){
 	Bullet bu;
+	bu.player = player;
 	bu.forward = jet.forward;
 	Vector3d axis = jet.up.cross(jet.forward);
 	bu.pos = Vector3d(jet.x + 2 * axis.x, jet.y + 2 * axis.y, jet.z + 2 * axis.z);
@@ -137,13 +225,15 @@ void Game::checkCollision(){
 	for (int i = 0; i < bullets.size(); ++i)
 	{
 		if(!bullets[i].dead){
-			for (int j = 0; j < baddie.size(); ++j)
-			{
-				if (bodycount[j] && bullets[i].body.collidesContinuos(baddie[j]))
+			if(bullets[i].player){
+				for (int j = 0; j < EVILS; ++j)
 				{
-					killBullets.push(i);
-					bullets[i].dead = true;
-					bodycount[j] = false;
+					if (evilscount[j] && bullets[i].body.collidesContinuos(evilsBody[j]))
+					{
+						killBullets.push(i);
+						bullets[i].dead = true;
+						evilscount[j] = false;
+					}
 				}
 			}
 		} else {
@@ -158,7 +248,7 @@ void Game::checkCollision(){
 }
 
 void Game::timer(int v){
-    
+
     if(!gamePause){
         GlobalClass::instance()->updateTimer(0.5);
         checkCollision();
@@ -166,7 +256,7 @@ void Game::timer(int v){
         jet.calcDir();
         jet.moveJet();
         if(bullets.size()){
-            cout << bullets.size() << endl;
+            //cout << bullets.size() << endl;
         }
     }
     if(GlobalClass::instance()->getTimer() < 0){
@@ -174,6 +264,7 @@ void Game::timer(int v){
     }
     
     glutPostRedisplay();
+
 }
 
 void Game::paintBackGroundImage(int x, int y, int z, int rx, int ry, int rz, int size){
@@ -308,13 +399,14 @@ void Game::paintHUD(float x, float y, float w, float h){
 		glColor3ub(0, 255, 0);
 		glVertex2f(85, -95);
 		glVertex2f(95, -95);
-		glColor3ub(0 + jet.speed * 20, 255 - jet.speed * 20, 0);
-		glVertex2f(95, -95 + jet.speed * 14);
-		glVertex2f(85, -95 + jet.speed * 14);
+
+		glColor3ub(0 + jet.speed * 10, 255 - jet.speed * 10, 0);
+		glVertex2f(95, -95 + jet.speed * 7);
+		glVertex2f(85, -95 + jet.speed * 7);
 	}
 	glEnd();
 	glColor3ub(255, 140, 0);
-	glRectf(84, -96, 96, -96 + jet.speed * 14 + 2);
+	glRectf(84, -96, 96, -96 + jet.speed * 7 + 2);
 	writeBigStringWide(-93, 85, "VIDA", 0.075, 200, 0, 0);
     writeBigStringWide(5, 85, "PNTS: " + std::to_string(GlobalClass::instance()->getPoints()), 0.075, 200, 0, 0);
     writeBigStringWide(65, 85, formato(GlobalClass::instance()->getTimer()), 0.075, 200, 0, 0);
@@ -355,6 +447,25 @@ void Game::paintGame(float x, float y, float w, float h){
 
 	for (int i = 0 ; i < PLANETS; i++) {
 		paintSphere(planets[i].x,planets[i].y,planets[i].z, planets[i].size, planets[i].texture);
+	}
+
+	for (int i = 0 ; i < EVILS; i++) {
+		if(evilscount[i]){
+			paintModel(evils[i].texture, evils[i].x, evils[i].y, evils[i].z, evils[i].size);
+			if(camera.first){
+				evilsBody[i].testPaint();
+			}
+		}
+	}
+
+	for (int i = 0 ; i < HEALTHS; i++) {
+		if (healthsTaken[i])
+		{
+			paintModel(healths[i].texture, healths[i].x, healths[i].y, healths[i].z, healths[i].size);
+			if(camera.first){
+				healthsBody[i].testPaint();
+			}
+		}
 	}
 
 	glColor3f(1.0, 1.0, 1.0);
@@ -417,7 +528,7 @@ void Game::keyboard(unsigned char key, int, int){
 		camera.yawMod = -(M_PI / 2.3);
 		break;
 		case 'm':
-		shoot(0);
+		shoot(0, true);
 		break;
 	}
 	jet.up.normalize();
@@ -520,7 +631,8 @@ void Game::EventLoop(int){
 				} else if( sdlEvent.jaxis.axis == RT_AXIS ) {
                         //Full Trigger
                     if(!gamePause)
-                        jet.setSpeed(normalizeValues(sdlEvent.jaxis.value, 6, 12));
+                        jet.setSpeed(normalizeValues(sdlEvent.jaxis.value, 6, 24));
+
 
 					// printf("SPEED: %f\n", jet.getSpeed());
 				}else if( sdlEvent.jaxis.axis == LT_AXIS ) {
@@ -569,7 +681,7 @@ void Game::EventLoop(int){
 				switch(sdlEvent.jbutton.button){
 					case BUTTON_A:
                         if(!gamePause)
-                            shoot(0);
+                            shoot(0, true);
 					break;
 					case BUTTON_B:
                         if(!gamePause)
@@ -604,4 +716,14 @@ void Game::EventLoop(int){
 
 		}
 	}
+}
+
+void paintModel(int tex, int x, int y, int z, int size){
+	glPushMatrix();
+	{
+		glTranslatef(x, y, z);
+		glScalef(size * 2, size  * 2, size  * 2);
+		glmDraw(&gameModels[tex], GLM_COLOR | GLM_SMOOTH);
+	}
+	glPopMatrix();
 }

@@ -38,7 +38,7 @@ void GameOver::display(){
     float maxCoord = 50.0f;
     
     
-    writeBigStringWide(-22, -46, std::to_string(GlobalClass::instance()->getPoints()), 0.075, 200, 0, 0);
+    writeBigStringWide(-18, -46, std::to_string(GlobalClass::instance()->getPoints()), 0.075, 200, 0, 0);
     
     glColor3f(255, 255, 255);
     

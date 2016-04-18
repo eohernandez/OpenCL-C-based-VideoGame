@@ -29,6 +29,7 @@ public:
 	PhysicsBodyCube body;
 	int life;
 	bool dead;
+	bool player;
 	float size;
 	Mix_Chunk *gSaber;
 	Bullet();
