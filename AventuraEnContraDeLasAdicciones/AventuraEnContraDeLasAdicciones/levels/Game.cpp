@@ -723,10 +723,10 @@ void Game::EventLoop(int){
                         if(!gamePause)
                             shoot(0, true);
 					break;
-					case BUTTON_B:
-                        if(!gamePause)
-                            jet.jetBrake();
-                        break;
+//					case BUTTON_B:
+//                        if(!gamePause)
+//                            jet.jetBrake();
+//                        break;
 					case BUTTON_Y:
                         camera.first = !camera.first;
                         break;
