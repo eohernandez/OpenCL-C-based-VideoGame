@@ -1,9 +1,39 @@
 #include "Win.h"
 
+Mix_Music *gSuccess = NULL;
+
+void closeSuccess()
+{
+    // //Free the sound effects
+    // Mix_FreeChunk( gExplosion );
+    // Mix_FreeChunk( gHit );
+    // Mix_FreeChunk( gMedium );
+    // Mix_FreeChunk( gLow );
+    // gExplosion = NULL;
+    // gHit = NULL;
+    // gMedium = NULL;
+    // gLow = NULL;
+
+    //Free the music
+    Mix_FreeMusic( gSuccess );
+    gSuccess = NULL;
+}
+
 Win::Win(int w, int h){
     reshape(w, h);
     glutPostRedisplay();
-	state = 5;
+    state = 5;
+
+    string s =  GlobalClass::instance()->get_path();
+    char  rutaSuccess[300];
+    sprintf(rutaSuccess,"%s%s", s.c_str() , "sounds/success.wav");
+    // cout << rutaMusic << endl;
+    gSuccess = Mix_LoadMUS( rutaSuccess );
+    if( gSuccess == NULL )
+    {
+        printf( "Failed to load Dubstep music! SDL_mixer Error: %s\n", Mix_GetError() );
+    }
+    Mix_PlayMusic( gSuccess, -1 );
 }
 
 void Win::timer(int v){
@@ -12,7 +42,7 @@ void Win::timer(int v){
 
 
 void Win::writeBigStringWide(GLdouble x, GLdouble y, string s, float size, int r, int g, int b){
-    
+
     unsigned int i;
     
     glColor3f(1.0, 1.0,1.0);
@@ -90,32 +120,33 @@ void Win::keyboard(unsigned char key, int, int){
 
 void Win::EventLoop(int){
 
-    
+
     SDL_Event sdlEvent;
     
     while( SDL_PollEvent( &sdlEvent ) ) {
         switch( sdlEvent.type ) {
-                
+
             case SDL_JOYBUTTONDOWN:
                 // printf("Joystick %d button %d down\n",
                 //  sdlEvent.jbutton.which, sdlEvent.jbutton.button);
-                if( sdlEvent.jaxis.which == 0 ){
-                    switch(sdlEvent.jbutton.button){
-                            
-                            
-                        case BUTTON_B:
-                            state = 0;
-                            break;
-                            
-                            
-                        default:
-                            break;
-                    }
-                } else{
-                    printf("Joystick %d button %d down\n",
-                           sdlEvent.jbutton.which, sdlEvent.jbutton.button);
+            if( sdlEvent.jaxis.which == 0 ){
+                switch(sdlEvent.jbutton.button){
+
+
+                    case BUTTON_B:
+                    state = 0;
+                    closeSuccess();
+                    break;
+
+
+                    default:
+                    break;
                 }
-                break;
+            } else{
+                printf("Joystick %d button %d down\n",
+                 sdlEvent.jbutton.which, sdlEvent.jbutton.button);
+            }
+            break;
         }
     }
 }

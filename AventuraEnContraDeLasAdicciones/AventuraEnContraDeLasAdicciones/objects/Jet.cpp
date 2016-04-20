@@ -41,7 +41,7 @@ Jet::Jet(){
 	yaw = 0;
 	pitch = 0;
 	roll = 0;
-	speed = 0;
+	speed = 6;
 	pitchMod = 0;
 	rollMod = 0;
 	life = 100;

@@ -4,6 +4,8 @@
 
 Game* game;
 Mix_Music *gDubstep = NULL;
+Mix_Chunk *gExplosion = NULL;
+Mix_Chunk *gHit = NULL;
 
 std::random_device rd;
 
@@ -39,18 +41,18 @@ void paintModel(int tex, int x, int y, int z, int size);
 void closeSound()
 {
     // //Free the sound effects
-    // Mix_FreeChunk( gScratch );
-    // Mix_FreeChunk( gSaber );
+    Mix_FreeChunk( gExplosion );
+    Mix_FreeChunk( gHit );
     // Mix_FreeChunk( gMedium );
     // Mix_FreeChunk( gLow );
-    // gScratch = NULL;
-    // gSaber = NULL;
+    gExplosion = NULL;
+    gHit = NULL;
     // gMedium = NULL;
     // gLow = NULL;
 
     //Free the music
-    Mix_FreeMusic( gDubstep );
-    gDubstep = NULL;
+	Mix_FreeMusic( gDubstep );
+	gDubstep = NULL;
 }
 
 void Game::evilsshoot(){
@@ -268,6 +270,23 @@ Game::Game(int w, int h){
 	}
 	Mix_PlayMusic( gDubstep, -1 );
 
+	char  rutaExp[300];
+	sprintf(rutaExp,"%s%s", s.c_str() , "sounds/explosion.wav");
+    // cout << rutaMusic << endl;
+	gExplosion = Mix_LoadWAV( rutaExp );
+	if( gExplosion == NULL )
+	{
+		printf( "Failed to load Dubstep music! SDL_mixer Error: %s\n", Mix_GetError() );
+	}
+
+	char  rutaHit[300];
+	sprintf(rutaHit,"%s%s", s.c_str() , "sounds/hit.wav");
+    // cout << rutaMusic << endl;
+	gHit = Mix_LoadWAV( rutaHit );
+	if( gHit == NULL )
+	{
+		printf( "Failed to load Dubstep music! SDL_mixer Error: %s\n", Mix_GetError() );
+	}
 }
 
 void Game::checkCollision(){
@@ -279,6 +298,7 @@ void Game::checkCollision(){
 				{
 					if (evilscount[j] && bullets[i].body.collidesContinuos(evilsBody[j]))
 					{
+						Mix_PlayChannel( 3, gExplosion, 0 );
 
 						GlobalClass::instance()->updatePoints(10);
 						evilsAlive--;
@@ -289,6 +309,7 @@ void Game::checkCollision(){
 				}
 			} else{
 				if(bullets[i].body.collidesContinuos(jet.body)){
+					Mix_PlayChannel( 2, gHit, 0 );
 					jet.life -= 20;
 					killBullets.push(i);
 					bullets[i].dead = true;
